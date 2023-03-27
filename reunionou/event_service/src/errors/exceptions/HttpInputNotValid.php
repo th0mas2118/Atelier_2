@@ -1,6 +1,6 @@
 <?php
 
-namespace lbs\order\errors\exceptions;
+namespace reunionou\event\errors\exceptions;
 
 use Slim\Exception\HttpSpecializedException;
 

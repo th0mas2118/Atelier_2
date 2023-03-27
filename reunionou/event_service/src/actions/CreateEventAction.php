@@ -2,13 +2,13 @@
 
 namespace reunionou\event\actions;
 
-use lbs\order\errors\exceptions\HttpInputNotValid;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
+use Respect\Validation\Validator as v;
 use reunionou\event\services\EventService;
 use reunionou\event\actions\AbstractAction;
-use Respect\Validation\Validator as v;
+use reunionou\event\errors\exceptions\HttpInputNotValid;
 
 
 final class CreateEventAction extends AbstractAction
@@ -22,15 +22,16 @@ final class CreateEventAction extends AbstractAction
         }
 
         if (
-            (!isset($body["title"]) && v::stringVal()->validate($body["title"])) ||
-            (!isset($body["description"]) && v::stringVal()->validate($body["description"])) ||
-            (!isset($body["date"]) && v::dateTime()->validate($body["date"])) ||
-            (!isset($body["location"]) && v::arrayVal()->validate($body["description"])) ||
-            (!isset($body["organizer_id"]) && v::stringVal()->validate($body["organizer_id"])) ||
-            (!isset($body["participants"]) && v::arrayVal()->validate($body["participants"]))
+            (!isset($body["title"]) || !v::stringVal()->validate($body["title"])) ||
+            (!isset($body["description"]) || !v::stringVal()->validate($body["description"])) ||
+            (!isset($body["date"]) || !v::dateTime()->validate($body["date"])) ||
+            (!isset($body["location"]) || !v::arrayVal()->validate($body["location"])) ||
+            (!isset($body["organizer_id"]) || !v::stringVal()->validate($body["organizer_id"])) ||
+            (!isset($body["participants"]) || !v::arrayVal()->validate($body["participants"]))
         ) {
-            return (throw new HttpInputNotValid($req, "Les champs suivants sont obligatoires: title, description, date, location, organizer, participants"));
+            return (throw new HttpInputNotValid($req, "Les données envoyées ne sont pas valides"));
         }
+
         $eventService = new EventService($this->container->get('mongo_url'));
         // $event = $eventService->createEvent(["title" => "salut"]);
         $event = null;
