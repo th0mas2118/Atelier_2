@@ -61,3 +61,32 @@ services:
       - "49318:27017"
     networks:
       - reunionou.net
+  ##################
+  # EVENT SERVICES #
+  ##################
+  api.comment:
+    image: "canals/php:latest"
+    environment:
+      - VHOST_HOSTNAME=api.comment.reunionou
+      - VHOST_DOCROOT=/var/www/public
+    ports:
+      - "49382:80"
+      - "49346:443"
+    volumes:
+      - "./reunionou/comment_service:/var/www"
+    working_dir: /var/www/src
+    networks:
+      - reunionou.net
+    depends_on:
+      - comment.db
+
+  comment.db:
+    image: "mongo:latest"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=root
+    ports:
+      - "49319:27017"
+    networks:
+      - reunionou.net
