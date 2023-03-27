@@ -119,4 +119,54 @@ final class DbService
         }
         return 200;
     }
+
+    public function addAvatar($token, $data)
+    {
+        $test = new \MongoDB\Client($this->mongo);
+        $db = $test->auth_reunionou;
+
+        $user = $db->user->findOne(['acces_token' => $token]);
+        if (!$user) {
+            throw new \Exception("User not found", 404);
+        }
+        $db->user->updateOne(['acces_token' => $token], ['$set' => ['avatar' => $data['avatar']]]);
+        return $user;
+    }
+    public function modifyAvatar($token, $data)
+    {
+        $test = new \MongoDB\Client($this->mongo);
+        $db = $test->auth_reunionou;
+
+        $user = $db->user->findOne(['acces_token' => $token]);
+        if (!$user) {
+            throw new \Exception("User not found", 404);
+        }
+        $db->user->updateOne(['acces_token' => $token], ['$set' => ['avatar' => $data['avatar']]]);
+        return $user;
+    }
+
+    public function addAdress($token, $data)
+    {
+        $test = new \MongoDB\Client($this->mongo);
+        $db = $test->auth_reunionou;
+
+        $user = $db->user->findOne(['acces_token' => $token]);
+        if (!$user) {
+            throw new \Exception("User not found", 404);
+        }
+        $db->user->updateOne(['acces_token' => $token], ['$set' => ['adress' => $data]]);
+        return $user;
+    }
+    public function modifyAdress($token, $data)
+    {
+        $test = new \MongoDB\Client($this->mongo);
+        $db = $test->auth_reunionou;
+
+        $user = $db->user->findOne(['acces_token' => $token]);
+        if (!$user) {
+            throw new \Exception("User not found", 404);
+        }
+        $db->user->updateOne(['acces_token' => $token], ['$set' => ['adress' => $data]]);
+        return $user;
+    }
 }
