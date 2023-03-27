@@ -15,7 +15,7 @@ final class EventService
         $this->mongo = $link;
     }
 
-    public function createEvent(array $data): mixed
+    public function createEvent(array $data): ?string
     {
         try {
             $client = new \MongoDB\Client($this->mongo);
@@ -23,7 +23,7 @@ final class EventService
 
             $event = $db->insertOne($data);
 
-            return $event;
+            return $event->getInsertedId();
         } catch (\Throwable $th) {
             return null;
         }

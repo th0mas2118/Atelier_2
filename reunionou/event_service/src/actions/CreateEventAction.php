@@ -35,7 +35,6 @@ final class CreateEventAction extends AbstractAction
 
         $eventService = new EventService($this->container->get('mongo_url'));
         $event = $eventService->createEvent($body);
-
         $routeContext = RouteContext::fromRequest($req);
         $routeParser = $routeContext->getRouteParser();
 
@@ -45,7 +44,7 @@ final class CreateEventAction extends AbstractAction
             'event' => $body,
             'links' => [
                 'self' => [
-                    'href' => $routeParser->urlFor('get_event', ['id' => strval($event["_id"])])
+                    'href' => $routeParser->urlFor('get_event', ['id' => strval($event)])
                 ],
             ]
         ];
