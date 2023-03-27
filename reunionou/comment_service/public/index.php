@@ -1,19 +1,16 @@
 <?php
 
 declare(strict_types=1);
+use DI\ContainerBuilder;
+use Slim\Factory\AppFactory;
+use reunionou\comment\actions\GetCommentAction;
+use reunionou\src\service\utils\CommentService;
+use reunionou\comment\actions\CreateCommentAction;
+
+
 require_once __DIR__ . '/../vendor/autoload.php';
 // $settings = require_once __DIR__ . '/../conf/setting.php';
 
-use Slim\Psr7\Request;
-use Slim\Psr7\Response;
-use DI\ContainerBuilder;
-use Slim\Factory\AppFactory;
-use Slim\Handlers\ErrorHandler;
-use lbs\auth\actions\SigninAction;
-use lbs\auth\actions\ValidateAction;
-use reunionou\event\actions\GetEventAction;
-use reunionou\event\actions\CreateEventAction;
-use reunionou\event\errors\renderer\JsonErrorRenderer;
 
 $builder = new ContainerBuilder();
 $builder->addDefinitions(__DIR__ . '/../config/settings.php');
@@ -26,11 +23,11 @@ $errorMiddleware = $app->addErrorMiddleware(true, false, false);
 $errorMiddleware->getDefaultErrorHandler()->forceContentType('application/json');
 
 
-$app->get('/messages/{id}[/]',CommentService::class . ':getMessage')->setName('getMessage');
+$app->get('/messages/{id}[/]',GetCommentAction::class)->setName('getComment');
 
-$app->post('/messages[/]', CommentService::class . ':createMessage')->setName('createMessage');
+$app->post('/messages[/]', CreateCommentAction::class)->setName('createComment');
 
-$app->delete('/messages/{id}[/]', CommentService::class . ':deleteMessageById')->setName('deleteMessageById');
+$app->delete('/messages/{id}[/]', CommentService::class . ':deleteCommentById')->setName('deleteCommentById');
 
 $app->get('/hello[/]', function (Request $request, Response $response, $args) {
     $response->getBody()->write("Hello,");

@@ -1,77 +1,40 @@
 <?php
 
-namespace renionou\comment\actions\order;
+namespace reunionou\comment\actions;
 
-use lbs\order\services\utils\CommandeService;
-use lbs\order\errors\exceptions\OrderExceptionNotFound;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
+use reunionou\comment\service\CommentService;
+use reunionou\comment\actions\AbstractAction;
+use reunionou\comment\errors\exceptions\HttpNotFound;
 
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Exception\HttpNotFoundException;
 
-
-final class GetCommentAction
+final class GetCommentAction extends AbstractAction
 {
-    const PAGE_SIZE = 10;
 
     public function __invoke(Request $request, Response $response, array $args): Response
     {
 
+        $message = new CommentService($this->container->get('mongo_url'));
+        $comment = $message->getComment($args['id']);
+        
+        $routeContext = RouteContext::fromRequest($request);
+        $routeParser = $routeContext->getRouteParser();
 
-        $client = $request->getQueryParams()['c'] ?? null;
-        $sort = $request->getQueryParams()['sort'] ?? null;
-        $page = $request->getQueryParams()['page'] ?? 1;
-
-        try {
-            $commande = new CommentService();
-            $orders = $commande->getOrders($client,$sort);
-        } catch (OrderExceptionNotFound $e) {
-            throw new HttpNotFoundException($request, $e->getMessage());
+        if (!isset($comment)) {
+            return (throw new HttpNotFound($request, "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible: " . $args['id']));
         }
 
-
-
-        $count = count($orders);
-        $lastPage = ceil($count/self::PAGE_SIZE);
-
-
-        if ($page < 1)
-            $page = 1;
-
-        if ($page > $lastPage)
-            $page = ceil($count/self::PAGE_SIZE);
-
-        $data_pagination =  array_slice($orders, ($page-1)*self::PAGE_SIZE, self::PAGE_SIZE);
-
-
-
-        $orders_data = [];
-        $route = RouteContext::fromRequest($request)->getRouteParser();
-
-        $size = 0;
-        foreach ($data_pagination as $order) {
-            $size++;
-            $orders_data[] = ['order' => $order,
-                'links' => [
-                    // 'self' => ['href' => $route->urlFor('getOrderById', ['id' => $order['id']])],
-                    // 'items' => ['href' => $route->urlFor('getOrderItemsById', ['id' => $order['id']])]
-                ]
-            ];
-        }
-
+        $response = $response->withStatus(200)->withHeader('Content-Type', 'application/json;charset=utf-8');
 
         $data = [
-            'type' => 'collection',
-            'count' => $count,
-            'size' => $size,
-            'orders' => $orders_data,
+            'type' => 'resource',
+            'comment' => $comment,
             'links' => [
-                // 'self' => ['href' => $route->urlFor('getOrders',[], ['page' => $page])],
-                // 'next' => ['href' => $route->urlFor('getOrders',[], ['page' => $page + 1 >= $lastPage ? 1 : $page + 1 ])],
-                // 'prev' => ['href' => $route->urlFor('getOrders',[], ['page' => $page - 1 <= 1 ? $lastPage : $page - 1])],
-                // 'first' => ['href' => $route->urlFor('getOrders',[], ['page' => 1])],
-                // 'last' => ['href' => $route->urlFor('getOrders',[], ['page' => $lastPage])],
+                'self' => [
+                    'href' => $routeParser->urlFor('getComment', ['id' => strval($comment["_id"])])
+                ],
             ]
         ];
 
