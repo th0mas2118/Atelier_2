@@ -25,7 +25,8 @@ final class CreateEventAction extends AbstractAction
             (!isset($body["title"]) || !v::stringVal()->validate($body["title"])) ||
             (!isset($body["description"]) || !v::stringVal()->validate($body["description"])) ||
             (!isset($body["date"]) || !v::dateTime()->validate($body["date"])) ||
-            (!isset($body["location"]) || !v::arrayVal()->validate($body["location"])) ||
+            (!isset($body["address"]) || !v::stringVal()->validate($body["address"])) ||
+            (!isset($body["gps"]) || !v::arrayVal()->validate($body["gps"])) ||
             (!isset($body["organizer_id"]) || !v::stringVal()->validate($body["organizer_id"])) ||
             (!isset($body["participants"]) || !v::arrayVal()->validate($body["participants"]))
         ) {
@@ -33,14 +34,15 @@ final class CreateEventAction extends AbstractAction
         }
 
         $eventService = new EventService($this->container->get('mongo_url'));
-        // $event = $eventService->createEvent(["title" => "salut"]);
-        $event = null;
+        $event = $eventService->createEvent($body);
+
         $routeContext = RouteContext::fromRequest($req);
         $routeParser = $routeContext->getRouteParser();
 
         $rs = $rs->withStatus(200)->withHeader('Content-Type', 'application/json;charset=utf-8');
         $data = [
             'type' => 'resource',
+            'event' => $body,
             'links' => [
                 'self' => [
                     'href' => $routeParser->urlFor('get_event', ['id' => strval($event["_id"])])
@@ -48,7 +50,7 @@ final class CreateEventAction extends AbstractAction
             ]
         ];
 
-        $rs->getBody()->write(json_encode($event));
+        $rs->getBody()->write(json_encode($data));
         return $rs;
     }
 }
