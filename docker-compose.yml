@@ -6,6 +6,7 @@ services:
   api.auth:
     image: "canals/php:latest"
     environment:
+      - VHOST_HOSTNAME=api.auth.reunionou
       - VHOST_DOCROOT=/var/www/public
     ports:
       - "49380:80"
