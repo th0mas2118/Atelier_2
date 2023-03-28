@@ -1,21 +1,35 @@
-version: '3'
+version: "3"
 networks:
   reunionou.net:
     driver: bridge
 services:
+  ###################
+  # GLOBAL COMPOSER #
+  ###################
+  composer:
+    image: composer/composer
+    networks:
+      - reunionou.net
+    volumes:
+      - "./reunionou/composer:/composer"
+      - "./reunionou/composer/vendor:/var/www/vendor"
+    container_name: composer
+    working_dir: /composer
+    command: install
   #################
   # AUTH SERVICES #
   #################
   api.auth:
-    image: 'canals/php:latest'
+    image: "canals/php:latest"
     environment:
       - VHOST_HOSTNAME=api.auth.reunionou
       - VHOST_DOCROOT=/var/www/public
     ports:
-      - '49380:80'
-      - '49344:443'
+      - "49380:80"
+      - "49344:443"
     volumes:
-      - './reunionou/auth_service:/var/www'
+      - "./reunionou/auth_service:/var/www"
+      - "./reunionou/composer/vendor:/var/www/vendor"
     working_dir: /var/www/src
     networks:
       reunionou.net:
@@ -25,28 +39,29 @@ services:
       - auth.db
 
   auth.db:
-    image: 'mongo:latest'
+    image: "mongo:latest"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
       - MONGO_INITDB_DATABASE=root
     ports:
-      - '49317:27017'
+      - "49317:27017"
     networks:
       - reunionou.net
   ##################
   # EVENT SERVICES #
   ##################
   api.event:
-    image: 'canals/php:latest'
+    image: "canals/php:latest"
     environment:
       - VHOST_HOSTNAME=api.event.reunionou
       - VHOST_DOCROOT=/var/www/public
     ports:
-      - '49381:80'
-      - '49345:443'
+      - "49381:80"
+      - "49345:443"
     volumes:
-      - './reunionou/event_service:/var/www'
+      - "./reunionou/event_service:/var/www"
+      - "./reunionou/composer/vendor:/var/www/vendor"
     working_dir: /var/www/src
     networks:
       - reunionou.net
@@ -54,28 +69,29 @@ services:
       - event.db
 
   event.db:
-    image: 'mongo:latest'
+    image: "mongo:latest"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
       - MONGO_INITDB_DATABASE=root
     ports:
-      - '49318:27017'
+      - "49318:27017"
     networks:
       - reunionou.net
   ##################
   # EVENT SERVICES #
   ##################
   api.comment:
-    image: 'canals/php:latest'
+    image: "canals/php:latest"
     environment:
       - VHOST_HOSTNAME=api.comment.reunionou
       - VHOST_DOCROOT=/var/www/public
     ports:
-      - '49382:80'
-      - '49346:443'
+      - "49382:80"
+      - "49346:443"
     volumes:
-      - './reunionou/comment_service:/var/www'
+      - "./reunionou/comment_service:/var/www"
+      - "./reunionou/composer/vendor:/var/www/vendor"
     working_dir: /var/www/src
     networks:
       - reunionou.net
@@ -83,28 +99,29 @@ services:
       - comment.db
 
   comment.db:
-    image: 'mongo:latest'
+    image: "mongo:latest"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
       - MONGO_INITDB_DATABASE=root
     ports:
-      - '49319:27017'
+      - "49319:27017"
     networks:
       - reunionou.net
     ##################
   # GATEWAY WEBAPP #
   ##################
   api.frontoffice:
-    image: 'canals/php:latest'
+    image: "canals/php:latest"
     environment:
       - VHOST_HOSTNAME=api.frontoffice.reunionou
       - VHOST_DOCROOT=/var/www/public
     ports:
-      - '49383:80'
-      - '49311:443'
+      - "49383:80"
+      - "49311:443"
     volumes:
-      - './reunionou/front_office_webapp:/var/www'
+      - "./reunionou/front_office_webapp:/var/www"
+      - "./reunionou/composer:/var/composer"
     working_dir: /var/www/src
     networks:
       - reunionou.net
