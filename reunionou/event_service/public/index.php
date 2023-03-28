@@ -28,9 +28,10 @@ $app->get('/events[/]', GetEventsAction::class)->setName("get_events");
 $app->get('/events/{id}[/]', GetEventAction::class)->setName("get_event");
 $app->get('/events/{id}/comments[/]', GetEventCommentsAction::class)->setName("get_event_comments");
 $app->get('/comments/{id}[/]', GetEventAction::class)->setName("get_comment");
+$app->get('/events/generatelink/{id}/{userid}[/]', GetEventAction::class)->setName("generate_invite_link");
 
 $app->post('/events[/]', CreateEventAction::class)->setName("create_event");
-
+$app->put('/events/join/{token}[/]', CreateEventAction::class)->setName("join_event");
 
 $app->put('/events/{id}[/]', UpdateEventAction::class)->setName("update_event");
 
