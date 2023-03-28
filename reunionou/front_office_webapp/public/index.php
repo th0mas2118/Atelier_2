@@ -7,6 +7,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Factory\AppFactory;
+use reunionou\frontwebapp\actions\SignUpAction;
 use reunionou\frontwebapp\actions\SignInAction;
 use reunionou\frontwebapp\actions\GetUserAction;
 use reunionou\frontwebapp\actions\SignOutAction;
@@ -44,6 +45,7 @@ $app->get(
 
 $app->post('/signin', SignInAction::class)->setName('signin');
 $app->post('/signout', SignOutAction::class)->setName('signout');
+$app->post('/signup', SignUpAction::class)->setName('signup');
 
 $app->get('/user/{id}', GetUserAction::class)->setName('getUser');
 
