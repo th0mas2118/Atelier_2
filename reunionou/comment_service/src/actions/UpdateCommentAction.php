@@ -13,11 +13,13 @@ final class UpdateCommentAction extends AbstractAction
 {
     public function __invoke(Request $request, Response $response, array $args): Response
 {
-    if (null === $req->getParsedBody()) {
-        $body = json_decode($req->getBody()->getContents(), true);
+    if (null === $request->getParsedBody()) {
+        $body = json_decode($request->getBody()->getContents(), true);
     } else {
-        $body = $req->getParsedBody();
+        $body = $request->getParsedBody();
     }
+
+
     $message = new CommentService($this->container->get('mongo_url'));
     $comment = $message->getComment($args['id']);
 
@@ -43,10 +45,11 @@ final class UpdateCommentAction extends AbstractAction
     ];
 
     $response = $response->withHeader('Content-type', 'application/json;charset=utf-8')->withStatus(202);
-    $response->getBody()->write(json_encode($body));
+    $response->getBody()->write(json_encode($data));
 
     return $response;
 }
+
 
 
 

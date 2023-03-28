@@ -65,14 +65,18 @@ class CommentService
         }
     }
 
-    public function updateComment($commentId, $newComment): ?String{
+    public function updateComment(String $commentId, array $newComment): ?bool{
         try{
             $client = new \MongoDB\Client($this->mongo);
             $db = $client->selectDatabase("reunionou")->selectCollection("comment");
 
-            $result = $db->updateOne(["_id" => new ObjectId($commentId)],["set" => new ObjectId($newComment)]);
+            $checkComment = $db->findOne(['_id' => new ObjectId($commentId)]);
 
-            return $result->getModifiedCount();
+            if(!$checkComment) return null;
+
+            $result = $db->updateOne(["_id" => new ObjectId($commentId)],['$set' => $newComment]);
+            
+            return $result->getModifiedCount() > 0;
 
         }catch(\Throwable $th) {
             return false;

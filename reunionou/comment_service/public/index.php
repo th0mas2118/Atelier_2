@@ -29,7 +29,7 @@ $app->get('/messages/{id}[/]',GetCommentAction::class)->setName('getComment');
 
 $app->post('/messages[/]', CreateCommentAction::class)->setName('createComment');
 
-$app->put('/messages[/]', UpdateCommentAction::class)->setName('updateComment');
+$app->put('/messages/{id}[/]', UpdateCommentAction::class)->setName('updateComment');
 
 $app->delete('/messages/{id}[/]', DeleteCommentAction::class)->setName('deleteComment');
 
