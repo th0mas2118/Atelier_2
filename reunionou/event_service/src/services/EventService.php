@@ -42,4 +42,54 @@ final class EventService
             return null;
         }
     }
+
+    public function getEvents(): array
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("event");
+
+            $events = $db->find();
+
+            return $events->toArray();
+        } catch (\Throwable $th) {
+            return null;
+        }
+    }
+
+    public function deleteEvent(string $id): ?bool
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("event");
+
+            $eventExists = $db->findOne(['_id' => new ObjectId($id)]);
+
+            if (!isset($eventExists)) return null;
+
+            $event = $db->deleteOne(['_id' => new ObjectId($id)]);
+
+            return $event->getDeletedCount() > 0;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function updateEvent(string $id, array $data): ?bool
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("event");
+
+            $eventExists = $db->findOne(['_id' => new ObjectId($id)]);
+
+            if (!$eventExists) return null;
+
+            $event = $db->updateOne(['_id' => new ObjectId($id)], ['$set' => $data]);
+
+            return $event->getModifiedCount() > 0;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
 }
