@@ -60,7 +60,6 @@ final class DbService
             throw new \Exception("User not found", 404);
         } else {
             $db->user->updateOne(['_id' => $user->_id], ['$set' => ['acces_token' => null]]);
-            return 200;
         }
     }
 
@@ -119,53 +118,29 @@ final class DbService
         return 200;
     }
 
-    public function addAvatar($token, $data)
+
+
+    public function modifyAvatar($id, $data)
     {
         $test = new \MongoDB\Client($this->mongo);
         $db = $test->auth_reunionou;
 
-        $user = $db->user->findOne(['acces_token' => $token]);
+        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
-        $db->user->updateOne(['acces_token' => $token], ['$set' => ['avatar' => $data['avatar']]]);
-        return $user;
-    }
-    public function modifyAvatar($token, $data)
-    {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
-
-        $user = $db->user->findOne(['acces_token' => $token]);
-        if (!$user) {
-            throw new \Exception("User not found", 404);
-        }
-        $db->user->updateOne(['acces_token' => $token], ['$set' => ['avatar' => $data['avatar']]]);
-        return $user;
+        $db->user->updateOne(['_id' => new ObjectId($id)], ['$set' => ['avatar' => $data]]);
     }
 
-    public function addAdress($token, $data)
+    public function modifyAdress($id, $data)
     {
         $test = new \MongoDB\Client($this->mongo);
         $db = $test->auth_reunionou;
 
-        $user = $db->user->findOne(['acces_token' => $token]);
+        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
-        $db->user->updateOne(['acces_token' => $token], ['$set' => ['adress' => $data]]);
-        return $user;
-    }
-    public function modifyAdress($token, $data)
-    {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
-
-        $user = $db->user->findOne(['acces_token' => $token]);
-        if (!$user) {
-            throw new \Exception("User not found", 404);
-        }
-        $db->user->updateOne(['acces_token' => $token], ['$set' => ['adress' => $data]]);
-        return $user;
+        $db->user->updateOne(['_id' => new ObjectId($id)], ['$set' => ['adress' => $data]]);
     }
 }

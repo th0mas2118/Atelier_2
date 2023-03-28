@@ -32,10 +32,7 @@ $app->get('/validate', ValidateAction::class)->setName('validate');
 $app->get('/user/{id}', GetUserAction::class)->setName('get_user');
 
 
-$app->put('/user/{id}', UpdateUserAction::class)->setName('updateUser');
-// $app->post('/avatar', AddAvatarAction::class)->setName('addAvatar');
-// $app->post('/adress', AddAdressAction::class)->setName('addAdress');
-// $app->patch('/adress', ModifyAdressAction::class)->setName('modifyAdress');
-// $app->patch('/avatar', ModifyAvatarAction::class)->setName('modifyAvatar');
+$app->put('/user/{id}', UpdateUserAction::class)->setName('update_user');
+$app->delete(('user/{id}'), DeleteUserAction::class)->setName('delete_user');
 
 $app->run();
