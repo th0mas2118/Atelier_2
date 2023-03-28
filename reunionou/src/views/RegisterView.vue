@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user";
 import { reactive } from 'vue'
+import router from "@/router";
+
 const user = useUserStore();
 let log = reactive({
     username: "",
@@ -28,7 +30,7 @@ const Register = async () => {
             email: log.email,
             password: password.password
         })
-    }).then((response) => console.log(response))
+    }).then((response) => router.push('/login'))
 };
 
 </script>
@@ -48,3 +50,13 @@ const Register = async () => {
         </form>
     </div>
 </template>
+
+<style>
+@media (min-width: 1024px) {
+    .register-view {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+}
+</style>
