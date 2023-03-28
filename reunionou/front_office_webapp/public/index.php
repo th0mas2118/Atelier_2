@@ -7,10 +7,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Factory\AppFactory;
-use reunionou\frontwebapp\actions\SignUpAction;
 use reunionou\frontwebapp\actions\SignInAction;
+use reunionou\frontwebapp\actions\SignUpAction;
 use reunionou\frontwebapp\actions\GetUserAction;
 use reunionou\frontwebapp\actions\SignOutAction;
+use reunionou\frontwebapp\actions\UpdateUserAction;
 use reunionou\frontwebapp\middlewares\ValidateToken;
 
 $app = AppFactory::create();
