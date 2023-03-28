@@ -55,7 +55,6 @@ let log = reactive({
 
 <style>
 .login-view {
-  display: flex;
   justify-content: center;
 }
 /* @media (min-width: 1024px) {

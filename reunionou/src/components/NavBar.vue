@@ -10,12 +10,12 @@ const test = () => {
 <template>
   <header class="navbar">
     <!-- <nav>
-                        <RouterLink to="/">Home</RouterLink>
-                            <RouterLink to="/about">About</RouterLink>
-                            <RouterLink v-if="!user.isConnected" to="/login">Login</RouterLink>
-                            <RouterLink v-if="!user.isConnected" to="/register">Register</RouterLink>
-                            <button v-if="user.isConnected" @click="user.disconnect">Logout</button>
-                          </nav> -->
+                                      <RouterLink to="/">Home</RouterLink>
+                                          <RouterLink to="/about">About</RouterLink>
+                                          <RouterLink v-if="!user.isConnected" to="/login">Login</RouterLink>
+                                          <RouterLink v-if="!user.isConnected" to="/register">Register</RouterLink>
+                                          <button v-if="user.isConnected" @click="user.disconnect">Logout</button>
+                                        </nav> -->
 
     <nav class="flex items-center justify-between flex-wrap bg-purple-800 p-6">
       <div class="flex items-center flex-shrink-0 text-white mr-6">
@@ -46,8 +46,13 @@ const test = () => {
         </div>
         <div>
           <router-link v-if="!user.isConnected"
-            class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+            class="inline-block bg-white text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
             to="/login">Se connecter</router-link>
+        </div>
+        <div>
+          <router-link v-if="!user.isConnected"
+            class="inline-block bg-white ml-2 text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+            to="/register">S'inscrire</router-link>
         </div>
         <div>
           <button v-if="user.isConnected"
