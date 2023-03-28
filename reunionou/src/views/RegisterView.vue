@@ -51,9 +51,9 @@ const Register = async () => {
             <input type="password" placeholder="Password confirmation" v-model="password.passwordConfirmation" />
             <button @click="Register()">Register</button>
         </form> -->
-        
+
     <form class="shadow-xl max-w-xl mx-auto rounded px-16 pt-16 pb-8 mb-8">
-        <h1 class="text-3xl font-bold mb-8 text-center">Register</h1>
+      <h1 class="text-3xl font-bold mb-8 text-center">Register</h1>
       <div class="mb-4">
         <label class="block text-white-700 font-bold mb-2" for="username">Nom d'Utilisateur</label>
         <input
