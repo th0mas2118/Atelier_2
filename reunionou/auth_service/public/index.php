@@ -3,9 +3,6 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Slim\Psr7\Request;
-use Slim\Psr7\Response;
-
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use reunionou\auth\actions\SigninAction;
@@ -13,10 +10,8 @@ use reunionou\auth\actions\SignUpAction;
 use reunionou\auth\actions\GetUserAction;
 use reunionou\auth\actions\SignOutAction;
 use reunionou\auth\actions\ValidateAction;
-use reunionou\auth\actions\AddAdressAction;
-use reunionou\auth\actions\AddAvatarAction;
-use reunionou\auth\actions\ModifyAdressAction;
-use reunionou\auth\actions\ModifyAvatarAction;
+use reunionou\auth\actions\UpdateUserAction;
+
 
 $builder = new ContainerBuilder();
 $builder->addDefinitions(__DIR__ . '/../conf/settings.php');
@@ -25,27 +20,19 @@ $app = AppFactory::createFromContainer($c);
 
 // $app = AppFactory::create();
 $app->addRoutingMiddleware();
-$app->addErrorMiddleware(true, false, false);
+$errorMiddleware = $app->addErrorMiddleware(true, false, false);
+$errorMiddleware->getDefaultErrorHandler()->forceContentType('application/json');
 
 // Route pour la connexion
-
-$app->get(
-    '/hello',
-    function (Request $rq, Response $rs, $args): Response {
-        $rs->getBody()->write("Hello World");
-        return $rs;
-    }
-);
 
 $app->post('/signin', SigninAction::class)->setName('signin');
 $app->post('/signup', SignUpAction::class)->setName('signup');
 $app->post('/signout', SignOutAction::class)->setName('signout');
 $app->get('/validate', ValidateAction::class)->setName('validate');
-$app->get('/user/{id}', GetUserAction::class)->setName('getUser');
+$app->get('/user/{id}', GetUserAction::class)->setName('get_user');
 
-$app->post('/avatar', AddAvatarAction::class)->setName('addAvatar');
-$app->post('/adress', AddAdressAction::class)->setName('addAdress');
-$app->patch('/adress', ModifyAdressAction::class)->setName('modifyAdress');
-$app->patch('/avatar', ModifyAvatarAction::class)->setName('modifyAvatar');
+
+$app->put('/user/{id}', UpdateUserAction::class)->setName('update_user');
+$app->delete(('user/{id}'), DeleteUserAction::class)->setName('delete_user');
 
 $app->run();

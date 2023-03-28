@@ -7,9 +7,10 @@ use Firebase\JWT\Key;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
+use Slim\Routing\RouteContext;
+use Respect\Validation\Validator as v;
 use reunionou\auth\services\DbService;
-use reunionou\auth\errors\exceptions\HttpNotAuthorized;
-
+use reunionou\auth\errors\exceptions\HttpInputNotValid;
 
 final class SignUpAction extends AbstractAction
 {
@@ -20,15 +21,22 @@ final class SignUpAction extends AbstractAction
         } else {
             $body = $rq->getParsedBody();
         }
+        if (
+            (!isset($body['email'])) || !v::email()->validate($body['email']) ||
+            (!isset($body['username'])) || !v::stringVal()->validate($body['username']) ||
+            (!isset($body['firstname'])) || !v::stringVal()->validate($body['firstname']) ||
+            (!isset($body['lastname'])) || !v::stringVal()->validate($body['lastname']) ||
+            (!isset($body['password'])) || !v::stringVal()->validate($body['password'])
+        ) {
+            return (throw new HttpInputNotValid($rq, "Les données envoyées ne sont pas valides"));
+        }
 
         $db_service = new DbService($this->container->get('mongo_url'));
         $user = $db_service->signUp($body);
+        $routeContext = RouteContext::fromRequest($rq);
+        $routeParser = $routeContext->getRouteParser();
 
-
-        $rs = $rs->withStatus(201)
-            ->withHeader('Content-Type', 'application/json;charset=utf-8');
-
-        $rs->getBody()->write(json_encode($body));
+        $rs = $rs->withStatus(201);
         return $rs;
     }
 }
