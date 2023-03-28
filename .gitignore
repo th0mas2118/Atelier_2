@@ -4,3 +4,5 @@ reunionou/event_service/vendor
 reunionou/event_service/composer.lock
 reunionou/comment_service/vendor
 reunionou/comment_service/composer.lock
+reunionou/front_office_webapp/vendor
+reunionou/front_office_webapp/composer.lock
