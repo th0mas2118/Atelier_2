@@ -29,7 +29,6 @@ final class ValidateAction extends AbstractAction
             $h = $rq->getHeader('Authorization')[0];
             $tokenstring = sscanf($h, "Bearer %s")[0];
             $db_service = new DbService($this->container->get('mongo_url'));
-            $db_service->validate($tokenstring);
             $token = JWT::decode($tokenstring, new Key($this->container->get('secret'), 'HS512'));
         } catch (ExpiredException $e) {
             return (throw new HttpNotAuthorized($rq, "Token expired"));
@@ -42,10 +41,8 @@ final class ValidateAction extends AbstractAction
         }
 
 
-        $rs = $rs->withStatus(200)
-            ->withHeader('Content-Type', 'application/json;charset=utf-8');
+        $rs = $rs->withStatus(200);
 
-        $rs->getBody()->write(json_encode(['username' => $token->username, 'usermail' => $token->usermail, 'userlevel' => $token->lvl, 'uid' => $token->uid]));
         return $rs;
     }
 }

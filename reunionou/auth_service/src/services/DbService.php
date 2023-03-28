@@ -106,19 +106,6 @@ final class DbService
         $db->user->updateOne(['_id' => $uid], ['$set' => ['acces_token' => $token]]);
     }
 
-    public function validate($token)
-    {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
-
-        $user = $db->user->findOne(['acces_token' => $token]);
-        if (!$user) {
-            throw new \Exception("User not found", 404);
-        }
-        return 200;
-    }
-
-
 
     public function modifyAvatar($id, $data)
     {
@@ -142,5 +129,17 @@ final class DbService
             throw new \Exception("User not found", 404);
         }
         $db->user->updateOne(['_id' => new ObjectId($id)], ['$set' => ['adress' => $data]]);
+    }
+
+    public function deleteUser($id)
+    {
+        $test = new \MongoDB\Client($this->mongo);
+        $db = $test->auth_reunionou;
+
+        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
+        if (!$user) {
+            throw new \Exception("User not found", 404);
+        }
+        $db->user->deleteOne(['_id' => new ObjectId($id)]);
     }
 }

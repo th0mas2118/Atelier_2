@@ -10,6 +10,7 @@ use reunionou\auth\actions\SignUpAction;
 use reunionou\auth\actions\GetUserAction;
 use reunionou\auth\actions\SignOutAction;
 use reunionou\auth\actions\ValidateAction;
+use reunionou\auth\actions\DeleteUserAction;
 use reunionou\auth\actions\UpdateUserAction;
 
 
@@ -33,6 +34,8 @@ $app->get('/user/{id}', GetUserAction::class)->setName('get_user');
 
 
 $app->put('/user/{id}', UpdateUserAction::class)->setName('update_user');
-$app->delete(('user/{id}'), DeleteUserAction::class)->setName('delete_user');
+$app->delete('/user/{id}', DeleteUserAction::class)->setName('delete_user');
+
+$app->post('/validate', ValidateAction::class)->setName('validate');
 
 $app->run();

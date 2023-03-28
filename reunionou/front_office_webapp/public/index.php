@@ -11,10 +11,12 @@ use reunionou\frontwebapp\actions\SignUpAction;
 use reunionou\frontwebapp\actions\SignInAction;
 use reunionou\frontwebapp\actions\GetUserAction;
 use reunionou\frontwebapp\actions\SignOutAction;
+use reunionou\frontwebapp\middlewares\ValidateToken;
 
 $app = AppFactory::create();
 $app->addRoutingMiddleware();
-$app->addErrorMiddleware(true, false, false);
+$errorMiddleware = $app->addErrorMiddleware(true, false, false);
+$errorMiddleware->getDefaultErrorHandler()->forceContentType('application/json');
 
 /**
  * configuring API Routes
@@ -44,9 +46,11 @@ $app->get(
 );
 
 $app->post('/signin', SignInAction::class)->setName('signin');
-$app->post('/signout', SignOutAction::class)->setName('signout');
+$app->post('/signout', SignOutAction::class)->setName('signout')->add(new ValidateToken());
 $app->post('/signup', SignUpAction::class)->setName('signup');
 
-$app->get('/user/{id}', GetUserAction::class)->setName('getUser');
+$app->get('/user/{id}', GetUserAction::class)->setName('get_user')->add(new ValidateToken());
+$app->put('/user/{id}', UpdateUserAction::class)->setName('update_user')->add(new ValidateToken());
+$app->delete('/user/{id}', DeleteUserAction::class)->setName('delete_user')->add(new ValidateToken());
 
 $app->run();

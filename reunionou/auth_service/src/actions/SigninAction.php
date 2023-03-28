@@ -8,6 +8,7 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Respect\Validation\Validator as v;
 use reunionou\auth\services\DbService;
+use reunionou\auth\errors\exceptions\HttpNotAuthorized;
 
 final class SigninAction extends AbstractAction
 {
@@ -42,7 +43,7 @@ final class SigninAction extends AbstractAction
         $data = [
             'type' => 'ressources',
             'user' => [
-                'token' => $token,
+                'acces_token' => $token,
                 'refresh_token' => $user->refresh_token
             ]
         ];
