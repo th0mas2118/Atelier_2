@@ -1,6 +1,7 @@
 import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import router from '../router/index.js'
+import axios from 'axios'
 
 export const useUserStore = defineStore(
   'user',
@@ -11,6 +12,7 @@ export const useUserStore = defineStore(
       id:'',
       username:'',
       level:0,
+      acces_token:'',
     })
 
     async function setConnected(log : {email: string, password: string}){
@@ -22,17 +24,18 @@ export const useUserStore = defineStore(
         }
       }).then((response)=>{
         if(response.status!=201){
+          console.log(response.status)
           throw new Error("Erreur de connexion")
         }else{
           return response.json()
         }
       })
       .then((response)=>{
-        console.log(response)
-        member.email = response.user.email
-        member.id = response.user.id
+        member.email = response.user.usermail
+        member.id = response.user.uid
         member.username = response.user.username
-        member.level = response.user.level
+        member.level = response.user.userlevel
+        member.acces_token= response.token
         isConnected.value = true
       })
     }
@@ -42,14 +45,8 @@ export const useUserStore = defineStore(
         method:'POST',
         mode:"cors",
         headers: {
-          "Authorization": `Bearer`
-      }}).then((response)=>{
-        if(response.status!=20){
-          throw new Error("Erreur de déconnexion")
-        }else{
-          return response.json()
-        }
-      })
+          "Authorization": `Bearer ${member.acces_token}`
+      }}).then((response)=>isConnected.value = false)
     }
   
     return { isConnected, setConnected,disconnect, member }
