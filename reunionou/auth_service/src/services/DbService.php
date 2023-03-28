@@ -2,9 +2,8 @@
 
 namespace reunionou\auth\services;
 
+use MongoDB\BSON\ObjectId;
 
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 
 function jsonPrint($printable)
 {
@@ -70,7 +69,7 @@ final class DbService
         $test = new \MongoDB\Client($this->mongo);
         $db = $test->auth_reunionou;
 
-        $user = $db->user->findOne(['_id' => '63ef4cbcb7d8c4065a000063']);
+        $user = $db->user->findOne(['_id' => new ObjectId($uid)]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }

@@ -10,6 +10,7 @@ use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use reunionou\auth\actions\SigninAction;
 use reunionou\auth\actions\SignUpAction;
+use reunionou\auth\actions\GetUserAction;
 use reunionou\auth\actions\SignOutAction;
 use reunionou\auth\actions\ValidateAction;
 use reunionou\auth\actions\AddAdressAction;
@@ -40,6 +41,7 @@ $app->post('/signin', SigninAction::class)->setName('signin');
 $app->post('/signup', SignUpAction::class)->setName('signup');
 $app->post('/signout', SignOutAction::class)->setName('signout');
 $app->get('/validate', ValidateAction::class)->setName('validate');
+$app->get('/user/{id}', GetUserAction::class)->setName('getUser');
 
 $app->post('/avatar', AddAvatarAction::class)->setName('addAvatar');
 $app->post('/adress', AddAdressAction::class)->setName('addAdress');
