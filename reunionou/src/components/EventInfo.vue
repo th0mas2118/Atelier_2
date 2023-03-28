@@ -72,6 +72,7 @@ const showOtherMenu = ref(false)
       class="w-full h-full flex min-h-[400px] justify-between items-start p-4 gap-2"
     >
       <div id="event-description" class="w-2/4">
+        <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Description</h3>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque omnis perferendis
           doloremque ex ratione officiis, odio nulla ipsum iusto delectus cupiditate in debitis
@@ -82,43 +83,82 @@ const showOtherMenu = ref(false)
         </p>
       </div>
       <div id="participant-list" class="max-h-[500px] overflow-y-auto">
-        <h3 class="text-cpurple font-bold min-w-[300px] mb-4">Invités</h3>
+        <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Invités</h3>
         <ul class="flex flex-col gap-2 overflow-auto">
           <li class="flex items-center gap-2">
             <div
-              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
-            ></div>
+              class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
+            >
+              <img
+                src="https://www.gala.fr/imgre/fit/~1~gal~2021~08~02~ddad7c39-59ab-49d3-ba37-04f203f8029c.jpeg/480x480/quality/80/focus-point/757%2C593/photos-emmanuel-macron-en-t-shirt-a-bregancon-pas-le-1er-president-a-se-lacher-en-vacances.jpg"
+                alt=""
+                srcset=""
+              />
+            </div>
             <p>John Doe</p>
+            <div>
+              <i class="fa-solid fa-check-circle text-cgreen"></i>
+            </div>
           </li>
           <li class="flex items-center gap-2">
             <div
-              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
-            ></div>
+              class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Brigitte_Macron_%28July_2017%29_%28cropped%29.JPG"
+                alt=""
+                srcset=""
+              />
+            </div>
             <p>John Doe</p>
+            <div>
+              <i class="fa-solid fa-xmark-circle text-cred"></i>
+            </div>
           </li>
           <li class="flex items-center gap-2">
             <div
-              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
-            ></div>
+              class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Brigitte_Macron_%28July_2017%29_%28cropped%29.JPG"
+                alt=""
+                srcset=""
+              />
+            </div>
             <p>John Doe</p>
+            <div>
+              <i class="fa-solid fa-xmark-circle text-cred"></i>
+            </div>
           </li>
           <li class="flex items-center gap-2">
             <div
-              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
-            ></div>
+              class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Brigitte_Macron_%28July_2017%29_%28cropped%29.JPG"
+                alt=""
+                srcset=""
+              />
+            </div>
             <p>John Doe</p>
+            <div>
+              <i class="fa-solid fa-xmark-circle text-cred"></i>
+            </div>
           </li>
           <li class="flex items-center gap-2">
             <div
-              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
-            ></div>
+              class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
+            >
+              <img
+                src="https://www.gala.fr/imgre/fit/~1~gal~2021~08~02~ddad7c39-59ab-49d3-ba37-04f203f8029c.jpeg/480x480/quality/80/focus-point/757%2C593/photos-emmanuel-macron-en-t-shirt-a-bregancon-pas-le-1er-president-a-se-lacher-en-vacances.jpg"
+                alt=""
+                srcset=""
+              />
+            </div>
             <p>John Doe</p>
-          </li>
-          <li class="flex items-center gap-2">
-            <div
-              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
-            ></div>
-            <p>John Doe</p>
+            <div>
+              <i class="fa-solid fa-check-circle text-cgreen"></i>
+            </div>
           </li>
         </ul>
       </div>
