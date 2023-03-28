@@ -9,3 +9,5 @@ import NavbarVue from "./components/NavBar.vue";
     <RouterView />
   </main>
 </template>
+
+<style scoped></style>
