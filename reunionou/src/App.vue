@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import NavbarVue from "./components/NavBar.vue";
+import NavbarVue from './components/NavBar.vue'
 </script>
 
 <template>
-  <NavbarVue>
-  </NavbarVue>
-  <main>
+  <NavbarVue> </NavbarVue>
+  <main class="">
     <RouterView />
   </main>
 </template>
 
-<style scoped></style>
+<style>
+@import './assets/main.css';
+</style>
