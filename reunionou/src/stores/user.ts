@@ -15,6 +15,14 @@ export const useUserStore = defineStore(
       acces_token:'',
     })
 
+    const parseJwt = (token : string) => {
+      try {
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch (e) {
+        return null;
+      }
+    };
+
     async function setConnected(log : {email: string, password: string}){
       await fetch('http://api.frontoffice.reunionou:49383/signin',{
         method: 'POST',
@@ -31,10 +39,11 @@ export const useUserStore = defineStore(
         }
       })
       .then((response)=>{
-        member.email = response.user.usermail
-        member.id = response.user.uid
-        member.username = response.user.username
-        member.level = response.user.userlevel
+        const decodedToken = parseJwt(response.token)
+        member.email = decodedToken.usermail
+        member.id = decodedToken.uid
+        member.username = decodedToken.username
+        member.level = decodedToken.lvl
         member.acces_token= response.token
         isConnected.value = true
       })
