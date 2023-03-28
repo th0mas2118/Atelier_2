@@ -12,11 +12,12 @@ module.exports = {
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
-        purple: '#905ff4',
-        white: '#ffffff',
-        black: '#2b2b2b',
-        white2: '#f6f6f6',
-        gray: '#adadad',
+        cpurple: '#905ff4',
+        cwhite: '#ffffff',
+        cblack: '#2b2b2b',
+        cwhite2: '#f6f6f6',
+        cgray: '#adadad',
+        cred: '#ed2456',
       }
     },
   },

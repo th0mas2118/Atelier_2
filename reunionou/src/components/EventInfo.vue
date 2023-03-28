@@ -1,34 +1,128 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const currentView = ref(0)
+const showOtherMenu = ref(false)
+</script>
+
 <template lang="">
   <div
-    class="bg-white text-black flex flex-column justify-center items-start w-full h-full m-4 p-4 rounded-lg shadow-lg"
+    class="bg-cwhite text-cblack flex flex-col min-h-xl justify-center items-start w-full h-full m-4 rounded-3xl shadow-lg text-cblack"
   >
-    <header class="p-8 w-full h-full flex justify-between items-center">
+    <header
+      class="p-8 w-full h-full flex justify-between items-center border-solid border-b-2 border-cwhite2"
+    >
       <div id="header-presentation" class="flex items-center gap-4">
-        <div class="w-16 h-16 rounded-full bg-white2 flex items-center justify-center text-2xl">
+        <div
+          class="w-16 h-16 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
+        >
           🔥
         </div>
         <div>
           <h1 class="text-2xl">GROSSE MANIFESTATION OUAIS</h1>
-          <p class="text-md text-gray">10 members</p>
+          <p class="text-md text-cgray">10 members</p>
         </div>
       </div>
       <div id="header-controls" class="flex items-center justify-between gap-2">
         <button
-          class="bg-white2 text-purple w-10 h-10 flex justify-center items-center rounded-full"
+          :class="`${
+            currentView == 0
+              ? 'bg-cpurple text-cwhite2 hover:bg-[#9a69fe]'
+              : 'bg-cwhite2 text-cpurple hover:bg-[#ececec]'
+          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300`"
+          @click="currentView = 0"
+        >
+          <i class="fa-solid fa-info"></i>
+        </button>
+        <button
+          :class="`${
+            currentView == 1
+              ? 'bg-cpurple text-cwhite2 hover:bg-[#9a69fe]'
+              : 'bg-cwhite2 text-cpurple hover:bg-[#ececec]'
+          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300`"
+          @click="currentView = 1"
         >
           <i class="fa-solid fa-map"></i>
         </button>
         <button
-          class="bg-white2 text-purple w-10 h-10 flex justify-center items-center rounded-full"
+          :class="`${
+            currentView == 2
+              ? 'bg-cpurple text-cwhite2 hover:bg-[#9a69fe]'
+              : 'bg-cwhite2 text-cpurple hover:bg-[#ececec]'
+          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300`"
+          @click="currentView = 2"
         >
           <i class="fa-solid fa-cloud"></i>
         </button>
-        <button class="bg-purple hover:bg-blue-700 text-white py-2 px-4 rounded-3xl">
+        <button
+          class="bg-cpurple hover:bg-[#9a69fe] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300"
+        >
           Participer
+        </button>
+        <button
+          class="bg-cwhite text-cgray w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300 hover:bg-[#ececec]"
+          @click="showOtherMenu = !showOtherMenu"
+        >
+          <i class="fa-solid fa-ellipsis-vertical"></i>
         </button>
       </div>
     </header>
+    <div
+      id="event-content"
+      class="w-full h-full flex min-h-[400px] justify-between items-start p-4 gap-2"
+    >
+      <div id="event-description" class="w-2/4">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque omnis perferendis
+          doloremque ex ratione officiis, odio nulla ipsum iusto delectus cupiditate in debitis
+          aperiam libero recusandae maxime quibusdam. Mollitia, consectetur! Lorem, ipsum dolor sit
+          amet consectetur adipisicing elit. Accusamus quas aspernatur est fugiat, vero harum.
+          Officiis recusandae libero, ipsa nesciunt voluptatem consequatur repudiandae voluptas
+          facere ullam rerum quis iste optio.
+        </p>
+      </div>
+      <div id="participant-list" class="max-h-[500px] overflow-y-auto">
+        <h3 class="text-cpurple font-bold min-w-[300px] mb-4">Invités</h3>
+        <ul class="flex flex-col gap-2 overflow-auto">
+          <li class="flex items-center gap-2">
+            <div
+              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
+            ></div>
+            <p>John Doe</p>
+          </li>
+          <li class="flex items-center gap-2">
+            <div
+              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
+            ></div>
+            <p>John Doe</p>
+          </li>
+          <li class="flex items-center gap-2">
+            <div
+              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
+            ></div>
+            <p>John Doe</p>
+          </li>
+          <li class="flex items-center gap-2">
+            <div
+              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
+            ></div>
+            <p>John Doe</p>
+          </li>
+          <li class="flex items-center gap-2">
+            <div
+              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
+            ></div>
+            <p>John Doe</p>
+          </li>
+          <li class="flex items-center gap-2">
+            <div
+              class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
+            ></div>
+            <p>John Doe</p>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 <style lang=""></style>
