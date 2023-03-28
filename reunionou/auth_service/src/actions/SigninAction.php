@@ -34,7 +34,7 @@ final class SigninAction extends AbstractAction
         $rs = $rs->withStatus(201)
             ->withHeader('Content-Type', 'application/json;charset=utf-8');
 
-        $rs->getBody()->write(json_encode(['token' => $token, 'refresh_token' => $user->refresh_token, 'user' => ['username' => $user->username, 'usermail' => $user->mail, 'userlevel' => $user->level, 'uid' => $user->_id]]));
+        $rs->getBody()->write(json_encode(['token' => $token, 'refresh_token' => $user->refresh_token]));
         return $rs;
     }
 }
