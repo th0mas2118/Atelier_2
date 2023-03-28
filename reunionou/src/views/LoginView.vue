@@ -1,30 +1,68 @@
 <script setup lang="ts">
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from '@/stores/user'
 import { reactive } from 'vue'
-const user = useUserStore();
+const user = useUserStore()
 let log = reactive({
-    email: "",
-    password: "",
-});
+  email: '',
+  password: ''
+})
 </script>
 
 <template>
-    <div class="login-view">
-        <h1>Login</h1>
-        <form type="login" onsubmit="return false" @submit="user.setConnected(log)">
-            <input type="email" placeholder="Email" v-model="log.email" />
-            <input type="password" placeholder="Password" v-model="log.password" />
-            <button @click="user.setConnected(log)">Login</button>
-        </form>
-    </div>
+  <div class="login-view mt-8">
+    <form
+      class="shadow-3xl rounded px-16 pt-16 pb-8 mb-8"
+      type="login"
+      onsubmit="return false"
+      @submit="user.setConnected(log)"
+    >
+      <h1 class="text-3xl font-bold mb-8 text-center">Se Connecter</h1>
+      <div class="mb-4">
+        <label class="block text-white-700 text-sm font-bold mb-2" for="username"> Username </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="email"
+          placeholder="Email"
+          v-model="log.email"
+        />
+      </div>
+      <div class="mb-6">
+        <label class="block text-white-700 text-sm font-bold mb-2" for="password"> Password </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="password"
+          placeholder="Password"
+          v-model="log.password"
+        />
+      </div>
+      <div class="flex items-center justify-between">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          @click="user.setConnected(log)"
+        >
+          Login
+        </button>
+        <router-link
+          to="/register"
+          class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+          >S'inscrire ?
+        </router-link>
+      </div>
+    </form>
+  </div>
 </template>
 
 <style>
-@media (min-width: 1024px) {
-    .login-view {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-    }
+.login-view {
+  display: flex;
+  justify-content: center;
 }
+/* @media (min-width: 1024px) {
+  .login-view {
+     min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+} */
 </style>
