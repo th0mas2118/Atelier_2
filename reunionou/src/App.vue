@@ -4,7 +4,7 @@ import NavbarVue from './components/NavBar.vue'
 
 <template>
   <NavbarVue> </NavbarVue>
-  <main class="">
+  <main class="flex w-full h-full max-w-7xl m-auto">
     <RouterView />
   </main>
 </template>
