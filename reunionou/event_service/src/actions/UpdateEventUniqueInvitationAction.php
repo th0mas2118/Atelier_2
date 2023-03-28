@@ -4,10 +4,13 @@ namespace reunionou\event\actions;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
-use reunionou\event\services\EventService;
+use Slim\Routing\RouteContext;
+use Respect\Validation\Validator as v;
 use reunionou\event\actions\AbstractAction;
+use reunionou\event\errors\exceptions\HttpInputNotValid;
+use reunionou\event\services\InvitationService;
 
-final class UpdateEventAction extends AbstractAction
+final class UpdateEventUniqueInvitationAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response
     {
@@ -17,10 +20,10 @@ final class UpdateEventAction extends AbstractAction
             $body = $req->getParsedBody();
         }
 
-        $eventService = new EventService($this->container->get('mongo_url'));
-        $event = $eventService->updateEvent($args["id"], $body);
+        $invitationService = new InvitationService($this->container->get('mongo_url'));
+        $invitation = $invitationService->updateInvitation($args["id"], $body);
 
-        if (!isset($event) || !$event) {
+        if (!isset($invitation) || !$invitation) {
             return (throw new HttpInternalServerErrorException($req, "La ressource demandée n'a pas pu être modifiée: " . $args['id']));
         }
 

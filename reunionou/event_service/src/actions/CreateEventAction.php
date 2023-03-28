@@ -28,6 +28,7 @@ final class CreateEventAction extends AbstractAction
             (!isset($body["address"]) || !v::stringVal()->validate($body["address"])) ||
             (!isset($body["gps"]) || !v::arrayVal()->validate($body["gps"])) ||
             (!isset($body["organizer_id"]) || !v::stringVal()->validate($body["organizer_id"])) ||
+            (!isset($body["isPrivate"]) || !v::boolVal()->validate($body["isPrivate"])) ||
             (!isset($body["participants"]) || !v::arrayVal()->validate($body["participants"]))
         ) {
             return (throw new HttpInputNotValid($req, "Les données envoyées ne sont pas valides"));
@@ -35,8 +36,15 @@ final class CreateEventAction extends AbstractAction
 
         $eventService = new EventService($this->container->get('mongo_url'));
         $event = $eventService->createEvent($body);
+
+        if (!isset($event)) {
+            return (throw new HttpInternalServerErrorException($req, "La ressource demandée n'a pas pu être créée"));
+        }
+
         $routeContext = RouteContext::fromRequest($req);
         $routeParser = $routeContext->getRouteParser();
+
+        $body->id = $event;
 
         $rs = $rs->withStatus(200)->withHeader('Content-Type', 'application/json;charset=utf-8');
         $data = [
