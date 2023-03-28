@@ -128,10 +128,9 @@ const Register = async () => {
 </template>
 
 <style>
-/* form {
-  display: flex;
+form {
   justify-content: center;
-} */
+}
 /* @media (min-width: 1024px) {
   .register-view {
     min-height: 100vh;
