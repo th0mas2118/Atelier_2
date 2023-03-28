@@ -121,7 +121,7 @@ services:
       - "49311:443"
     volumes:
       - "./reunionou/front_office_webapp:/var/www"
-      - "./reunionou/composer:/var/composer"
+      - "./reunionou/composer/vendor:/var/www/vendor"
     working_dir: /var/www/src
     networks:
       - reunionou.net
