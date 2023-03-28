@@ -13,7 +13,7 @@ final class ValidateToken
     public function __invoke(Request $rq, RequestHandlerInterface $handler): Response
     {
         $client = new Client([
-            'base_uri' => 'http://api.auth.local',
+            'base_uri' => 'http://api.auth.reunionou',
             'timeout' => 5.0
         ]);
 
