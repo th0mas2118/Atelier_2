@@ -113,7 +113,7 @@ final class DbService
 
         $user = $db->user->findOne(['acces_token' => $token]);
         if (!$user) {
-            throw new \Exception("User not found", 404);
+            throw new \Exception("User not connected", 404);
         }
         return 200;
     }
