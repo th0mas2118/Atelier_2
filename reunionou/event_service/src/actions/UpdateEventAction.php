@@ -9,5 +9,6 @@ final class UpdateEventAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response
     {
+        
     }
 }

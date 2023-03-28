@@ -32,8 +32,8 @@ class CommentService
         try {
             $db = $client->selectDatabase("reunionou")->selectCollection("comment");
 
-            $event = $db->findOne(['_id' => new ObjectId($id)]);
-            return $event;
+            $comment = $db->findOne(['_id' => new ObjectId($id)]);
+            return $comment;
         } catch (\Throwable $th) {
             return null;
         }
@@ -52,5 +52,47 @@ class CommentService
         }
 
     }
+
+    public function deleteComment($commentId): bool {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("comment");
+            $result = $db->deleteOne(["_id" => new ObjectID($commentId)]);
+    
+            return $result->getDeletedCount() === 1;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function updateComment($commentId, $newComment): ?String{
+        try{
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("comment");
+
+            $result = $db->updateOne(["_id" => new ObjectId($commentId)],["set" => new ObjectId($newComment)]);
+
+            return $result->getModifiedCount();
+
+        }catch(\Throwable $th) {
+            return false;
+        }
+    }
+    
+    // public function deleteComment($data): ?String {
+
+    //     try {
+    //         $client = new \MongoDB\Client($this->mongo);
+    //         $db = $client->selectDatabase("reunionou")->selectCollection("comment");
+
+    //         $comment = $db->deleteOne($data);
+
+    //         return $comment->getInsertedId();
+    //     } catch (\Throwable $th) {
+    //         return null;
+    //     }
+
+    // }
+
 
 }

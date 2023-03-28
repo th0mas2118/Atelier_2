@@ -6,6 +6,8 @@ use Slim\Factory\AppFactory;
 use reunionou\comment\actions\GetCommentAction;
 use reunionou\src\service\utils\CommentService;
 use reunionou\comment\actions\CreateCommentAction;
+use reunionou\comment\actions\DeleteCommentAction;
+use reunionou\comment\actions\UpdateCommentAction;
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -27,7 +29,9 @@ $app->get('/messages/{id}[/]',GetCommentAction::class)->setName('getComment');
 
 $app->post('/messages[/]', CreateCommentAction::class)->setName('createComment');
 
-$app->delete('/messages/{id}[/]', CommentService::class . ':deleteCommentById')->setName('deleteCommentById');
+$app->put('/messages[/]', UpdateCommentAction::class)->setName('updateComment');
+
+$app->delete('/messages/{id}[/]', DeleteCommentAction::class)->setName('deleteComment');
 
 $app->get('/hello[/]', function (Request $request, Response $response, $args) {
     $response->getBody()->write("Hello,");
