@@ -54,7 +54,17 @@ const getGPS = async (address: string) => {
   gpsError.value = false
 }
 
-const createEvent = async () => {}
+const createEvent = async () => {
+  const res = await axios.post(`${import.meta.env.VITE_API_HOST}/events`, eventData, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  console.log(res)
+  if (res.status == 200) {
+    window.location.href = '/'
+  }
+}
 
 const eventData = reactive({
   title: '',
