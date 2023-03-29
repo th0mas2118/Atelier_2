@@ -27,7 +27,9 @@ final class GetUserAction extends AbstractAction
         $user->id = strval($user['_id']);
         unset($user['_id']);
 
+        //Sécurité
         unset($user['password']);
+        unset($user['refresh_token']);
         $data = [
             'type' => 'ressource',
             'user' => $user,
