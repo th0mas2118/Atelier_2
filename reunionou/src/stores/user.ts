@@ -1,7 +1,8 @@
 import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import router from '../router/index.js'
-import axios from 'axios'
+
+
 
 export const useUserStore = defineStore(
   'user',
@@ -48,7 +49,7 @@ export const useUserStore = defineStore(
         member.level = decodedToken.lvl
         member.acces_token= response.user.acces_token
         isConnected.value = true
-        router.push('/home')
+        router.push('/')
       })
     }
 
@@ -62,5 +63,6 @@ export const useUserStore = defineStore(
     }
   
     return { isConnected, setConnected,disconnect, member }
-  }
+  },
+  {persist:true}
 )
