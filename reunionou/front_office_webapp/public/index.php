@@ -11,8 +11,11 @@ use reunionou\frontwebapp\actions\SignInAction;
 use reunionou\frontwebapp\actions\SignUpAction;
 use reunionou\frontwebapp\actions\GetUserAction;
 use reunionou\frontwebapp\actions\SignOutAction;
+use reunionou\frontwebapp\actions\GetFriendsList;
+use reunionou\frontwebapp\actions\AddFriendAction;
 use reunionou\frontwebapp\actions\UpdateUserAction;
 use reunionou\frontwebapp\middlewares\ValidateToken;
+use reunionou\frontwebapp\actions\DeleteFriendAction;
 
 $app = AppFactory::create();
 $app->addRoutingMiddleware();
@@ -38,20 +41,19 @@ $app->options(
     }
 );
 
-$app->get(
-    '/hello',
-    function (Request $rq, Response $rs, $args): Response {
-        $rs->getBody()->write("Hello World");
-        return $rs;
-    }
-);
+
 
 $app->post('/signin', SignInAction::class)->setName('signin');
 $app->post('/signout', SignOutAction::class)->setName('signout')->add(new ValidateToken());
 $app->post('/signup', SignUpAction::class)->setName('signup');
 
+$app->get('/user/{id}/friends', GetFriendsList::class)->setName('get_user_friends')->add(new ValidateToken());
 $app->get('/user/{id}', GetUserAction::class)->setName('get_user');
+
 $app->put('/user/{id}', UpdateUserAction::class)->setName('update_user')->add(new ValidateToken());
+$app->put('/user/{id}/friends', AddFriendAction::class)->setName('add_user_friend')->add(new ValidateToken());
+
 $app->delete('/user/{id}', DeleteUserAction::class)->setName('delete_user')->add(new ValidateToken());
+$app->delete('/user/{id}/friends/{friend_id}', DeleteFriendAction::class)->setName('delete_user_friend')->add(new ValidateToken());
 
 $app->run();

@@ -36,7 +36,7 @@ $app->get('/validate', ValidateAction::class)->setName('validate');
 $app->get('/user/{id}', GetUserAction::class)->setName('get_user');
 $app->get('/user/{id}/friends', GetFriendsList::class)->setName('get_friends_list');
 
-$app->put('/user/{id}/friends', AddFriendAction::class)->setName('add_friendd');
+$app->put('/user/{id}/friends', AddFriendAction::class)->setName('add_friend');
 $app->put('/user/{id}', UpdateUserAction::class)->setName('update_user');
 
 $app->delete('/user/{id}', DeleteUserAction::class)->setName('delete_user');

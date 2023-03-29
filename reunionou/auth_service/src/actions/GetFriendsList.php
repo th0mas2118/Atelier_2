@@ -5,7 +5,7 @@ namespace reunionou\auth\actions;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use reunionou\auth\services\DbService;
-use Slim\Routing\RouteContext;
+use Respect\Validation\Validator as v;
 
 final class GetFriendsList extends AbstractAction
 {
