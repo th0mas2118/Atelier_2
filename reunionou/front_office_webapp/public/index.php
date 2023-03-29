@@ -51,6 +51,7 @@ $app->post('/signup', SignUpAction::class)->setName('signup');
 
 $app->get('/user/{id}/friends', GetFriendsList::class)->setName('get_user_friends')->add(new ValidateToken());
 $app->get('/user/{id}', GetUserAction::class)->setName('get_user');
+$app->get('/user/{id}/friends', GetFriendsList::class)->setName('get_user_friends');
 
 $app->put('/user/{id}', UpdateUserAction::class)->setName('update_user')->add(new ValidateToken());
 $app->put('/user/{id}/friends', AddFriendAction::class)->setName('add_user_friend')->add(new ValidateToken());
