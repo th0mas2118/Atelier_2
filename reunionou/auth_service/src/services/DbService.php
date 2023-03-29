@@ -157,4 +157,27 @@ final class DbService
         }
         $db->user->deleteOne(['_id' => new ObjectId($id)]);
     }
+
+
+    public function addFriend($id, $friend)
+    {
+        $test = new \MongoDB\Client($this->mongo);
+        $db = $test->auth_reunionou;
+
+        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
+        if (!$user) {
+            throw new \Exception("User not found", 404);
+        }
+        if (!isset($user['friends'])) {
+            $db->user->updateOne(['_id' => new ObjectId($id)], ['$push' => ['friends' => $friend]]);
+            return;
+        }
+        //convert MongoDB\\Model\\BSONArray to array
+        $user['friends'] = json_decode(json_encode($user['friends']), true);
+        //add to db
+        if (in_array($friend, $user['friends'])) {
+            throw new \Exception("Friend already added", 400);
+        }
+        $db->user->updateOne(['_id' => new ObjectId($id)], ['$push' => ['friends' => $friend]]);
+    }
 }
