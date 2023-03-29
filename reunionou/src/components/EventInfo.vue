@@ -61,7 +61,7 @@ const showOtherMenu = ref(false)
           <i class="fa-solid fa-cloud"></i>
         </button>
         <button
-          class="bg-cpurple hover:bg-[#9a69fe] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300"
+          class="bg-cpurple hover:bg-[#9a69fe] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap"
         >
           Participer
         </button>

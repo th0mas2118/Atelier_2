@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import EventInfo from '../components/EventInfo.vue'
+import CreateEventForm from '../components/CreateEventForm.vue'
 </script>
 
 <template>
-  <EventInfo></EventInfo>
+  <CreateEventForm></CreateEventForm>
 </template>
 
 <style></style>
