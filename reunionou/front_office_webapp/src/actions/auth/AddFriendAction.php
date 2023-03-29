@@ -1,6 +1,6 @@
 <?php
 
-namespace reunionou\frontwebapp\actions;
+namespace reunionou\frontwebapp\actions\auth;
 
 use GuzzleHttp\Client;
 use Slim\Psr7\Request;

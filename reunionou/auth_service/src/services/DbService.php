@@ -23,10 +23,10 @@ final class DbService
 
     public function signUp($data)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['username' => $data['username']]);
+        $user = $db->findOne(['username' => $data['username']]);
         if ($user) {
             throw new \Exception("User already exists", 409);
         }
@@ -46,45 +46,81 @@ final class DbService
 
         $refresh_token = bin2hex(random_bytes(32));
         $user['refresh_token'] = $refresh_token;
-        $db->user->insertOne($user);
+        $db->insertOne($user);
         return $user;
     }
 
 
     public function signOut($acces_token)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['acces_token' => $acces_token]);
+        $user = $db->findOne(['acces_token' => $acces_token]);
 
         if (!$user) {
             throw new \Exception("User not found", 404);
         } else {
-            $db->user->updateOne(['_id' => $user->_id], ['$set' => ['acces_token' => null]]);
+            $db->updateOne(['_id' => $user->_id], ['$set' => ['acces_token' => null]]);
         }
     }
 
     public  function getUser($uid)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['_id' => new ObjectId($uid)]);
+        $user = $db->findOne(['_id' => new ObjectId($uid)]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
         return $user;
     }
 
+    public function findUser($data)
+    {
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
+
+        $user = $db->findOne(['username' => $data]);
+        if (!$user) {
+            $user = $db->findOne(['mail' => $data]);
+            if (!$user) {
+                $user = $db->findOne(['firstname' => $data]);
+                if (!$user) {
+                    $user = $db->findOne(['lastname' => $data]);
+                    if (!$user) {
+                        throw new \Exception("User not found", 404);
+                    }
+                }
+            }
+        }
+        return $user;
+    }
+
+    public function getUsers()
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
+
+            $users = $db->find();
+
+            return $users->toArray();
+        } catch (\Throwable $th) {
+            return null;
+        }
+    }
+
+
     public  function signIn($username, $password)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['username' => $username]);
+        $user = $db->findOne(['username' => $username]);
         if (!$user) {
-            $user = $db->user->findOne(['mail' => $username]);
+            $user = $db->findOne(['mail' => $username]);
             if (!$user) {
                 throw new \Exception("User not found", 404);
             }
@@ -98,22 +134,22 @@ final class DbService
 
     public function updateToken($uid, $token)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['_id' => $uid]);
+        $user = $db->findOne(['_id' => $uid]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
-        $db->user->updateOne(['_id' => $uid], ['$set' => ['acces_token' => $token]]);
+        $db->updateOne(['_id' => $uid], ['$set' => ['acces_token' => $token]]);
     }
 
     public function validate($token)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['acces_token' => $token]);
+        $user = $db->findOne(['acces_token' => $token]);
         if (!$user) {
             throw new \Exception("User not connected", 404);
         }
@@ -124,52 +160,53 @@ final class DbService
 
     public function modifyAvatar($id, $data)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
-
-        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
+        $user = $db->findOne(['_id' => new ObjectId($id)]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
-        $db->user->updateOne(['_id' => new ObjectId($id)], ['$set' => ['avatar' => $data]]);
+        $db->updateOne(['_id' => new ObjectId($id)], ['$set' => ['avatar' => $data]]);
     }
 
     public function modifyAdress($id, $data)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
+        $user = $db->findOne(['_id' => new ObjectId($id)]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
-        $db->user->updateOne(['_id' => new ObjectId($id)], ['$set' => ['adress' => $data]]);
+        $db->updateOne(['_id' => new ObjectId($id)], ['$set' => ['adress' => $data]]);
     }
 
     public function deleteUser($id)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
+        $user = $db->findOne(['_id' => new ObjectId($id)]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
-        $db->user->deleteOne(['_id' => new ObjectId($id)]);
+        $db->deleteOne(['_id' => new ObjectId($id)]);
     }
 
 
+
+    //FRIEND déplacer collection a part
     public function addFriend($id, $friend)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
+        $user = $db->findOne(['_id' => new ObjectId($id)]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
         if (!isset($user['friends'])) {
-            $db->user->updateOne(['_id' => new ObjectId($id)], ['$push' => ['friends' => $friend]]);
+            $db->updateOne(['_id' => new ObjectId($id)], ['$push' => ['friends' => $friend]]);
             return;
         }
         //convert MongoDB\\Model\\BSONArray to array
@@ -178,14 +215,14 @@ final class DbService
         if (in_array($friend, $user['friends'])) {
             throw new \Exception("Friend already added", 400);
         }
-        $db->user->updateOne(['_id' => new ObjectId($id)], ['$push' => ['friends' => $friend]]);
+        $db->updateOne(['_id' => new ObjectId($id)], ['$push' => ['friends' => $friend]]);
     }
     public function getFriendsList($id)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
+        $user = $db->findOne(['_id' => new ObjectId($id)]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
@@ -198,10 +235,10 @@ final class DbService
     }
     public function removeFriend($id, $friend)
     {
-        $test = new \MongoDB\Client($this->mongo);
-        $db = $test->auth_reunionou;
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
+        $user = $db->findOne(['_id' => new ObjectId($id)]);
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
@@ -214,6 +251,6 @@ final class DbService
         if (!in_array($friend, $user['friends'])) {
             throw new \Exception("Friend not found", 404);
         }
-        $db->user->updateOne(['_id' => new ObjectId($id)], ['$pull' => ['friends' => $friend]]);
+        $db->updateOne(['_id' => new ObjectId($id)], ['$pull' => ['friends' => $friend]]);
     }
 }

@@ -26,7 +26,7 @@ final class GetFriendsList extends AbstractAction
         ];
 
         $rs->getBody()->write(json_encode($data));
-        $rs->withStatus(200);
+        $rs = $rs->withStatus(200)->withHeader('Content-Type', 'application/json;charset=utf-8');
         return $rs;
     }
 }
