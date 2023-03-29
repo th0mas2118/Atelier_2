@@ -180,4 +180,20 @@ final class DbService
         }
         $db->user->updateOne(['_id' => new ObjectId($id)], ['$push' => ['friends' => $friend]]);
     }
+    public function getFriendsList($id)
+    {
+        $test = new \MongoDB\Client($this->mongo);
+        $db = $test->auth_reunionou;
+
+        $user = $db->user->findOne(['_id' => new ObjectId($id)]);
+        if (!$user) {
+            throw new \Exception("User not found", 404);
+        }
+        if (!isset($user['friends'])) {
+            throw new \Exception("User has no friends", 404);
+        }
+        //convert MongoDB\\Model\\BSONArray to array
+        $user['friends'] = json_decode(json_encode($user['friends']), true);
+        return $user['friends'];
+    }
 }

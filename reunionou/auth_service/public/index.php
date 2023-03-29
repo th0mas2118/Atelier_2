@@ -4,13 +4,14 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use DI\ContainerBuilder;
-use reunionou\auth\actions\AddFriendAction;
 use Slim\Factory\AppFactory;
 use reunionou\auth\actions\SigninAction;
 use reunionou\auth\actions\SignUpAction;
 use reunionou\auth\actions\GetUserAction;
 use reunionou\auth\actions\SignOutAction;
+use reunionou\auth\actions\GetFriendsList;
 use reunionou\auth\actions\ValidateAction;
+use reunionou\auth\actions\AddFriendAction;
 use reunionou\auth\actions\DeleteUserAction;
 use reunionou\auth\actions\UpdateUserAction;
 
@@ -32,6 +33,7 @@ $app->post('/signup', SignUpAction::class)->setName('signup');
 $app->post('/signout', SignOutAction::class)->setName('signout');
 $app->get('/validate', ValidateAction::class)->setName('validate');
 $app->get('/user/{id}', GetUserAction::class)->setName('get_user');
+$app->get('/user/{id}/friends', GetFriendsList::class)->setName('get_friends_list');
 
 
 $app->put('/user/{id}/friends', AddFriendAction::class)->setName('add_friendd');
