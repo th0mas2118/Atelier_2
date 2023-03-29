@@ -33,7 +33,10 @@ final class SigninAction extends AbstractAction
         $db_service = new DbService($this->container->get('mongo_url'));
         $user = $db_service->signIn($username, $password);
 
-        $payload = ['iss' => 'http://api.auth.local', 'aud' => 'http://api.auth.local', 'iat' => time(), 'nbf' => time(), 'exp' => time() + 3600, 'username' => $user->username, "usermail" => $user->mail, 'lvl' => $user->level, 'uid' => $user->_id];
+        $user->id = strval($user->_id);
+
+
+        $payload = ['iss' => 'http://api.auth.local', 'aud' => 'http://api.auth.local', 'iat' => time(), 'nbf' => time(), 'exp' => time() + 3600, 'username' => $user->username, "usermail" => $user->mail, 'lvl' => $user->level, 'uid' => $user->id];
         $token = JWT::encode($payload, $this->container->get('secret'), 'HS512');
 
         $db_service->updateToken($user->_id, $token);

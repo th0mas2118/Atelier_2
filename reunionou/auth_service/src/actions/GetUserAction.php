@@ -30,6 +30,7 @@ final class GetUserAction extends AbstractAction
         //Sécurité
         unset($user['password']);
         unset($user['refresh_token']);
+        unset($user['friends']);
         $data = [
             'type' => 'ressource',
             'user' => $user,
@@ -37,6 +38,7 @@ final class GetUserAction extends AbstractAction
                 'self' => ['href' => $routeParser->urlFor('get_user', ['id' => $user->id])],
                 'update' => ['href' => $routeParser->urlFor('update_user', ['id' => $user->id])],
                 'delete' => ['href' => $routeParser->urlFor('delete_user', ['id' => $user->id])],
+                'friends' => ['href' => $routeParser->urlFor('get_friends_list', ['id' => $user->id])],
             ],
         ];
 

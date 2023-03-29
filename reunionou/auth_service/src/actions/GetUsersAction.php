@@ -26,8 +26,12 @@ final class GetUsersAction extends AbstractAction
             $users = $db_service->findUser($search['search']);
         }
 
-        // unset($users[$key]['refresh_token']);
 
+        foreach ($users as $key => $user) {
+            unset($users[$key]['password']);
+            unset($users[$key]['refresh_token']);
+            unset($users[$key]['friends']);
+        }
         $data = [
             'type' => 'collection',
             "count" => count($users),
