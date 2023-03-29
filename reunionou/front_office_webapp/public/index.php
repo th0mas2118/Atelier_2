@@ -60,7 +60,7 @@ $app->delete('/user/{id}/friends/{friend_id}', DeleteFriendAction::class)->setNa
 
 
 // EVENT SERVICE
-$app->get('/events/{id}', GetEventAction::class)->setName('get_event');
+$app->get('/events/{id}[/]', GetEventAction::class)->setName('get_event');
 
 $app->post('/events[/]', CreateEventAction::class)->setName('create_event');
 
