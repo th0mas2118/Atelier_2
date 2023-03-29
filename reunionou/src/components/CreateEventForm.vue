@@ -91,7 +91,7 @@ onUnmounted(() => {
 <template>
   <form
     action=""
-    class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center max-w-[800px] w-full h-full m-auto md:rounded-3xl shadow-lg text-cblack overflow-x-hidden m-4"
+    class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center max-w-[800px] w-full h-[calc(100vh-80px)] md:h-full m-auto md:rounded-3xl shadow-lg text-cblack overflow-x-hidden m-4"
   >
     <h1 class="text-cblack font-bold min-w-[250px] text-2xl w-full text-center p-4">
       CRÉER UN EVENEMENT
@@ -101,8 +101,8 @@ onUnmounted(() => {
       :style="{ transform: `translateX(-` + currentPage * 100 + `%)` }"
     >
       <section id="page1" class="flex-shrink-0 w-full h-full p-4">
-        <div id="inputs" class="flex w-full h-full flex-grow flex-wrap">
-          <div class="flex flex-col w-2/4 p-4 gap-4">
+        <div id="inputs" class="flex w-full h-full flex-grow flex-wrap flex-col md:flex-row">
+          <div class="flex flex-col w-full md:w-2/4 p-4 gap-4">
             <div>
               <label class="block text-white-700 text-sm font-bold mb-2" for="titre">Titre</label>
               <input
@@ -134,7 +134,7 @@ onUnmounted(() => {
               />
             </div>
           </div>
-          <div class="flex flex-col w-2/4 p-4 gap-4">
+          <div class="flex flex-col w-full md:w-2/4 p-4 gap-4">
             <div>
               <label class="block text-white-700 text-sm font-bold mb-2" for="adresse">
                 Adresse
@@ -176,8 +176,11 @@ onUnmounted(() => {
         </div>
       </section>
       <section id="page2" class="flex-shrink-0 w-full h-full p-4">
-        <div id="inputs" class="flex w-full h-full flex-grow flex-wrap">
-          <div class="flex flex-col w-2/4 p-4 gap-4">
+        <div
+          id="inputs"
+          class="flex w-full h-full flex-grow flex-wrap flex-col-reverse justify-items-start md:flex-row"
+        >
+          <div class="flex flex-col w-full md:w-2/4 p-4 gap-4">
             <div>
               <input
                 checked
@@ -216,7 +219,7 @@ onUnmounted(() => {
               </ul>
             </div>
           </div>
-          <div class="flex flex-col w-2/4 p-4 gap-4">
+          <div class="flex flex-col w-full md:w-2/4 p-4 gap-4">
             <div>
               <header class="flex flex-col mb-4">
                 <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Rechercher</h3>
