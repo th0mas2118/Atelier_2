@@ -13,11 +13,19 @@ axios.get(`http://api.frontoffice.reunionou:49383/user/${useRoute().params['id']
 <template lang="">
     <div class="bg-cwhite text-cblack flex flex-col justify-start items-center w-full h-full m-4 rounded-3xl shadow-lg text-cblack overflow-x-hidden">
         <div class='friends-list flex flex-col  w-11/12 gap-11 mt-5 mb-6'>
-            <ul>
-                <li v-for="friends in user_friends">
-                    <p>{{friends}}</p>
-                </li>
-            </ul>
+            <div v-for="friend in user_friends">
+                <div class="flex flex-row gap-4 items-center">
+                    <div class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden">
+                        <router-link :to="`/user/${friend.friend_id}`"> <img
+                                src="https://i.pravatar.cc/150?img=1"
+                                alt=""
+                                srcset=""
+                            /></router-link>
+                           
+                    </div>
+                    <p>{{ friend.lastname.toUpperCase() }}   {{friend.firstname}}</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
