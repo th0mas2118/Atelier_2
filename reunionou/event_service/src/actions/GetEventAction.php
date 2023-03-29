@@ -31,14 +31,14 @@ final class GetEventAction extends AbstractAction
 
         $data = [
             'type' => 'resource',
-            'order' => $event,
+            'event' => $event,
             'links' => [
                 'self' => [
                     'href' => $routeParser->urlFor('get_event', ['id' => strval($event["id"])])
                 ],
-                'join' => [
-                    'href' => $routeParser->urlFor('join_event', ['id' => strval($event["id"])])
-                ],
+                // 'join' => [
+                //     'href' => $routeParser->urlFor('join_event', ['id' => strval($event["id"])])
+                // ],
             ]
         ];
 

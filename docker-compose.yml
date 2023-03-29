@@ -64,7 +64,9 @@ services:
       - "./reunionou/composer/vendor:/var/www/vendor"
     working_dir: /var/www/src
     networks:
-      - reunionou.net
+      reunionou.net:
+        aliases:
+          - api.event.reunionou
     depends_on:
       - event.db
 

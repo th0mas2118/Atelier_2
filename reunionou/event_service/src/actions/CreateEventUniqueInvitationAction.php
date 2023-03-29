@@ -19,7 +19,7 @@ final class CreateEventUniqueInvitationAction extends AbstractAction
         $routeContext = RouteContext::fromRequest($req);
         $routeParser = $routeContext->getRouteParser();
 
-        $rs = $rs->withStatus(200)->withHeader('Content-Type', 'application/json;charset=utf-8');
+        $rs = $rs->withStatus(201)->withHeader('Content-Type', 'application/json;charset=utf-8');
         $data = [
             'type' => 'resource',
             'invitation' => [

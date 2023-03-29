@@ -16,6 +16,8 @@ use reunionou\frontwebapp\actions\AddFriendAction;
 use reunionou\frontwebapp\actions\UpdateUserAction;
 use reunionou\frontwebapp\middlewares\ValidateToken;
 use reunionou\frontwebapp\actions\DeleteFriendAction;
+use reunionou\frontwebapp\actions\events\GetEventAction;
+use reunionou\frontwebapp\actions\events\CreateEventAction;
 
 $app = AppFactory::create();
 $app->addRoutingMiddleware();
@@ -42,7 +44,7 @@ $app->options(
 );
 
 
-
+// AUTH SERVICE
 $app->post('/signin', SignInAction::class)->setName('signin');
 $app->post('/signout', SignOutAction::class)->setName('signout')->add(new ValidateToken());
 $app->post('/signup', SignUpAction::class)->setName('signup');
@@ -55,5 +57,11 @@ $app->put('/user/{id}/friends', AddFriendAction::class)->setName('add_user_frien
 
 $app->delete('/user/{id}', DeleteUserAction::class)->setName('delete_user')->add(new ValidateToken());
 $app->delete('/user/{id}/friends/{friend_id}', DeleteFriendAction::class)->setName('delete_user_friend')->add(new ValidateToken());
+
+
+// EVENT SERVICE
+$app->get('/events/{id}', GetEventAction::class)->setName('get_event');
+
+$app->post('/events[/]', CreateEventAction::class)->setName('create_event');
 
 $app->run();

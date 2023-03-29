@@ -44,9 +44,9 @@ final class CreateEventAction extends AbstractAction
         $routeContext = RouteContext::fromRequest($req);
         $routeParser = $routeContext->getRouteParser();
 
-        $body->id = $event;
+        $body["id"] = $event;
 
-        $rs = $rs->withStatus(200)->withHeader('Content-Type', 'application/json;charset=utf-8');
+        $rs = $rs->withStatus(201)->withHeader('Content-Type', 'application/json;charset=utf-8');
         $data = [
             'type' => 'resource',
             'event' => $body,
