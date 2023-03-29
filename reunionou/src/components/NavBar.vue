@@ -41,7 +41,7 @@ const test = () => {
         <NavBarButton v-if="!user.isConnected" route='register' text="S'inscrire"></NavBarButton>
         <div>
           <button v-if="user.isConnected"
-            class="inline-block bg-white text-black text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+            class="inline-block bg-white text-black text-sm px-4 py-2 leading-none border rounded  border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
             @click="user.disconnect()">Se déconnecter</button>
         </div>
       </div>
