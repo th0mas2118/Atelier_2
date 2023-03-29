@@ -12,6 +12,10 @@ final class GetFriendsList extends AbstractAction
     public function __invoke(Request $req, Response $rs, array $args): Response
     {
         $id = $args['id'];
+
+        if (!isset($id) || !v::stringVal()->validate($id)) {
+            return (throw new HttpInputNotValid($req, "Les données envoyées ne sont pas valides"));
+        }
         $db_service = new DbService($this->container->get('mongo_url'));
         $friends = $db_service->getFriendsList($id);
 

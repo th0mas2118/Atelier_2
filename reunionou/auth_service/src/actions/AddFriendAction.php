@@ -16,9 +16,13 @@ final class AddFriendAction extends AbstractAction
         $id = $args['id'];
         $body = json_decode($req->getBody()->getContents(), true);
 
-        if (!isset($body['friend_id']) || !v::stringVal()->validate($body['friend_id'])) {
+        if (
+            (!isset($body['friend_id'])) || !v::stringVal()->validate($body['friend_id']) ||
+            (!isset($id) || !v::stringVal()->validate($id))
+        ) {
             return (throw new HttpInputNotValid($req, "Les données envoyées ne sont pas valides"));
         }
+
         $db_service = new DbService($this->container->get('mongo_url'));
         $db_service->addFriend($id, $body['friend_id']);
 
