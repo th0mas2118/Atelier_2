@@ -40,6 +40,8 @@ final class DbService
             'password' => password_hash($data['password'], PASSWORD_BCRYPT),
             'mail' => $data['email'],
             'level' => $data['level'],
+            'avatar' => null,
+            'adress' => null
         ];
 
         $refresh_token = bin2hex(random_bytes(32));

@@ -26,6 +26,8 @@ final class GetUserAction extends AbstractAction
 
         $user->id = strval($user['_id']);
         unset($user['_id']);
+
+        unset($user['password']);
         $data = [
             'type' => 'ressource',
             'user' => $user,

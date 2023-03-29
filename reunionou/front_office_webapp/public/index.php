@@ -50,7 +50,7 @@ $app->post('/signin', SignInAction::class)->setName('signin');
 $app->post('/signout', SignOutAction::class)->setName('signout')->add(new ValidateToken());
 $app->post('/signup', SignUpAction::class)->setName('signup');
 
-$app->get('/user/{id}', GetUserAction::class)->setName('get_user')->add(new ValidateToken());
+$app->get('/user/{id}', GetUserAction::class)->setName('get_user');
 $app->put('/user/{id}', UpdateUserAction::class)->setName('update_user')->add(new ValidateToken());
 $app->delete('/user/{id}', DeleteUserAction::class)->setName('delete_user')->add(new ValidateToken());
 
