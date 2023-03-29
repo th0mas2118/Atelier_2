@@ -1,19 +1,27 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import EmojiPicker from 'vue3-emoji-picker'
+import axios from 'axios'
 import 'vue3-emoji-picker/css'
 
 const currentPage = ref(0)
 const showEmojiPicker = ref(false)
+const gpsError = ref(false)
 
-const setPage = (page: number) => {
+const setPage = async (page: number) => {
   if (page == 1) {
     if (
-      eventData.title == '' ||
-      eventData.address == '' ||
-      eventData.date == '' ||
-      eventData.description == ''
+      eventData.title.trim() == '' ||
+      eventData.address.trim() == '' ||
+      eventData.date.trim() == '' ||
+      eventData.description.trim() == ''
     ) {
+      return
+    }
+
+    await getGPS(eventData.address)
+
+    if (eventData.gps[0] == 0 && eventData.gps[1] == 0) {
       return
     }
   }
@@ -34,11 +42,25 @@ const listenClick = (e: MouseEvent) => {
   }
 }
 
+const getGPS = async (address: string) => {
+  const res = await axios.get(`https://geocode.maps.co/search?q=${address}`)
+
+  if (res?.data[0]?.lat == undefined || res?.data[0]?.lon == undefined) {
+    eventData.gps = [0, 0]
+    gpsError.value = true
+    return
+  }
+  eventData.gps = [parseFloat(res?.data[0]?.lat), parseFloat(res?.data[0]?.lon)]
+  gpsError.value = false
+}
+
+const createEvent = async () => {}
+
 const eventData = reactive({
   title: '',
   date: '',
   address: '',
-  gps: [],
+  gps: [0, 0],
   description: '',
   icon: '',
   isPrivate: false,
@@ -46,7 +68,7 @@ const eventData = reactive({
   participants: []
 })
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('click', listenClick)
 })
 
@@ -58,7 +80,7 @@ onUnmounted(() => {
 <template>
   <form
     action=""
-    class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center max-w-[800px] w-full h-full m-auto md:rounded-3xl shadow-lg text-cblack overflow-x-hidden"
+    class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center max-w-[800px] w-full h-full m-auto md:rounded-3xl shadow-lg text-cblack overflow-x-hidden m-4"
   >
     <h1 class="text-cblack font-bold min-w-[250px] text-2xl w-full text-center p-4">
       CRÉER UN EVENEMENT
@@ -75,7 +97,7 @@ onUnmounted(() => {
               <input
                 :class="`${
                   'shadow appearance-none ' +
-                  (eventData.title == '' ? 'border-cred' : 'border-[#E5E7EB]') +
+                  (eventData.title.trim() == '' ? 'border-cred' : 'border-[#E5E7EB]') +
                   ' rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]'
                 }`"
                 name="titre"
@@ -90,7 +112,7 @@ onUnmounted(() => {
               <input
                 :class="`${
                   'shadow appearance-none ' +
-                  (eventData.date == '' ? 'border-cred' : 'border-[#E5E7EB]') +
+                  (eventData.date.trim() == '' ? 'border-cred' : 'border-[#E5E7EB]') +
                   ' rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]'
                 }`"
                 name="date"
@@ -109,7 +131,9 @@ onUnmounted(() => {
               <input
                 :class="`${
                   'shadow appearance-none ' +
-                  (eventData.address == '' ? 'border-cred' : 'border-[#E5E7EB]') +
+                  (eventData.address.trim() == '' || gpsError
+                    ? 'border-cred'
+                    : 'border-[#E5E7EB]') +
                   ' rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]'
                 }`"
                 name="adresse"
@@ -127,7 +151,7 @@ onUnmounted(() => {
             <textarea
               :class="`${
                 'shadow appearance-none ' +
-                (eventData.description == '' ? 'border-cred' : 'border-[#E5E7EB]') +
+                (eventData.description.trim() == '' ? 'border-cred' : 'border-[#E5E7EB]') +
                 ' rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]'
               }`"
               name="description"
@@ -287,7 +311,7 @@ onUnmounted(() => {
       <button
         type="button"
         v-if="currentPage == 2"
-        @click=""
+        @click="createEvent"
         class="bg-cpurple hover:bg-[#9a69fe] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap self-end ml-auto"
       >
         Créer l'évenement
