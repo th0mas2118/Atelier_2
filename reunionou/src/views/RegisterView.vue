@@ -41,7 +41,7 @@ const Register = async () => {
 
 <template>
   <div class="register-view flex w-full justify-center">
-    <form class="shadow-xl max-w-xl mx-auto rounded px-16 pt-16 pb-8 mb-8">
+    <form class="shadow-xl max-w-xl mx-auto rounded px-16 pt-16 pb-8 m-8 mb-8">
       <h1 class="text-3xl font-bold mb-8 text-center">Register</h1>
       <div class="mb-4">
         <label class="block text-white-700 font-bold mb-2" for="username">Nom d'Utilisateur</label>
@@ -81,7 +81,7 @@ const Register = async () => {
       </div>
       <div class="flex items-center justify-between mt-11">
         <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          class="bg-gradient-to-r from-blue-500 to-cpurple hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button" @click="Register()">
           S'inscrire
         </button>

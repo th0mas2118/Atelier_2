@@ -10,7 +10,7 @@ let log = reactive({
 
 <template>
   <div class="login-container flex w-full justify-center">
-    <div class="login-view mt-8">
+    <div class="login-view mt-8 shadow-">
       <form class="shadow-3xl rounded px-16 pt-16 pb-8 mb-8" type="login" onsubmit="return false"
         @submit="user.setConnected(log)" @keyup.enter="user.setConnected(log)">
         <h1 class="text-3xl font-bold mb-8 text-center">Se Connecter</h1>
@@ -28,7 +28,7 @@ let log = reactive({
         </div>
         <div class="flex items-center justify-between">
           <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            class="bg-gradient-to-r from-blue-500 to-cpurple hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button" @click="user.setConnected(log)">
             Login
           </button>
