@@ -10,11 +10,14 @@ const showOtherMenu = ref(false)
     class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center w-full h-full m-4 rounded-3xl shadow-lg text-cblack overflow-x-hidden"
   >
     <header
-      class="p-8 w-full h-full flex justify-between items-center border-solid border-b-2 border-cwhite2"
+      class="p-8 w-full h-full flex flex-col md:flex-row justify-between items-start md:items-center border-solid border-b-2 border-cwhite2 gap-4"
     >
-      <div id="header-presentation" class="flex items-center gap-4">
+      <div
+        id="header-presentation"
+        class="flex items-center gap-4 flex-col w-full sm:flex-row text-center md:text-left"
+      >
         <div
-          class="w-16 h-16 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default"
+          class="w-16 h-16 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default aspect-square"
         >
           🔥
         </div>
@@ -23,13 +26,16 @@ const showOtherMenu = ref(false)
           <p class="text-md text-cgray">10 members</p>
         </div>
       </div>
-      <div id="header-controls" class="flex items-center justify-between gap-2">
+      <div
+        id="header-controls"
+        class="flex items-center justify-center md:w-auto md:justify-between gap-2 w-full flex-wrap md:flex-nowrap"
+      >
         <button
           :class="`${
             currentView == 0
               ? 'bg-cpurple text-cwhite2 hover:bg-[#9a69fe]'
               : 'bg-cwhite2 text-cpurple hover:bg-[#ececec]'
-          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300`"
+          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300 aspect-square`"
           @click="currentView = 0"
         >
           <i class="fa-solid fa-info"></i>
@@ -39,7 +45,7 @@ const showOtherMenu = ref(false)
             currentView == 1
               ? 'bg-cpurple text-cwhite2 hover:bg-[#9a69fe]'
               : 'bg-cwhite2 text-cpurple hover:bg-[#ececec]'
-          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300`"
+          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300 aspect-square`"
           @click="currentView = 1"
         >
           <i class="fa-solid fa-map"></i>
@@ -49,7 +55,7 @@ const showOtherMenu = ref(false)
             currentView == 2
               ? 'bg-cpurple text-cwhite2 hover:bg-[#9a69fe]'
               : 'bg-cwhite2 text-cpurple hover:bg-[#ececec]'
-          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300`"
+          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300 aspect-square`"
           @click="currentView = 2"
         >
           <i class="fa-solid fa-cloud"></i>
@@ -60,7 +66,7 @@ const showOtherMenu = ref(false)
           Participer
         </button>
         <button
-          class="bg-cwhite text-cgray w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300 hover:bg-[#ececec]"
+          class="bg-cwhite text-cgray w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300 hover:bg-[#ececec] aspect-square"
           @click="showOtherMenu = !showOtherMenu"
         >
           <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -75,9 +81,9 @@ const showOtherMenu = ref(false)
     >
       <section
         id="event-info"
-        class="w-full h-full flex justify-between items-start p-4 gap-2 flex-shrink-0"
+        class="w-full h-full flex flex-col md:flex-row justify-between items-start p-4 gap-2 flex-shrink-0"
       >
-        <div id="event-description" class="w-2/4">
+        <div id="event-description" class="w-full md:w-2/4">
           <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Description</h3>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque omnis perferendis
