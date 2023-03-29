@@ -3,11 +3,12 @@ import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import EmojiPicker from 'vue3-emoji-picker'
 import axios from 'axios'
 import 'vue3-emoji-picker/css'
+import { useUserStore } from '@/stores/user'
+const user = useUserStore()
 
 const currentPage = ref(0)
 const showEmojiPicker = ref(false)
 const gpsError = ref(false)
-
 const setPage = async (page: number) => {
   if (page == 1) {
     if (
@@ -74,7 +75,7 @@ const eventData = reactive({
   description: '',
   icon: '',
   isPrivate: false,
-  organizer_id: '',
+  organizer_id: user.member.id,
   participants: []
 })
 

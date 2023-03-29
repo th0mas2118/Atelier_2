@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { auth } from '@/middlewares/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,10 +28,11 @@ const router = createRouter({
     {
       path: '/event/new',
       name: 'newEvent',
-      component: () => import('../views/CreateEventView.vue')
+      component: () => import('../views/CreateEventView.vue'),
+      meta: { requiresAuth: true },
     },
     {
-      path:'/user/:id',
+      path: '/user/:id',
       name: 'user',
       component: () => import('../views/UserView.vue')
     },
@@ -47,5 +49,13 @@ const router = createRouter({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    auth(to, from, next);
+  } else {
+    next();
+  }
+});
 
 export default router
