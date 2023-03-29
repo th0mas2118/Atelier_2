@@ -28,7 +28,7 @@ let log = reactive({
             type="password" placeholder="Password" v-model="log.password" />
         </div>
         <div class="flex items-center justify-between">
-          <FormButton :function="user.setConnected" :email=log.email :password=log.password></FormButton>
+          <FormButton name='login' :function="user.setConnected" :email=log.email :password=log.password></FormButton>
           <router-link to="/register"
             class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">S'inscrire ?
           </router-link>

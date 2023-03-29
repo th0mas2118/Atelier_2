@@ -48,6 +48,7 @@ export const useUserStore = defineStore(
         member.level = decodedToken.lvl
         member.acces_token= response.user.acces_token
         isConnected.value = true
+        router.push('/home')
       })
     }
 

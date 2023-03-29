@@ -10,11 +10,15 @@ export default {
         },
         email: String,
         password: String,
+        name: String
     },
     methods: {
         execute() {
             if (this.function) {
-                this.function({ email: this.email, password: this.password })
+                console.log(this.name)
+                if (this.name == "login") {
+                    this.function({ email: this.email, password: this.password })
+                }
             }
         }
     }
