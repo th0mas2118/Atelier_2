@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FormButton from '../components/FormButton.vue'
 import { useUserStore } from '@/stores/user'
 import { reactive } from 'vue'
 const user = useUserStore()
@@ -27,11 +28,7 @@ let log = reactive({
             type="password" placeholder="Password" v-model="log.password" />
         </div>
         <div class="flex items-center justify-between">
-          <button
-            class="bg-gradient-to-r from-blue-500 to-cpurple hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="button" @click="user.setConnected(log)">
-            Login
-          </button>
+          <FormButton :function="user.setConnected" :email=log.email :password=log.password></FormButton>
           <router-link to="/register"
             class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">S'inscrire ?
           </router-link>
