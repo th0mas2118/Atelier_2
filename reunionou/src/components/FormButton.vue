@@ -32,6 +32,6 @@ export default {
     <button
             class="bg-gradient-to-r from-blue-500 to-cpurple hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button" @click="execute">
-            Login
+            Se Connecter
           </button>
 </template>

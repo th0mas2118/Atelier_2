@@ -41,16 +41,17 @@ const Register = async () => {
 
 <template>
   <div class="register-view flex w-full justify-center">
-    <form class="shadow-xl max-w-xl mx-auto rounded px-16 pt-16 pb-8 m-8 mb-8">
-      <h1 class="text-3xl font-bold mb-8 text-center">Register</h1>
+    <form
+      class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center p-10 h-full m-4 rounded-3xl shadow-lg text-cblack overflow-x-hidden">
+      <h1 class="text-3xl font-bold mb-8 text-center">S'inscrire</h1>
       <div class="mb-4">
-        <label class="block text-white-700 font-bold mb-2" for="username">Nom d'Utilisateur</label>
+        <label class="block text-white-700 font-bold mb-2" for="username">Nom d'utilisateur</label>
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text" placeholder="Username" v-model="log.username" />
       </div>
       <div class="mb-4">
-        <label class="block text-white-700 font-bold mb-2" for="fistname">Prenom</label>
+        <label class="block text-white-700 font-bold mb-2" for="fistname">Prénom</label>
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text" placeholder="Firstname" v-model="log.firstname" />
@@ -74,12 +75,12 @@ const Register = async () => {
           type="password" placeholder="Password" v-model="password.password" />
       </div>
       <div class="mb-6">
-        <label class="block text-white-700 font-bold mb-2" for="password">Confirmation mdp</label>
+        <label class="block text-white-700 font-bold mb-2" for="password">Confirmation de mot de passe</label>
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="password" placeholder="Password confirmation" v-model="password.passwordConfirmation" />
       </div>
-      <div class="flex items-center justify-between mt-11">
+      <div class="flex items-center justify-between mt-11 gap-6">
         <button
           class="bg-gradient-to-r from-blue-500 to-cpurple hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button" @click="Register()">
