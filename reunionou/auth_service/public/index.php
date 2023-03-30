@@ -15,6 +15,7 @@ use reunionou\auth\actions\GetUsersAction;
 use reunionou\auth\actions\ValidateAction;
 use reunionou\auth\actions\AddFriendAction;
 use reunionou\auth\actions\DeleteUserAction;
+use reunionou\auth\actions\GetUserInvitationsAction;
 use reunionou\auth\actions\UpdateUserAction;
 use reunionou\auth\actions\RefreshTokenAction;
 
@@ -38,6 +39,7 @@ $app->get('/validate', ValidateAction::class)->setName('validate');
 $app->get('/user/{id}', GetUserAction::class)->setName('get_user');
 $app->get('/user/{id}/friends', GetFriendsList::class)->setName('get_friends_list');
 $app->get('/users', GetUsersAction::class)->setName('get_users');
+$app->get('/users/{id}/invitations', GetUserInvitationsAction::class)->setName('get_user_invitations');
 
 $app->put('/user/{id}/friends', AddFriendAction::class)->setName('add_friend');
 $app->put('/user/{id}', UpdateUserAction::class)->setName('update_user');

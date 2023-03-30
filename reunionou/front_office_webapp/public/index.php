@@ -9,21 +9,22 @@ use Slim\Psr7\Response;
 use Slim\Factory\AppFactory;
 
 use reunionou\frontwebapp\middlewares\Cors;
-use reunionou\frontwebapp\middlewares\ValidateToken;
-use reunionou\frontwebapp\actions\events\GetEventAction;
-use reunionou\frontwebapp\actions\events\CreateEventAction;
-
 use reunionou\frontwebapp\actions\auth\SignInAction;
-use reunionou\frontwebapp\actions\auth\SignOutAction;
 use reunionou\frontwebapp\actions\auth\SignUpAction;
+use reunionou\frontwebapp\middlewares\ValidateToken;
+
 use reunionou\frontwebapp\actions\auth\GetUserAction;
-use reunionou\frontwebapp\actions\auth\GetUsersAction;
-use reunionou\frontwebapp\actions\auth\UpdateUserAction;
+use reunionou\frontwebapp\actions\auth\SignOutAction;
+use reunionou\frontwebapp\actions\comment\GetComment;
 use reunionou\frontwebapp\actions\auth\GetFriendsList;
+use reunionou\frontwebapp\actions\auth\GetUsersAction;
 use reunionou\frontwebapp\actions\auth\AddFriendAction;
 use reunionou\frontwebapp\actions\auth\DeleteUserAction;
+use reunionou\frontwebapp\actions\auth\UpdateUserAction;
+use reunionou\frontwebapp\actions\events\GetEventAction;
 use reunionou\frontwebapp\actions\auth\DeleteFriendAction;
-use reunionou\frontwebapp\actions\comment\GetComment;
+use reunionou\frontwebapp\actions\events\CreateEventAction;
+use reunionou\frontwebapp\actions\auth\GetUserInvitationsAction;
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
 
 $app = AppFactory::create();
@@ -57,6 +58,7 @@ $app->post('/signout', SignOutAction::class)->setName('signout')->add(new Valida
 $app->post('/signup', SignUpAction::class)->setName('signup');
 
 $app->get('/user/{id}', GetUserAction::class)->setName('get_user');
+$app->get('/user/{id}/invitations', GetUserInvitationsAction::class)->setName('get_user_invitations');
 $app->get('/user/{id}/friends', GetFriendsList::class)->setName('get_user_friends');
 $app->get('/users', GetUsersAction::class)->setName('get_users');
 
@@ -73,7 +75,6 @@ $app->get('/events/{id}[/]', GetEventAction::class)->setName('get_event');
 $app->post('/events[/]', CreateEventAction::class)->setName('create_event');
 
 $app->patch('/events/{event_id}/participate[/]', UpdateParticipationAction::class)->setName("update_participation");
-
 
 $app->get('/messages/{id}[/]', GetComment::class)->setName('get_comment');
 $app->run();
