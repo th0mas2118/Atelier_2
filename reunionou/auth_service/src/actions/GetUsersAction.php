@@ -23,16 +23,21 @@ final class GetUsersAction extends AbstractAction
             }
             //search users
             $db_service = new DbService($this->container->get('mongo_url'));
-            $users = $db_service->findUser($search['search']);
+            $users = $db_service->findUsers($search['search']);
         }
 
 
         foreach ($users as $key => $user) {
+            $users[$key]['id'] = strval($user['_id']);
+            unset($users[$key]['_id']);
             unset($users[$key]['acces_token']);
             unset($users[$key]['password']);
             unset($users[$key]['refresh_token']);
             unset($users[$key]['friends']);
+            unset($users[$key]['level']);
+            unset($users[$key]['address']);
         }
+
         $data = [
             'type' => 'collection',
             "count" => count($users),

@@ -2,8 +2,9 @@
 
 namespace reunionou\auth\services;
 
-use MongoDB\BSON\ObjectId;
 use Firebase\JWT\JWT;
+use MongoDB\BSON\Regex;
+use MongoDB\BSON\ObjectId;
 
 
 function jsonPrint($printable)
@@ -78,25 +79,20 @@ final class DbService
         return $user;
     }
 
-    public function findUser($data)
+    public function findUsers($data)
     {
         $client = new \MongoDB\Client($this->mongo);
         $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->find(['username' => $data]);
-        if (!$user) {
-            $user = $db->find(['mail' => $data]);
-            if (!$user) {
-                $user = $db->find(['firstname' => $data]);
-                if (!$user) {
-                    $user = $db->find(['lastname' => $data]);
-                    if (!$user) {
-                        throw new \Exception("User not found", 404);
-                    }
-                }
-            }
-        }
-        return $user->toArray();
+        $filter = ['$or' => [
+            ['mail' => new Regex($data, 'i')],
+            ['username' => new Regex($data, 'i')],
+            ['lastname' => new Regex($data, 'i')],
+            ['firstname' => new Regex($data, 'i')]
+        ]];
+
+        $users = $db->find($filter);
+        return $users->toArray();
     }
 
     public function getUsers()

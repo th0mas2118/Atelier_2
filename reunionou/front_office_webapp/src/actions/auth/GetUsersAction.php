@@ -18,7 +18,6 @@ final class GetUsersAction
             $search = $search['search'];
 
         $url = ($search == null) ? '/users' : '/users?search=' . $search;
-        echo $url;
 
         $response = $client->request('GET', $url);
 
