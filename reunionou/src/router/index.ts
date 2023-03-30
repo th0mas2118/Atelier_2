@@ -29,7 +29,7 @@ const router = createRouter({
       path: '/event/new',
       name: 'newEvent',
       component: () => import('../views/CreateEventView.vue'),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true }
     },
     {
       path: '/user/:id',
@@ -41,7 +41,12 @@ const router = createRouter({
       name: 'about',
       component: () => import('../views/AboutView.vue')
     },
-    //defaut route 
+    {
+      path: '/message',
+      name: 'message',
+      component: () => import('../views/MessageView.vue')
+    },
+    //defaut route
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
@@ -51,11 +56,11 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    auth(to, from, next);
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    auth(to, from, next)
   } else {
-    next();
+    next()
   }
-});
+})
 
 export default router
