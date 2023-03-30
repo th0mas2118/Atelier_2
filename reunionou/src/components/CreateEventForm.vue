@@ -13,8 +13,10 @@ const currentPage = ref(0)
 const showEmojiPicker = ref(false)
 const gpsError = ref(false)
 const searchResult = reactive([{}])
+const error = ref('')
 
 const setPage = async (page: number) => {
+  error.value = ''
   if (page == 1) {
     if (
       eventData.title.trim() == '' ||
@@ -22,12 +24,14 @@ const setPage = async (page: number) => {
       eventData.date.trim() == '' ||
       eventData.description.trim() == ''
     ) {
+      error.value = 'Veuillez remplir tous les champs'
       return
     }
 
     await getGPS(eventData.address)
 
     if (eventData.gps[0] == 0 && eventData.gps[1] == 0) {
+      error.value = "L'adresse n'est pas valide (la position GPS n'a pas pu être trouvée)"
       return
     }
   }
@@ -84,8 +88,8 @@ const eventData = reactive({
   gps: [0, 0],
   description: '',
   icon: '',
-  isPrivate: false,
-  organizer_id: user.member.id,
+  isPrivate: true,
+  organizer: user.member,
   participants: []
 })
 
@@ -114,7 +118,7 @@ onUnmounted(() => {
     class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center max-w-[800px] w-full h-[calc(100vh-80px)] md:h-full m-auto md:rounded-3xl shadow-lg text-cblack overflow-x-hidden m-4"
   >
     <h1 class="text-cblack font-bold min-w-[250px] text-2xl w-full text-center p-4">
-      CRÉER UN EVENEMENT
+      CRÉER UN EVENEMENT ({{ currentPage + 1 + '/' + 3 }})
     </h1>
     <div
       class="h-full w-full flex flex-grow transition-all duration-500 ease-in-out"
@@ -214,11 +218,11 @@ onUnmounted(() => {
               <label
                 for="isPrivate"
                 class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >Évenement privé</label
+                >Évenement privé ?</label
               >
             </div>
             <div>
-              <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Invités</h3>
+              <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Invités selectionnés</h3>
 
               <ul class="flex flex-col gap-2 overflow-auto max-h-[328px]">
                 <li
@@ -248,7 +252,7 @@ onUnmounted(() => {
           </div>
           <div class="flex flex-col w-2/4">
             <SearchUsers @onSearchResult="onResult"></SearchUsers>
-            <ul class="flex flex-col gap-2 overflow-auto px-4">
+            <ul class="flex flex-col gap-2 overflow-auto px-4 max-h-[328px]">
               <li class="flex items-center gap-2" v-for="user in searchResult.value" :key="user.id">
                 <div
                   class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
@@ -318,6 +322,7 @@ onUnmounted(() => {
       >
         Précedent
       </button>
+      <span v-if="error != ''" class="text-cred">{{ error }}</span>
       <button
         type="button"
         v-if="currentPage < 2"

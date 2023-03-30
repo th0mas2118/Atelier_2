@@ -70,7 +70,7 @@ onMounted(() => {
 
       if (
         response.data.event.participants.find((x: any) => x.user.id == user.member.id) ||
-        response.data.event.organizer_id == user.member.id ||
+        response.data.event.organizer.id == user.member.id ||
         user.member.level > 0 ||
         response.data.event.isPrivate == false
       ) {
@@ -146,14 +146,14 @@ onMounted(() => {
           <i class="fa-solid fa-cloud"></i>
         </button>
         <button
-          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status != 'confirmed') && event.organizer_id != user.member.id"
+          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status != 'confirmed') && event.organizer.id != user.member.id"
           class="bg-cpurple hover:bg-[#9a69fe] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap"
           @click="participate"
         >
           Participer
         </button>
         <button
-          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status == 'confirmed') && event.organizer_id != user.member.id"
+          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status == 'confirmed') && event.organizer.id != user.member.id"
           class="bg-cred hover:bg-[#ea384e] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap"
           @click="decline"
         >

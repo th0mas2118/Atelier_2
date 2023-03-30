@@ -36,7 +36,7 @@ onUnmounted(() => {
   <div class="flex flex-col w-full p-4 gap-4">
     <div>
       <header class="flex flex-col mb-4">
-        <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Rechercher</h3>
+        <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Rechercher des utilisateurs</h3>
         <div class="relative">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg
