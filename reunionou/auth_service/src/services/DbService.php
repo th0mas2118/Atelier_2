@@ -83,20 +83,20 @@ final class DbService
         $client = new \MongoDB\Client($this->mongo);
         $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
 
-        $user = $db->findOne(['username' => $data]);
+        $user = $db->find(['username' => $data]);
         if (!$user) {
-            $user = $db->findOne(['mail' => $data]);
+            $user = $db->find(['mail' => $data]);
             if (!$user) {
-                $user = $db->findOne(['firstname' => $data]);
+                $user = $db->find(['firstname' => $data]);
                 if (!$user) {
-                    $user = $db->findOne(['lastname' => $data]);
+                    $user = $db->find(['lastname' => $data]);
                     if (!$user) {
                         throw new \Exception("User not found", 404);
                     }
                 }
             }
         }
-        return $user;
+        return $user->toArray();
     }
 
     public function getUsers()

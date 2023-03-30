@@ -28,6 +28,7 @@ final class GetUsersAction extends AbstractAction
 
 
         foreach ($users as $key => $user) {
+            unset($users[$key]['acces_token']);
             unset($users[$key]['password']);
             unset($users[$key]['refresh_token']);
             unset($users[$key]['friends']);
