@@ -4,11 +4,15 @@ import EmojiPicker from 'vue3-emoji-picker'
 import axios from 'axios'
 import 'vue3-emoji-picker/css'
 import { useUserStore } from '@/stores/user'
+import SearchUsers from '../components/SearchUsers.vue'
 const user = useUserStore()
+import { useRoute } from 'vue-router'
+import router from '@/router'
 
 const currentPage = ref(0)
 const showEmojiPicker = ref(false)
 const gpsError = ref(false)
+const searchResult = reactive([{}])
 const setPage = async (page: number) => {
   if (page == 1) {
     if (
@@ -51,6 +55,7 @@ const getGPS = async (address: string) => {
     gpsError.value = true
     return
   }
+
   eventData.gps = [parseFloat(res?.data[0]?.lat), parseFloat(res?.data[0]?.lon)]
   gpsError.value = false
 }
@@ -61,10 +66,14 @@ const createEvent = async () => {
       'Content-Type': 'application/json'
     }
   })
-  console.log(res)
-  if (res.status == 200) {
-    window.location.href = '/'
+
+  if (res.status == 201) {
+    router.push({ name: 'event', params: { id: res.data.event.id } })
   }
+}
+
+const onResult = (e: any) => {
+  searchResult.value = e
 }
 
 const eventData = reactive({
@@ -78,6 +87,16 @@ const eventData = reactive({
   organizer_id: user.member.id,
   participants: []
 })
+
+const addParticipant = (user: { user: {}; type: string }) => {
+  let index = eventData.participants.findIndex((x) => x.user.id == user.user.id)
+
+  if (index == -1) {
+    eventData.participants.push({ ...user, status: 'waiting' })
+  } else {
+    eventData.participants.splice(index, 1)
+  }
+}
 
 onMounted(async () => {
   window.addEventListener('click', listenClick)
@@ -201,9 +220,13 @@ onUnmounted(() => {
               <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Invités</h3>
 
               <ul class="flex flex-col gap-2 overflow-auto max-h-[328px]">
-                <!-- <li class="flex items-center gap-2">
+                <li
+                  class="flex items-center gap-2"
+                  v-for="user in eventData.participants"
+                  :key="user.user.id"
+                >
                   <div
-                    class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
+                    class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
                   >
                     <img
                       src="https://www.gala.fr/imgre/fit/~1~gal~2021~08~02~ddad7c39-59ab-49d3-ba37-04f203f8029c.jpeg/480x480/quality/80/focus-point/757%2C593/photos-emmanuel-macron-en-t-shirt-a-bregancon-pas-le-1er-president-a-se-lacher-en-vacances.jpg"
@@ -211,63 +234,43 @@ onUnmounted(() => {
                       srcset=""
                     />
                   </div>
-                  <p>John Doe</p>
-                  <div>
-                    <i class="fa-solid fa-xmark text-cred"></i>
+                  <p>{{ user.user.firstname + ' ' + user.user.lastname }}</p>
+                  <div
+                    class="cursor-pointer"
+                    @click="addParticipant({ user: user.user, type: 'user' })"
+                  >
+                    <i class="fa-solid fa-minus-circle text-cred"></i>
                   </div>
-                </li> -->
+                </li>
               </ul>
             </div>
           </div>
-          <div class="flex flex-col w-full md:w-2/4 p-4 gap-4">
-            <div>
-              <header class="flex flex-col mb-4">
-                <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Rechercher</h3>
-                <div class="relative">
-                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg
-                      aria-hidden="true"
-                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <input
-                    type="search"
-                    id="default-search"
-                    class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-cpurple focus:border-cpurple dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-cpurple dark:focus:border-cpurple"
-                    placeholder="Nom, prénom, email, nom d'utilisateur"
-                    required
+          <div class="flex flex-col w-2/4">
+            <SearchUsers @onSearchResult="onResult"></SearchUsers>
+            <ul class="flex flex-col gap-2 overflow-auto px-4">
+              <li class="flex items-center gap-2" v-for="user in searchResult.value" :key="user.id">
+                <div
+                  class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
+                >
+                  <img
+                    src="https://www.gala.fr/imgre/fit/~1~gal~2021~08~02~ddad7c39-59ab-49d3-ba37-04f203f8029c.jpeg/480x480/quality/80/focus-point/757%2C593/photos-emmanuel-macron-en-t-shirt-a-bregancon-pas-le-1er-president-a-se-lacher-en-vacances.jpg"
+                    alt=""
+                    srcset=""
                   />
                 </div>
-              </header>
-              <ul class="flex flex-col gap-2 overflow-auto max-h-[314px]">
-                <!-- <li class="flex items-center gap-2">
-                  <div
-                    class="w-10 h-10 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
-                  >
-                    <img
-                      src="https://www.gala.fr/imgre/fit/~1~gal~2021~08~02~ddad7c39-59ab-49d3-ba37-04f203f8029c.jpeg/480x480/quality/80/focus-point/757%2C593/photos-emmanuel-macron-en-t-shirt-a-bregancon-pas-le-1er-president-a-se-lacher-en-vacances.jpg"
-                      alt=""
-                      srcset=""
-                    />
-                  </div>
-                  <p>John Doe</p>
-                  <div>
-                    <i class="fa-solid fa-plus text-cgreen"></i>
-                  </div>
-                </li> -->
-              </ul>
-            </div>
+                <p>{{ user.firstname + ' ' + user.lastname }}</p>
+                <div class="cursor-pointer" @click="addParticipant({ user: user, type: 'user' })">
+                  <i
+                    v-if="!eventData.participants.find((x) => x.user.id == user.id)"
+                    class="fa-solid fa-plus-circle text-cgreen"
+                  ></i>
+                  <i
+                    v-if="eventData.participants.find((x) => x.user.id == user.id)"
+                    class="fa-solid fa-minus-circle text-cred"
+                  ></i>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
