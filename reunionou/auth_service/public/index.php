@@ -11,11 +11,12 @@ use reunionou\auth\actions\SignUpAction;
 use reunionou\auth\actions\GetUserAction;
 use reunionou\auth\actions\SignOutAction;
 use reunionou\auth\actions\GetFriendsList;
+use reunionou\auth\actions\GetUsersAction;
 use reunionou\auth\actions\ValidateAction;
 use reunionou\auth\actions\AddFriendAction;
 use reunionou\auth\actions\DeleteUserAction;
 use reunionou\auth\actions\UpdateUserAction;
-use reunionou\auth\actions\GetUsersAction;
+use reunionou\auth\actions\RefreshTokenAction;
 
 
 $builder = new ContainerBuilder();
@@ -45,5 +46,6 @@ $app->delete('/user/{id}', DeleteUserAction::class)->setName('delete_user');
 $app->delete('/user/{id}/friends/{friend_id}', RemoveFriend::class)->setName('remove_friend');
 
 $app->post('/validate', ValidateAction::class)->setName('validate');
+$app->post('/refresh/{id}', RefreshTokenAction::class)->setName('refresh');
 
 $app->run();
