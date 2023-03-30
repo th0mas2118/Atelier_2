@@ -66,6 +66,11 @@ const getGPS = async (address: string) => {
 }
 
 const createEvent = async () => {
+  let organizer: any = user.member
+  delete organizer.access_token
+
+  eventData.organizer = organizer
+
   const res = await axios.post(`${import.meta.env.VITE_API_HOST}/events`, eventData, {
     headers: {
       'Content-Type': 'application/json'

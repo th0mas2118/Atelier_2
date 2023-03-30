@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { onUnmounted, ref } from 'vue'
+import { useUserStore } from '@/stores/user'
+const user = useUserStore()
 
 const searchInput = ref('')
 const inputTimer = ref(0)
@@ -16,7 +18,7 @@ const search = async (input: string) => {
   loading.value = true
   const response = await axios.get(`${import.meta.env.VITE_API_HOST}/users?search=${input}`)
   loading.value = false
-  mutateSearchResult(response.data.users)
+  mutateSearchResult(response.data.users.filter((u: any) => u.id !== user.member.id))
 }
 
 const onKeyUp = (e: KeyboardEvent) => {
