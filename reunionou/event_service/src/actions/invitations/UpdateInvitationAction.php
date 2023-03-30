@@ -1,6 +1,6 @@
 <?php
 
-namespace reunionou\event\actions;
+namespace reunionou\event\actions\invitations;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -10,7 +10,7 @@ use reunionou\event\actions\AbstractAction;
 use reunionou\event\errors\exceptions\HttpInputNotValid;
 use reunionou\event\services\InvitationService;
 
-final class UpdateEventUniqueInvitationAction extends AbstractAction
+final class UpdateInvitationAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response
     {

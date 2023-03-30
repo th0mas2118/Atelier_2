@@ -1,6 +1,6 @@
 <?php
 
-namespace reunionou\event\actions;
+namespace reunionou\event\actions\events;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;

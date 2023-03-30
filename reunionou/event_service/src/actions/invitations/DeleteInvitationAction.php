@@ -1,15 +1,16 @@
 <?php
 
-namespace reunionou\event\actions;
+namespace reunionou\event\actions\invitations;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
-use reunionou\event\errors\exceptions\HttpNotFound;
+use reunionou\event\actions\AbstractAction;
 use reunionou\event\services\InvitationService;
+use reunionou\event\errors\exceptions\HttpNotFound;
 use Slim\Exception\HttpInternalServerErrorException;
 
-final class DeleteEventUniqueInvitation extends AbstractAction
+final class DeleteInvitationAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response
     {

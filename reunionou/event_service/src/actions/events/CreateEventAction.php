@@ -1,6 +1,6 @@
 <?php
 
-namespace reunionou\event\actions;
+namespace reunionou\event\actions\events;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -8,6 +8,7 @@ use Slim\Routing\RouteContext;
 use Respect\Validation\Validator as v;
 use reunionou\event\services\EventService;
 use reunionou\event\actions\AbstractAction;
+use reunionou\event\services\InvitationService;
 use reunionou\event\errors\exceptions\HttpInputNotValid;
 
 
@@ -39,6 +40,12 @@ final class CreateEventAction extends AbstractAction
 
         if (!isset($event)) {
             return (throw new HttpInternalServerErrorException($req, "La ressource demandée n'a pas pu être créée"));
+        }
+
+        $invitationService = new InvitationService($this->container->get('mongo_url'));
+
+        foreach ($body["participants"] as $participant) {
+            $invitationService->createUserInvitation(strval($event), $participant["user"]["id"]);
         }
 
         $routeContext = RouteContext::fromRequest($req);

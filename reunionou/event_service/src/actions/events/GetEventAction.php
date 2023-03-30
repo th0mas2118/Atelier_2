@@ -1,6 +1,6 @@
 <?php
 
-namespace reunionou\event\actions;
+namespace reunionou\event\actions\events;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -8,41 +8,37 @@ use Slim\Routing\RouteContext;
 use reunionou\event\services\EventService;
 use reunionou\event\actions\AbstractAction;
 use reunionou\event\errors\exceptions\HttpNotFound;
-use reunionou\event\services\CommentService;
 
-final class GetEventCommentsAction extends AbstractAction
+final class GetEventAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response
     {
-        $commentService = new CommentService($this->container->get('mongo_comment_url'));
-        $comments = $commentService->getEventComments($args['id']);
+        $eventService = new EventService($this->container->get('mongo_url'));
+        $event = $eventService->getEvent($args['id']);
+
         $routeContext = RouteContext::fromRequest($req);
         $routeParser = $routeContext->getRouteParser();
 
 
-        if (!isset($comments)) {
+        if (!isset($event)) {
             return (throw new HttpNotFound($req, "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible: " . $args['id']));
         }
 
         $rs = $rs->withStatus(200)->withHeader('Content-Type', 'application/json;charset=utf-8');
 
-        $commentList = [];
-
-        foreach ($comments as $comment) {
-            $comment->uri = $routeParser->urlFor('get_comment', ['id' => strval($comment["_id"])]);
-            $comment->id = strval($comment["_id"]);
-            unset($comment["_id"]);
-            array_push($commentList, $comment);
-        }
+        $event->id = strval($event["_id"]);
+        unset($event["_id"]);
 
         $data = [
-            'type' => 'collection',
-            'count' => count($commentList),
-            'comments' => $commentList,
+            'type' => 'resource',
+            'event' => $event,
             'links' => [
                 'self' => [
-                    'href' => $routeParser->urlFor('get_event_comments', ['id' => $args['id']])
+                    'href' => $routeParser->urlFor('get_event', ['id' => strval($event["id"])])
                 ],
+                // 'join' => [
+                //     'href' => $routeParser->urlFor('join_event', ['id' => strval($event["id"])])
+                // ],
             ]
         ];
 
