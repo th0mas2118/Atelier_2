@@ -36,7 +36,7 @@ final class InvitationService
         }
     }
 
-    public function createUserInvitation(string $event_id, mixed $user): ?string
+    public function createUserInvitation(string $event_id, string $event_title, mixed $organizer, mixed $user): ?string
     {
         try {
             $client = new \MongoDB\Client($this->mongo);
@@ -48,6 +48,8 @@ final class InvitationService
             $data["expired"] = false;
             $data["accepted"] = false;
             $data["expiration_date"] = null;
+            $data["organizer"] = $organizer;
+            $data["event_title"] = $event_title;
 
             $invitation = $db->insertOne($data);
 

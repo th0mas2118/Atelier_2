@@ -28,7 +28,7 @@ final class CreateEventAction extends AbstractAction
             (!isset($body["date"]) || !v::dateTime()->validate($body["date"])) ||
             (!isset($body["address"]) || !v::stringVal()->validate($body["address"])) ||
             (!isset($body["gps"]) || !v::arrayVal()->validate($body["gps"])) ||
-            (!isset($body["organizer_id"]) || !v::stringVal()->validate($body["organizer_id"])) ||
+            (!isset($body["organizer"])) ||
             (!isset($body["isPrivate"]) || !v::boolVal()->validate($body["isPrivate"])) ||
             (!isset($body["participants"]) || !v::arrayVal()->validate($body["participants"]))
         ) {
@@ -45,7 +45,7 @@ final class CreateEventAction extends AbstractAction
         $invitationService = new InvitationService($this->container->get('mongo_url'));
 
         foreach ($body["participants"] as $participant) {
-            $invitationService->createUserInvitation(strval($event), $participant["user"]);
+            $invitationService->createUserInvitation(strval($event), $body["title"], $body["organizer"], $participant["user"]);
         }
 
         $routeContext = RouteContext::fromRequest($req);
