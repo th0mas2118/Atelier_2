@@ -32,6 +32,7 @@ final class SignUpAction extends AbstractAction
         }
 
         $db_service = new DbService($this->container->get('mongo_url'));
+        $body['email'] = strtolower($body['email']);
         $user = $db_service->signUp($body);
         $routeContext = RouteContext::fromRequest($rq);
         $routeParser = $routeContext->getRouteParser();

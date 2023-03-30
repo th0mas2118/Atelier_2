@@ -21,7 +21,7 @@ final class SigninAction extends AbstractAction
         }
         $headerAuth = $headerAuth['Authorization'];
         $userAuth = base64_decode(sscanf($headerAuth[0], "Basic %s")[0]);
-        $username = strstr($userAuth, ':', true);
+        $username = strtolower(strstr($userAuth, ':', true));
         $password = substr(strstr($userAuth, ':'), 1);
         if (
             (!isset($username)) || !v::stringVal()->validate($username) ||
