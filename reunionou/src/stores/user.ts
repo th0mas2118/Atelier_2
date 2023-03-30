@@ -59,7 +59,9 @@ export const useUserStore = defineStore(
         mode:"cors",
         headers: {
           "Authorization": `Bearer ${member.acces_token}`
-      }}).then((response)=>{isConnected.value = false
+      }}).then((response)=>{
+        isConnected.value = false
+        localStorage.clear()
         router.push('/')
         })
     }

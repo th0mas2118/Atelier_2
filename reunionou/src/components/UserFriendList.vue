@@ -6,15 +6,13 @@ import router from '@/router';
 
 let user_friends = ref({})
 axios
-    .get(`http://api.frontoffice.reunionou:49383/user/${useRoute().params['id']}/friends`)
-    .then((response) => {
-        user_friends.value = response.data.friends
-    })
-    .then((response) => console.log(user_friends))
+  .get(`http://api.frontoffice.reunionou:49383/user/${useRoute().params['id']}/friends`)
+  .then((response) => {
+    user_friends.value = response.data.friends
+  })
 
 const goTo = (id: string) => {
-    console.log(id)
-    router.push(`/user/${id}`)
+  router.push(`/user/${id}`)
 }
 
 

@@ -15,17 +15,37 @@ let userModify = reactive({
     adresse: ''
 })
 const currentView = ref(0)
+let file: any
+
+const onFileChange = (e: File) => {
+    file = ref(['file']).value
+}
 
 const modifyUser = () => {
-    axios.put(`http://api.frontoffice.reunionou:49383/user/${user.member.id}`, userModify, {
-        headers: {
-            'Authorization': `Bearer ${user.member.acces_token}`
-        },
-    }).then((response) => {
-        console.log(response)
-    }).catch((error) => {
-        console.log(error)
-    })
+    if (userModify.adresse === '' && file === undefined) {
+        return
+    }
+    else {
+        if (userModify.adresse !== '') {
+            axios.put(`http://api.frontoffice.reunionou:49383/user/${user.member.id}`, userModify, {
+                headers: {
+                    'Authorization': `Bearer ${user.member.acces_token}`
+                },
+            }).then((response) => {
+                console.log(response)
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+        if (file !== undefined) {
+            const formData = new FormData()
+            formData.append('file', file)
+            console.log(file)
+            console.log(formData)
+            axios.put(`http://api.frontoffice.reunionou:49383/user/${user.member.id}/avatar`, formData).then((response) => console.log(response)).catch((error) => console.log(error))
+        }
+    }
+
 }
 
 
@@ -58,7 +78,7 @@ const modifyUser = () => {
                 </div>
                 <div class="flex flex-col w-full">
                     <label for="adress">Avatar</label>
-                    <input type="file" name="avatar" id="avatar" class="border-2 border-cpurple rounded-md p-2">
+                    <input @change="onFileChange"  ref="file" type="file" name="avatar" id="avatar" class="border-2 border-cpurple rounded-md p-2">
                 </div>
                 <div class="flex flex-row w-full mt-5 justify-between">
                     <button class="bg-cpurple hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" @click="modify=false">Annuler</button>
