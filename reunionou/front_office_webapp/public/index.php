@@ -23,6 +23,7 @@ use reunionou\frontwebapp\actions\auth\GetFriendsList;
 use reunionou\frontwebapp\actions\auth\AddFriendAction;
 use reunionou\frontwebapp\actions\auth\DeleteUserAction;
 use reunionou\frontwebapp\actions\auth\DeleteFriendAction;
+use reunionou\frontwebapp\actions\comment\GetComment;
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
 
 $app = AppFactory::create();
@@ -73,4 +74,6 @@ $app->post('/events[/]', CreateEventAction::class)->setName('create_event');
 
 $app->patch('/events/{event_id}/participate[/]', UpdateParticipationAction::class)->setName("update_participation");
 
+
+$app->get('/messages/{id}[/]', GetComment::class)->setName('get_comment');
 $app->run();

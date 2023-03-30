@@ -45,7 +45,7 @@ $app->delete('/events/{id}[/]', DeleteEventAction::class)->setName("delete_event
 
 // COMMENTS
 
-$app->get('/comments/{id}[/]', GetEventAction::class)->setName("get_comment");
+$app->get('/comments/{id}[/]', GetEventCommentsAction::class)->setName("get_comment");
 
 // INVITATIONS
 
