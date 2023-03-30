@@ -49,12 +49,12 @@ $app->get('/comments/{id}[/]', GetEventCommentsAction::class)->setName("get_comm
 
 // INVITATIONS
 
-$app->get('/invitation/{id}[/]', GetInvitationAction::class)->setName("get_invitation");
+$app->get('/invitations/{id}[/]', GetInvitationAction::class)->setName("get_invitation");
 
-$app->post('/invitation/{id}[/]', CreateInvitationAction::class)->setName("create_invitation");
+$app->post('/invitations/{id}[/]', CreateInvitationAction::class)->setName("create_invitation");
 
-$app->put('/invitation/{id}[/]', UpdateInvitationAction::class)->setName("update_invitation");
+$app->patch('/invitations/{id}[/]', UpdateInvitationAction::class)->setName("update_invitation");
 
-$app->delete('/invitation/{id}[/]', DeleteInvitationAction::class)->setName("delete_invitation");
+$app->delete('/invitations/{id}[/]', DeleteInvitationAction::class)->setName("delete_invitation");
 
 $app->run();

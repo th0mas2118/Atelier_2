@@ -7,13 +7,13 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Factory\AppFactory;
-
 use reunionou\frontwebapp\middlewares\Cors;
+
 use reunionou\frontwebapp\actions\auth\SignInAction;
 use reunionou\frontwebapp\actions\auth\SignUpAction;
 use reunionou\frontwebapp\middlewares\ValidateToken;
-
 use reunionou\frontwebapp\actions\auth\GetUserAction;
+
 use reunionou\frontwebapp\actions\auth\SignOutAction;
 use reunionou\frontwebapp\actions\comment\GetComment;
 use reunionou\frontwebapp\actions\auth\GetFriendsList;
@@ -25,6 +25,7 @@ use reunionou\frontwebapp\actions\events\GetEventAction;
 use reunionou\frontwebapp\actions\auth\DeleteFriendAction;
 use reunionou\frontwebapp\actions\events\CreateEventAction;
 use reunionou\frontwebapp\actions\auth\GetUserInvitationsAction;
+use reunionou\frontwebapp\actions\events\UpdateInvitationAction;
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
 
 $app = AppFactory::create();
@@ -77,4 +78,9 @@ $app->post('/events[/]', CreateEventAction::class)->setName('create_event');
 $app->patch('/events/{event_id}/participate[/]', UpdateParticipationAction::class)->setName("update_participation");
 
 $app->get('/messages/{id}[/]', GetComment::class)->setName('get_comment');
+
+// INVITATIONS
+$app->patch('/invitations/{id}[/]', UpdateInvitationAction::class)->setName('update_invitation');
+
+
 $app->run();
