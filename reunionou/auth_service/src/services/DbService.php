@@ -3,6 +3,7 @@
 namespace reunionou\auth\services;
 
 use MongoDB\BSON\ObjectId;
+use Firebase\JWT\JWT;
 
 
 function jsonPrint($printable)
@@ -191,6 +192,26 @@ final class DbService
             throw new \Exception("User not found", 404);
         }
         $db->deleteOne(['_id' => new ObjectId($id)]);
+    }
+
+    //TOKEN
+    public function refreshToken($id, $token, $secret)
+    {
+        $client = new \MongoDB\Client($this->mongo);
+        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
+
+
+        $user = $db->findOne(['_id' => new ObjectId($id)]);
+        if (!$user) {
+            throw new \Exception("User not found", 404);
+        }
+        if ($user->refresh_token != $token) {
+            throw new \Exception("Invalid token", 401);
+        }
+        $user->id = strval($user->_id);
+        $payload = ['iss' => 'http://api.auth.local', 'aud' => 'http://api.auth.local', 'iat' => time(), 'nbf' => time(), 'exp' => time() + 3600, 'username' => $user->username, "usermail" => $user->mail, 'lvl' => $user->level, 'uid' => $user->id];
+        $token = JWT::encode($payload, $secret, 'HS512');
+        $this->updateToken(new ObjectId($id), $token);
     }
 
 
