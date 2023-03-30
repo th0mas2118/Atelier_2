@@ -1,7 +1,10 @@
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import NavBarButton from '../components/NavBarButton.vue'
 const user = useUserStore()
+
+let showNav = false
 
 </script>
 
@@ -17,15 +20,23 @@ const user = useUserStore()
         <span class="font-semibold text-xl tracking-tight">Tailwind CSS</span>
       </div>
       <div class="block lg:hidden">
-        <button
-          class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+        <button id="button-burger"
+          class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"
+          @click="showNav = !showNav">
           <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <title>Menu</title>
             <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
           </svg>
         </button>
+        <nav v-show="showNav" class="burger-route flex flex-col nav bg-white hidden fixed top-0 left-0 w-full h-full">
+          <router-link to="/">HOME</router-link>
+          <router-link to="/about">ABOUT</router-link>
+          <router-link v-if="!user.isConnected" to="/login">LOGIN</router-link>
+          <router-link v-if="!user.isConnected" to="/register">REGISTER</router-link>
+          <button v-if="user.isConnected" @click="user.disconnect()">LOGOUT</button>
+        </nav>
       </div>
-      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto hidden lg:visible">
         <div class="text-sm lg:flex-grow">
           <router-link class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4" to="/">
             Home

@@ -60,6 +60,7 @@ export const useUserStore = defineStore(
         headers: {
           "Authorization": `Bearer ${member.acces_token}`
       }}).then((response)=>{
+        isConnected.value = false
         localStorage.clear()
         router.push('/')
         })
