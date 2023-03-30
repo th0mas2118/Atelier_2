@@ -1,13 +1,49 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import router from '@/router'
+import axios from 'axios'
+import { useUserStore } from '@/stores/user'
+const user = useUserStore()
 
 const currentView = ref(0)
 const showOtherMenu = ref(false)
+const event = ref({})
+const hasAccess = ref(false)
+
+const getConfirmatedParticipantsCount = (): number => {
+  return event.value.participants.filter((participant: any) => participant.status == 'confirmed')
+    .length
+}
+
+// get id from router
+onMounted(() => {
+  const id = useRoute().params.id
+  axios
+    .get(`${import.meta.env.VITE_API_HOST}/events/${id}`)
+    .then((response) => {
+      event.value = response.data.event
+
+      if (
+        response.data.event.participants.find((x: any) => x.user.id == user.member.id) ||
+        response.data.event.organizer_id == user.member.id
+      ) {
+        hasAccess.value = true
+      } else {
+        router.push({ name: 'home' })
+      }
+      console.log(event)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+})
 </script>
 
 <template lang="">
   <div
     class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center w-full h-full m-4 rounded-3xl shadow-lg text-cblack overflow-x-hidden"
+    v-if="event.title && hasAccess"
   >
     <header
       class="p-8 w-full h-full flex flex-col md:flex-row justify-between items-start md:items-center border-solid border-b-2 border-cwhite2 gap-4"
@@ -22,8 +58,10 @@ const showOtherMenu = ref(false)
           🔥
         </div>
         <div>
-          <h1 class="text-2xl">GROSSE MANIFESTATION OUAIS</h1>
-          <p class="text-md text-cgray">10 members</p>
+          <h1 class="text-2xl">{{ event.title }}</h1>
+          <p class="text-md text-cgray">
+            {{ event.participants ? getConfirmatedParticipantsCount() : 0 }} participants
+          </p>
         </div>
       </div>
       <div
@@ -86,18 +124,19 @@ const showOtherMenu = ref(false)
         <div id="event-description" class="w-full md:w-2/4">
           <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Description</h3>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque omnis perferendis
-            doloremque ex ratione officiis, odio nulla ipsum iusto delectus cupiditate in debitis
-            aperiam libero recusandae maxime quibusdam. Mollitia, consectetur! Lorem, ipsum dolor
-            sit amet consectetur adipisicing elit. Accusamus quas aspernatur est fugiat, vero harum.
-            Officiis recusandae libero, ipsa nesciunt voluptatem consequatur repudiandae voluptas
-            facere ullam rerum quis iste optio.
+            {{ event.description }}
           </p>
         </div>
         <div id="participant-list" class="max-h-[500px] overflow-y-auto">
-          <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Invités</h3>
+          <h3 class="text-cpurple font-bold min-w-[250px] mb-4">
+            Invités ({{ event.participants.length }})
+          </h3>
           <ul class="flex flex-col gap-2 overflow-auto">
-            <li class="flex items-center gap-2">
+            <li
+              class="flex items-center gap-2"
+              v-for="user in event.participants"
+              :key="user.user.id"
+            >
               <div
                 class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
               >
@@ -107,69 +146,14 @@ const showOtherMenu = ref(false)
                   srcset=""
                 />
               </div>
-              <p>John Doe</p>
+              <p>{{ user.user.firstname + ' ' + user.user.lastname }}</p>
               <div>
-                <i class="fa-solid fa-check-circle text-cgreen"></i>
-              </div>
-            </li>
-            <li class="flex items-center gap-2">
-              <div
-                class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
-              >
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Brigitte_Macron_%28July_2017%29_%28cropped%29.JPG"
-                  alt=""
-                  srcset=""
-                />
-              </div>
-              <p>John Doe</p>
-              <div>
-                <i class="fa-solid fa-xmark-circle text-cred"></i>
-              </div>
-            </li>
-            <li class="flex items-center gap-2">
-              <div
-                class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
-              >
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Brigitte_Macron_%28July_2017%29_%28cropped%29.JPG"
-                  alt=""
-                  srcset=""
-                />
-              </div>
-              <p>John Doe</p>
-              <div>
-                <i class="fa-solid fa-xmark-circle text-cred"></i>
-              </div>
-            </li>
-            <li class="flex items-center gap-2">
-              <div
-                class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
-              >
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Brigitte_Macron_%28July_2017%29_%28cropped%29.JPG"
-                  alt=""
-                  srcset=""
-                />
-              </div>
-              <p>John Doe</p>
-              <div>
-                <i class="fa-solid fa-xmark-circle text-cred"></i>
-              </div>
-            </li>
-            <li class="flex items-center gap-2">
-              <div
-                class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
-              >
-                <img
-                  src="https://www.gala.fr/imgre/fit/~1~gal~2021~08~02~ddad7c39-59ab-49d3-ba37-04f203f8029c.jpeg/480x480/quality/80/focus-point/757%2C593/photos-emmanuel-macron-en-t-shirt-a-bregancon-pas-le-1er-president-a-se-lacher-en-vacances.jpg"
-                  alt=""
-                  srcset=""
-                />
-              </div>
-              <p>John Doe</p>
-              <div>
-                <i class="fa-solid fa-check-circle text-cgreen"></i>
+                <i
+                  v-if="user.status == 'confirmed'"
+                  class="fa-solid fa-check-circle text-cgreen"
+                ></i>
+                <i v-if="user.status == 'declined'" class="fa-solid fa-xmark-circle text-cred"></i>
+                <i v-if="user.status == 'waiting'" class="fa-solid fa-clock text-cblack"></i>
               </div>
             </li>
           </ul>
@@ -188,6 +172,29 @@ const showOtherMenu = ref(false)
         METEO
       </section>
     </div>
+  </div>
+  <div
+    v-if="!event.title"
+    id="loading-spinner"
+    class="flex justify-end align-center absolute top-[calc(50%-3rem)] right-[calc(50%-3rem)]"
+  >
+    <svg
+      aria-hidden="true"
+      class="w-12 h-12 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-cpurple"
+      viewBox="0 0 100 101"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+        fill="currentColor"
+      />
+      <path
+        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+        fill="currentFill"
+      />
+    </svg>
+    <span class="sr-only">Loading...</span>
   </div>
 </template>
 <style lang=""></style>

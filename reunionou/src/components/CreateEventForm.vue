@@ -5,14 +5,15 @@ import axios from 'axios'
 import 'vue3-emoji-picker/css'
 import { useUserStore } from '@/stores/user'
 import SearchUsers from '../components/SearchUsers.vue'
-const user = useUserStore()
 import { useRoute } from 'vue-router'
 import router from '@/router'
 
+const user = useUserStore()
 const currentPage = ref(0)
 const showEmojiPicker = ref(false)
 const gpsError = ref(false)
 const searchResult = reactive([{}])
+
 const setPage = async (page: number) => {
   if (page == 1) {
     if (
