@@ -16,17 +16,63 @@ const getConfirmatedParticipantsCount = (): number => {
     .length
 }
 
+const participate = async () => {
+  let eventParticipant = event.value.participants.findIndex(
+    (participant: any) => participant.user.id == user.member.id
+  )
+
+  try {
+    const result = await axios.patch(
+      `${import.meta.env.VITE_API_HOST}/events/${event.value.id}/participate`,
+      {
+        user_id: user.member.id,
+        status: 'confirmed'
+      }
+    )
+
+    event.value.participants[eventParticipant].status = 'confirmed'
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const decline = async () => {
+  let eventParticipant = event.value.participants.findIndex(
+    (participant: any) => participant.user.id == user.member.id
+  )
+
+  try {
+    const result = await axios.patch(
+      `${import.meta.env.VITE_API_HOST}/events/${event.value.id}/participate`,
+      {
+        user_id: user.member.id,
+        status: 'declined'
+      }
+    )
+
+    event.value.participants[eventParticipant].status = 'declined'
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 // get id from router
 onMounted(() => {
   const id = useRoute().params.id
   axios
     .get(`${import.meta.env.VITE_API_HOST}/events/${id}`)
     .then((response) => {
+      if (!response.data.event.title) {
+        router.push({ name: 'home' })
+        return
+      }
       event.value = response.data.event
 
       if (
         response.data.event.participants.find((x: any) => x.user.id == user.member.id) ||
-        response.data.event.organizer_id == user.member.id
+        response.data.event.organizer_id == user.member.id ||
+        user.member.level > 0 ||
+        response.data.event.isPrivate == false
       ) {
         hasAccess.value = true
       } else {
@@ -35,6 +81,7 @@ onMounted(() => {
       console.log(event)
     })
     .catch((error) => {
+      router.push({ name: 'home' })
       console.log(error)
     })
 })
@@ -99,9 +146,18 @@ onMounted(() => {
           <i class="fa-solid fa-cloud"></i>
         </button>
         <button
+          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status != 'confirmed') && event.organizer_id != user.member.id"
           class="bg-cpurple hover:bg-[#9a69fe] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap"
+          @click="participate"
         >
           Participer
+        </button>
+        <button
+          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status == 'confirmed') && event.organizer_id != user.member.id"
+          class="bg-cred hover:bg-[#ea384e] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap"
+          @click="decline"
+        >
+          Décliner
         </button>
         <button
           class="bg-cwhite text-cgray w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300 hover:bg-[#ececec] aspect-square"
