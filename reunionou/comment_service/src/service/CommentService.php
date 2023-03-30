@@ -15,7 +15,7 @@ use GuzzleHttp\Exception\ServerException;
 use orders\errors\exceptions\OrderExceptionNotFound;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class CommentService
+final class CommentService
 {
 
     private String $mongo;
@@ -80,6 +80,18 @@ class CommentService
 
         }catch(\Throwable $th) {
             return false;
+        }
+    }
+    public function getEventComments(string $id): array
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("comment");
+
+            $comments = $db->find(['event_id' => $id]);
+            return $comments->toArray();
+        } catch (\Throwable $th) {
+            return null;
         }
     }
     

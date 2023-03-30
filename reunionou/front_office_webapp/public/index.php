@@ -24,6 +24,9 @@ use reunionou\frontwebapp\actions\auth\UpdateUserAction;
 use reunionou\frontwebapp\actions\events\GetEventAction;
 use reunionou\frontwebapp\actions\auth\DeleteFriendAction;
 use reunionou\frontwebapp\actions\events\CreateEventAction;
+
+use reunionou\frontwebapp\actions\comment\GetCommentByIdEvent;
+
 use reunionou\frontwebapp\actions\auth\GetUserInvitationsAction;
 use reunionou\frontwebapp\actions\events\UpdateInvitationAction;
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
@@ -81,6 +84,9 @@ $app->get('/messages/{id}[/]', GetComment::class)->setName('get_comment');
 
 // INVITATIONS
 $app->patch('/invitations/{id}[/]', UpdateInvitationAction::class)->setName('update_invitation');
+
+//COMMENT SERVICE
+$app->get('/messages/{id}/event[/]', GetCommentByIdEvent::class)->setName('getCommentByIdEvent');
 
 
 $app->run();

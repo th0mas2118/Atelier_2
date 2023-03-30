@@ -8,6 +8,7 @@ use reunionou\src\service\utils\CommentService;
 use reunionou\comment\actions\CreateCommentAction;
 use reunionou\comment\actions\DeleteCommentAction;
 use reunionou\comment\actions\UpdateCommentAction;
+use reunionou\comment\actions\GetCommentByIdEventAction;
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -26,6 +27,8 @@ $errorMiddleware->getDefaultErrorHandler()->forceContentType('application/json')
 
 
 $app->get('/messages/{id}[/]',GetCommentAction::class)->setName('getComment');
+
+$app->get('/messages/{id}/event[/]',GetCommentByIdEventAction::class)->setName('getCommentByIdEventAction');
 
 $app->post('/messages[/]', CreateCommentAction::class)->setName('createComment');
 

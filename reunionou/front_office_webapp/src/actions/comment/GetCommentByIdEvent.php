@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
-final class GetComment
+final class GetCommentByIdEvent
 {
     public function __invoke(Request $rq, Response $rs, array $args): Response
 
@@ -18,7 +18,9 @@ final class GetComment
         }
         $client  = new Client(['base_uri' => 'http://api.comment.reunionou'], ['timeout' => 2.0]);
 
-        $response = $client->request('GET', "/messages/$id",);
+        $url = "/messages/" . $id . "/event";
+
+        $response = $client->request('GET', $url);
 
         return $rs->withStatus($response->getStatusCode())->withHeader('Content-Type', $response->getHeader('Content-Type'))->withBody($response->getBody());
     }
