@@ -45,7 +45,7 @@ final class CreateEventAction extends AbstractAction
         $invitationService = new InvitationService($this->container->get('mongo_url'));
 
         foreach ($body["participants"] as $participant) {
-            $invitationService->createUserInvitation(strval($event), $participant["user"]["id"]);
+            $invitationService->createUserInvitation(strval($event), $participant["user"]);
         }
 
         $routeContext = RouteContext::fromRequest($req);

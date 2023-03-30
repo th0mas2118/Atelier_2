@@ -12,6 +12,7 @@ use reunionou\event\actions\events\CreateEventAction;
 use reunionou\event\actions\events\DeleteEventAction;
 use reunionou\event\actions\events\UpdateEventAction;
 use reunionou\event\actions\comments\GetEventCommentsAction;
+use reunionou\event\actions\events\UpdateParticipationAction;
 use reunionou\event\actions\invitations\CreateInvitationAction;
 use reunionou\event\actions\invitations\DeleteInvitationAction;
 use reunionou\event\actions\invitations\GetEventInvitationsAction;
@@ -29,7 +30,6 @@ $errorMiddleware = $app->addErrorMiddleware(true, false, false);
 $errorMiddleware->getDefaultErrorHandler()->forceContentType('application/json');
 
 // EVENTS
-
 $app->get('/events[/]', GetEventsAction::class)->setName("get_events");
 $app->get('/events/{id}[/]', GetEventAction::class)->setName("get_event");
 $app->get('/events/{id}/comments[/]', GetEventCommentsAction::class)->setName("get_event_comments");
@@ -39,6 +39,7 @@ $app->post('/events[/]', CreateEventAction::class)->setName("create_event");
 
 $app->put('/events/{id}[/]', UpdateEventAction::class)->setName("update_event");
 
+$app->patch('/events/{event_id}/participate[/]', UpdateParticipationAction::class)->setName("update_participation");
 
 $app->delete('/events/{id}[/]', DeleteEventAction::class)->setName("delete_event");
 

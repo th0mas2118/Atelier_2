@@ -23,6 +23,7 @@ use reunionou\frontwebapp\actions\auth\GetFriendsList;
 use reunionou\frontwebapp\actions\auth\AddFriendAction;
 use reunionou\frontwebapp\actions\auth\DeleteUserAction;
 use reunionou\frontwebapp\actions\auth\DeleteFriendAction;
+use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
 
 $app = AppFactory::create();
 $app->addRoutingMiddleware();
@@ -69,5 +70,7 @@ $app->delete('/user/{id}/friends/{friend_id}', DeleteFriendAction::class)->setNa
 $app->get('/events/{id}[/]', GetEventAction::class)->setName('get_event');
 
 $app->post('/events[/]', CreateEventAction::class)->setName('create_event');
+
+$app->patch('/events/{event_id}/participate[/]', UpdateParticipationAction::class)->setName("update_participation");
 
 $app->run();

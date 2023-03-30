@@ -24,7 +24,7 @@ final class UpdateEventAction extends AbstractAction
             return (throw new HttpInternalServerErrorException($req, "La ressource demandée n'a pas pu être modifiée: " . $args['id']));
         }
 
-        $rs = $rs->withStatus(204);
+        $rs = $rs->withStatus(204)->withHeader('Content-Type', 'application/json;charset=utf-8');
         return $rs;
     }
 }

@@ -43,6 +43,33 @@ final class EventService
         }
     }
 
+    public function updateParticipation(string $event_id, string $user_id, string $state): bool
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("event");
+
+            $event = $db->findOne(['_id' => new ObjectId($event_id)]);
+
+            if (!$event) return null;
+
+            $filter = [
+                'participants.user.id' => $user_id,
+            ];
+
+            $update = [
+                '$set' => [
+                    'participants.$.status' => $state
+                ]
+            ];
+
+            $result = $db->updateOne($filter, $update);
+            return $result->getModifiedCount() > 0;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
     public function getEvents(): array
     {
         try {

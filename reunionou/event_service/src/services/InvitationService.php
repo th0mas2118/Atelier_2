@@ -36,7 +36,7 @@ final class InvitationService
         }
     }
 
-    public function createUserInvitation(string $event_id, string $user_id): ?string
+    public function createUserInvitation(string $event_id, mixed $user): ?string
     {
         try {
             $client = new \MongoDB\Client($this->mongo);
@@ -44,7 +44,7 @@ final class InvitationService
 
             $data = [];
             $data["event_id"] = $event_id;
-            $data["user_id"] = $user_id;
+            $data["user"] = $user;
             $data["expired"] = false;
             $data["accepted"] = false;
             $data["expiration_date"] = null;
