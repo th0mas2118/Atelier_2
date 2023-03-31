@@ -23,9 +23,7 @@ const error = ref('')
       >
         <h1 class="text-3xl font-bold mb-8 text-center">Connexion</h1>
         <div class="mb-4">
-          <label class="block text-white-700 text-sm font-bold mb-2" for="username">
-            Nom d'utilisateur
-          </label>
+          <label class="block text-white-700 text-sm font-bold mb-2" for="username"> Email </label>
           <input
             class="shadow appearance-none border-[#E5E7EB] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]"
             type="email"

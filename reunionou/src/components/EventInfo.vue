@@ -112,7 +112,7 @@ onMounted(() => {
     class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center w-full h-full m-4 rounded-3xl shadow-lg text-cblack overflow-x-hidden"
     v-if="event.title && hasAccess"
   >
-    <CreateInvitationLinkPopup></CreateInvitationLinkPopup>
+    <!-- <CreateInvitationLinkPopup></CreateInvitationLinkPopup> -->
     <header
       class="p-8 w-full h-full flex flex-col md:flex-row justify-between items-start md:items-center border-solid border-b-2 border-cwhite2 gap-4"
     >
@@ -165,6 +165,16 @@ onMounted(() => {
           @click="currentView = 2"
         >
           <i class="fa-solid fa-cloud"></i>
+        </button>
+        <button
+          :class="`${
+            currentView == 3
+              ? 'bg-cpurple text-cwhite2 hover:bg-[#9a69fe]'
+              : 'bg-cwhite2 text-cpurple hover:bg-[#ececec]'
+          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300 aspect-square`"
+          @click="currentView = 3"
+        >
+          <i class="fa-solid fa-comment"></i>
         </button>
         <button
           v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status != 'confirmed') && event.organizer.id != user.member.id"
@@ -254,6 +264,12 @@ onMounted(() => {
         class="w-full h-full flex justify-between items-start p-4 gap-2 flex-shrink-0"
       >
         METEO
+      </section>
+      <section
+        id="event-map"
+        class="w-full h-full flex justify-between items-start p-4 gap-2 flex-shrink-0"
+      >
+        COMMENTS
       </section>
     </div>
   </div>
