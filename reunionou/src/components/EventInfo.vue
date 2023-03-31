@@ -8,11 +8,15 @@ import EventDropdownMenu from './EventDropdownMenu.vue'
 import CreateInvitationLinkPopup from './CreateInvitationLinkPopup.vue'
 import ChatBox from './ChatBox.vue'
 const user = useUserStore()
+const route = useRoute()
 
 const currentView = ref(0)
 const showOtherMenu = ref(false)
 const event = ref({})
 const hasAccess = ref(false)
+const showCreateInvitationLinkPopup = ref(false)
+const isGuest = ref(false)
+const guestId = ref('')
 
 const getConfirmatedParticipantsCount = (): number => {
   return event.value.participants.filter((participant: any) => participant.status == 'confirmed')
@@ -21,15 +25,18 @@ const getConfirmatedParticipantsCount = (): number => {
 
 const participate = async () => {
   let eventParticipant = event.value.participants.findIndex(
-    (participant: any) => participant.user.id == user.member.id
+    (participant: any) => participant.user.id == (isGuest.value ? guestId.value : user.member.id)
   )
+
+  console.log(eventParticipant)
 
   try {
     const result = await axios.patch(
       `${import.meta.env.VITE_API_HOST}/events/${event.value.id}/participate`,
       {
-        user_id: user.member.id,
-        status: 'confirmed'
+        user_id: isGuest.value ? guestId.value : user.member.id,
+        status: 'confirmed',
+        type: isGuest.value ? 'guest' : 'user'
       }
     )
 
@@ -41,15 +48,16 @@ const participate = async () => {
 
 const decline = async () => {
   let eventParticipant = event.value.participants.findIndex(
-    (participant: any) => participant.user.id == user.member.id
+    (participant: any) => participant.user.id == (isGuest.value ? guestId.value : user.member.id)
   )
 
   try {
     const result = await axios.patch(
       `${import.meta.env.VITE_API_HOST}/events/${event.value.id}/participate`,
       {
-        user_id: user.member.id,
-        status: 'declined'
+        user_id: isGuest.value ? guestId.value : user.member.id,
+        status: 'declined',
+        type: isGuest.value ? 'guest' : 'user'
       }
     )
 
@@ -79,7 +87,9 @@ onUnmounted(() => {
 // get id from router
 onMounted(() => {
   window.addEventListener('click', listenClick)
+
   const id = useRoute().params.id
+
   axios
     .get(`${import.meta.env.VITE_API_HOST}/events/${id}`)
     .then((response) => {
@@ -88,18 +98,25 @@ onMounted(() => {
         return
       }
       event.value = response.data.event
-
+      isGuest.value = response.data.event.participants.find(
+        (x: any) => x.user.id == route.query?.guest
+      )
       if (
         response.data.event.participants.find((x: any) => x.user.id == user.member.id) ||
         response.data.event.organizer.id == user.member.id ||
         user.member.level > 0 ||
+        isGuest ||
         response.data.event.isPrivate == false
       ) {
         hasAccess.value = true
+
+        if (isGuest.value && route.query?.guest) {
+          guestId.value = route.query.guest.toString()
+          console.log(guestId)
+        }
       } else {
         router.push({ name: 'home' })
       }
-      console.log(event)
     })
     .catch((error) => {
       router.push({ name: 'home' })
@@ -113,7 +130,11 @@ onMounted(() => {
     class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center w-full h-full m-4 rounded-3xl shadow-lg text-cblack overflow-x-hidden"
     v-if="event.title && hasAccess"
   >
-    <!-- <CreateInvitationLinkPopup></CreateInvitationLinkPopup> -->
+    <CreateInvitationLinkPopup
+      v-if="showCreateInvitationLinkPopup"
+      :event="event"
+      @close="showCreateInvitationLinkPopup = false"
+    ></CreateInvitationLinkPopup>
     <header
       class="p-8 w-full h-full flex flex-col md:flex-row justify-between items-start md:items-center border-solid border-b-2 border-cwhite2 gap-4"
     >
@@ -178,14 +199,14 @@ onMounted(() => {
           <i class="fa-solid fa-comment"></i>
         </button>
         <button
-          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status != 'confirmed') && event.organizer.id != user.member.id"
+          v-if="event.participants.find((x: any) => x.user.id == (isGuest ? guestId : user.member.id) && x.status != 'confirmed') && (event.organizer.id != user.member.id || isGuest)"
           class="bg-cpurple hover:bg-[#9a69fe] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap"
           @click="participate"
         >
           Participer
         </button>
         <button
-          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status == 'confirmed') && event.organizer.id != user.member.id"
+          v-if="event.participants.find((x: any) => x.user.id == (isGuest ? guestId : user.member.id) && x.status == 'confirmed') && (event.organizer.id != user.member.id || isGuest)"
           class="bg-cred hover:bg-[#ea384e] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap"
           @click="decline"
         >
@@ -203,6 +224,7 @@ onMounted(() => {
           v-if="showOtherMenu"
           :user="user"
           :event="event"
+          @openCreateLinkPopup="showCreateInvitationLinkPopup = true"
         ></EventDropdownMenu>
       </div>
     </header>

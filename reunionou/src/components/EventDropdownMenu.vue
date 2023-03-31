@@ -29,6 +29,7 @@ const organizerId = ref(props.event.organizer.id)
       role="menuitem"
       tabindex="-1"
       id="user-menu-item-1"
+      @click="$emit('openCreateLinkPopup')"
       >Créer un lien d'invitation</a
     >
   </div>
