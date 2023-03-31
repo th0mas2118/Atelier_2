@@ -115,7 +115,7 @@ services:
       - "49319:27017"
     networks:
       - reunionou.net
-    ##################
+  ##################
   # GATEWAY WEBAPP #
   ##################
   api.frontoffice:
@@ -134,3 +134,22 @@ services:
       - reunionou.net
     depends_on:
       - api.auth
+  #################
+  # FILES SERVICE #
+  #################
+  api.files:
+    image: "canals/php:latest"
+    environment:
+      - VHOST_HOSTNAME=api.files.reunionou
+      - VHOST_DOCROOT=/var/www/public
+    ports:
+      - "49384:80"
+      - "49312:443"
+    volumes:
+      - "./reunionou/files_service:/var/www"
+      - "./reunionou/composer/vendor:/var/www/vendor"
+    working_dir: /var/www/src
+    networks:
+      reunionou.net:
+        aliases:
+          - api.files.reunionou

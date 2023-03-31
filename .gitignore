@@ -8,3 +8,5 @@ reunionou/front_office_webapp/vendor
 reunionou/front_office_webapp/composer.lock
 reunionou/composer/vendor
 reunionou/composer/composer.lock
+reunionou/files_service/vendor
+reunionou/files_service/composer.lock
