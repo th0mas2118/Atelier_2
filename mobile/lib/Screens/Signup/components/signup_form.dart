@@ -32,7 +32,7 @@ class SignUpForm extends StatelessWidget {
               hintText: "Votre email",
               prefixIcon: Padding(
                 padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.person),
+                child: Icon(Icons.mail_lock_outlined),
               ),
             ),
           ),
@@ -46,7 +46,7 @@ class SignUpForm extends StatelessWidget {
               hintText: "Votre nom d'utilisateur",
               prefixIcon: Padding(
                 padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.mail_lock_outlined),
+                child: Icon(Icons.person),
               ),
             ),
           ),
