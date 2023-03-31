@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 import EventDropdownMenu from './EventDropdownMenu.vue'
 import CreateInvitationLinkPopup from './CreateInvitationLinkPopup.vue'
+import ChatBox from './ChatBox.vue'
 const user = useUserStore()
 
 const currentView = ref(0)
@@ -266,10 +267,10 @@ onMounted(() => {
         METEO
       </section>
       <section
-        id="event-map"
+        id="event-message"
         class="w-full h-full flex justify-between items-start p-4 gap-2 flex-shrink-0"
       >
-        COMMENTS
+        <ChatBox></ChatBox>
       </section>
     </div>
   </div>
