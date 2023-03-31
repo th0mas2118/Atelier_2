@@ -11,7 +11,8 @@ const user = useUserStore()
 const event = route.params['id']
 let message = reactive({
   content: '',
-  username: user.member.username,
+  firstname: user.member.firstname,
+  lastname: user.member.lastname,
   event_id: event,
   member_id: user.member.id
 })
@@ -29,6 +30,8 @@ const Comment = async () => {
     mode: 'cors',
     body: JSON.stringify({
       content: message.content,
+      firstname: message.firstname,
+      lastname: message.lastname,
       event_id: message.event_id,
       member_id: message.member_id
     })
@@ -69,8 +72,8 @@ onMounted(() => {
       <div v-for="channel in state.channels">
         <div class="flex justify-end mb-4" v-if="channel.member_id == user.member.id">
           <div class="w-6/12">
-            <span class="text-center">Dustin lane</span>
-            <div class="flex flex-col bg-cpurple rounded-lg list-inside mt-4 p-4">
+            <span class="text-sm text-cpurple">{{ channel.firstname + channel.firstname }}</span>
+            <div class="flex flex-col bg-cpurple rounded-lg list-inside mt-2 p-4">
               <div class="flex items-center mb-4">
                 <p class="leading-normal">
                   {{ channel.content }}
@@ -83,8 +86,8 @@ onMounted(() => {
         <div class="flex justify-start mb-4" v-else>
           <img class="w-12 h-12 object-cover rounded-full mr-4 self-end ml-4" src="" alt="avatar" />
           <div class="w-6/12">
-            <span class="text-center mr-4">Dustin lane</span>
-            <div class="flex flex-col bg-gray-100 rounded-lg list-inside mt-4 p-4">
+            <span class="text-sm text-cpurple">{{ channel.firstname + channel.firstname }}</span>
+            <div class="flex flex-col bg-gray-100 rounded-lg list-inside mt-2 p-4">
               <div class="flex items-center mb-4">
                 <div>
                   <p class="leading-normal">
