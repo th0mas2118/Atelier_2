@@ -17,7 +17,7 @@ final class Cors
             new HttpUnauthorizedException($rq, "missing Origin Header (cors)");
         $response = $next->handle($rq);
         $response = $response
-            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:5173')
+            ->withHeader('Access-Control-Allow-Origin', "*")
             ->withHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
             ->withHeader('Access-Control-Max-Age', 3600)
