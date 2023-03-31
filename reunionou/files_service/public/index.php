@@ -8,6 +8,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
+use reunionou\files\actions\GetAvatarAction;
 use reunionou\files\actions\CreateAvatarAction;
 
 $builder = new ContainerBuilder();
@@ -21,5 +22,6 @@ $errorMiddleware = $app->addErrorMiddleware(true, false, false);
 $errorMiddleware->getDefaultErrorHandler()->forceContentType('application/json');
 
 $app->post('/avatars/{id}[/]', CreateAvatarAction::class)->setName("create_avatar");
+$app->get('/avatars/{id}/{width}/{height}[/]', GetAvatarAction::class)->setName("get_avatar");
 
 $app->run();
