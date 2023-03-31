@@ -5,6 +5,8 @@ import '../../../constants.dart';
 import '../../Signup/signup_screen.dart';
 import 'package:provider/provider.dart';
 import '../../../provider/user_model.dart';
+import 'package:dio/dio.dart';
+
 
 class CreateEventForm extends StatelessWidget {
   CreateEventForm({
@@ -15,14 +17,27 @@ class CreateEventForm extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
+
+  final String _baseUrl = 'http://api.frontoffice.reunionou:49383';
+  Dio dio = Dio();
+
+  // createEvent()async  (
+
+  // )
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      
+      
       child:Column(
+        
+
         children: [
+          const SizedBox(height: defaultPadding),
           TextFormField(
             controller: titleController,
             textInputAction: TextInputAction.next,
@@ -31,9 +46,27 @@ class CreateEventForm extends StatelessWidget {
               hintText: "Titre de l'événement",
               prefixIcon: Padding(
                 padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.calendar_month_outlined),
+                child: Icon(Icons.title_outlined),
             ),
           ),
+          ),
+          const SizedBox(height: defaultPadding),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+            child: TextFormField(
+              controller: dateController,
+              textInputAction: TextInputAction.next,
+              cursorColor: kPrimaryColor,
+              decoration: const InputDecoration(
+                hintText: "Date de l'événement",
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(defaultPadding),
+                  child: Icon(Icons.calendar_month_rounded),
+                ),
+                
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: defaultPadding),
@@ -47,8 +80,9 @@ class CreateEventForm extends StatelessWidget {
                   padding: EdgeInsets.all(defaultPadding),
                   child: Icon(Icons.description),
                 ),
+              ) 
               ),
-            ),
+            
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: defaultPadding),
@@ -68,7 +102,8 @@ class CreateEventForm extends StatelessWidget {
           const SizedBox(height: defaultPadding),
           Hero(
             tag: "login_btn",
-            child: ElevatedButton(
+            child: SizedBox(width: 300,
+              child:ElevatedButton(
               onPressed: () {
                 Provider.of<UserModel>(context, listen: false).login(
                     emailController.text, passwordController.text, context);
@@ -81,8 +116,10 @@ class CreateEventForm extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+            )
           ),
           const SizedBox(height: defaultPadding),
+        ],
       ),
     );
   }
