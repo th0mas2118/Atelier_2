@@ -42,7 +42,7 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/message',
+      path: '/messages/:id/event',
       name: 'message',
       component: () => import('../views/MessageView.vue')
     },
