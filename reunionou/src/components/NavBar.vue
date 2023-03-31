@@ -1,59 +1,259 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import NavBarButton from '../components/NavBarButton.vue'
 const user = useUserStore()
 
-let showNav = false
+const showMobileMenu = ref(false)
+const showUserMenu = ref(false)
 
+const listenClick = (e: MouseEvent) => {
+  const target = e.target as HTMLInputElement
+
+  if (target && target.id !== 'profile-dropdown' && showUserMenu.value == true) {
+    showUserMenu.value = false
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('click', listenClick)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('click', listenClick)
+})
 </script>
 
 <template>
-  <header class="navbar">
-    <nav class="flex items-center justify-between flex-wrap bg-cpurple p-6">
-      <div class="flex items-center flex-shrink-0 text-white mr-6">
-        <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54"
-          xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z" />
-        </svg>
-        <span class="font-semibold text-xl tracking-tight">Tailwind CSS</span>
-      </div>
-      <div class="block lg:hidden">
-        <button id="button-burger"
-          class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"
-          @click="showNav = !showNav">
-          <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <title>Menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-          </svg>
-        </button>
-        <nav v-show="showNav" class="burger-route flex flex-col nav bg-white hidden fixed top-0 left-0 w-full h-full">
-          <router-link to="/">HOME</router-link>
-          <router-link to="/about">ABOUT</router-link>
-          <router-link v-if="!user.isConnected" to="/login">LOGIN</router-link>
-          <router-link v-if="!user.isConnected" to="/register">REGISTER</router-link>
-          <button v-if="user.isConnected" @click="user.disconnect()">LOGOUT</button>
-        </nav>
-      </div>
-      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto hidden lg:visible">
-        <div class="text-sm lg:flex-grow">
-          <router-link class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4" to="/">
-            Home
-          </router-link>
-          <router-link class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4" to="/about">
-            About
-          </router-link>
+  <nav class="bg-cblack">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative">
+      <div class="relative flex h-16 items-center justify-between">
+        <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+          <!-- Mobile menu button-->
+          <button
+            @click="showMobileMenu = !showMobileMenu"
+            type="button"
+            class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            aria-controls="mobile-menu"
+            aria-expanded="false"
+          >
+            <span class="sr-only">Open main menu</span>
+            <!--
+              Icon when menu is closed.
+  
+              Menu open: "hidden", Menu closed: "block"
+            -->
+            <svg
+              class="block h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+            <!--
+              Icon when menu is open.
+  
+              Menu open: "block", Menu closed: "hidden"
+            -->
+            <svg
+              class="hidden h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
-        <NavBarButton v-if="!user.isConnected" route='login' text="Se connecter"></NavBarButton>
-        <NavBarButton v-if="!user.isConnected" route='register' text="S'inscrire"></NavBarButton>
-        <NavBarButton v-if="user.isConnected" route='user' :user=user.member.id text="Profil"></NavBarButton>
-        <div>
-          <button v-if="user.isConnected"
-            class="inline-block bg-white text-black text-sm px-4 py-2 leading-none border rounded  border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-            @click="user.disconnect()">Se déconnecter</button>
+        <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+          <div class="flex flex-shrink-0 items-center">
+            <img
+              class="block h-8 w-auto lg:hidden"
+              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+              alt="Your Company"
+            />
+            <img
+              class="hidden h-8 w-auto lg:block"
+              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+              alt="Your Company"
+            />
+          </div>
+          <div class="hidden sm:ml-6 sm:block">
+            <div class="flex space-x-4">
+              <router-link
+                :to="{ name: 'home' }"
+                active-class="bg-cpurple text-cwhite hover:text-cwhite"
+                class="text-cwhite hover:text-[#9a69fe] rounded-md px-3 py-2 text-sm font-medium"
+                >Accueil</router-link
+              >
+
+              <router-link
+                v-if="user.isConnected"
+                :to="{ name: 'newEvent' }"
+                active-class="bg-cpurple text-cwhite"
+                class="text-cwhite hover:text-[#9a69fe] rounded-md px-3 py-2 text-sm font-medium"
+                >Créer un évenement</router-link
+              >
+
+              <router-link
+                v-if="user.isConnected"
+                to="/ACHANGER"
+                active-class="bg-cpurple text-cwhite"
+                class="text-cwhite hover:text-[#9a69fe] rounded-md px-3 py-2 text-sm font-medium"
+                >Mes évenements</router-link
+              >
+            </div>
+          </div>
+        </div>
+        <div class="hidden sm:ml-6 sm:block" v-if="!user.isConnected">
+          <div class="flex space-x-4">
+            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+            <router-link
+              v-if="!user.isConnected"
+              :to="{ name: 'login' }"
+              active-class="bg-cpurple text-cwhite hover:text-cwhite"
+              class="text-cwhite hover:text-[#9a69fe] rounded-md px-3 py-2 text-sm font-medium"
+              >Connexion</router-link
+            >
+
+            <router-link
+              v-if="!user.isConnected"
+              :to="{ name: 'register' }"
+              active-class="bg-cpurple text-cwhite hover:text-cwhite"
+              class="text-cwhite hover:text-[#9a69fe] rounded-md px-3 py-2 text-sm font-medium"
+              >Inscription</router-link
+            >
+          </div>
+        </div>
+        <div
+          v-if="user.isConnected"
+          class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+        >
+          <button
+            type="button"
+            class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+          >
+            <span class="sr-only">View notifications</span>
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+              />
+            </svg>
+          </button>
+
+          <!-- Profile dropdown -->
+          <div
+            class="relative ml-3"
+            @click="($event) => $event.stopPropagation()"
+            id="profile-dropdown"
+          >
+            <div>
+              <button
+                @click="showUserMenu = !showUserMenu"
+                type="button"
+                class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 transition-all duration-300 hover:scale-110"
+                id="user-menu-button"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                <span class="sr-only">Open user menu</span>
+                <img
+                  class="h-8 w-8 rounded-full"
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  alt=""
+                />
+              </button>
+            </div>
+            <div
+              v-if="showUserMenu"
+              class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-cwhite py-1 shadow-lg ring-1 ring-cblack ring-opacity-5 focus:outline-none text-cblack"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="user-menu-button"
+              tabindex="-1"
+            >
+              <!-- Active: "bg-gray-100", Not Active: "" -->
+              <router-link
+                :to="{ name: 'user', params: { id: user.member.id } }"
+                active-class="text-cpurple"
+                class="block px-4 py-2 text-sm text-cblack"
+                >Mon profile</router-link
+              >
+
+              <a
+                @click="user.disconnect()"
+                class="block px-4 py-2 text-sm text-cblack cursor-pointer"
+                role="menuitem"
+                tabindex="-1"
+                id="user-menu-item-1"
+                >Se deconnecter</a
+              >
+            </div>
+          </div>
         </div>
       </div>
-    </nav>
-  </header>
+    </div>
+
+    <!-- Mobile menu, show/hide based on menu state. -->
+    <div class="absolute bg-cblack w-full sm:hidden" id="mobile-menu" v-if="showMobileMenu">
+      <div class="space-y-1 px-2 pb-3 pt-2 text-center">
+        <router-link
+          :to="{ name: 'home' }"
+          active-class="bg-cpurple text-cwhite hover:text-cwhite"
+          class="text-cwhite hover:text-[#9a69fe] block rounded-md px-3 py-2 text-base font-medium"
+          >Accueil</router-link
+        >
+
+        <router-link
+          v-if="user.isConnected"
+          :to="{ name: 'newEvent' }"
+          active-class="bg-cpurple text-cwhite"
+          class="text-cwhite hover:text-[#9a69fe] block rounded-md px-3 py-2 text-base font-medium"
+          >Créer un évenement</router-link
+        >
+
+        <router-link
+          v-if="user.isConnected"
+          to="/ACHANGER"
+          active-class="bg-cpurple text-cwhite"
+          class="text-cwhite hover:text-[#9a69fe] block rounded-md px-3 py-2 text-base font-medium"
+          >Mes évenements</router-link
+        >
+
+        <router-link
+          v-if="user.isConnected"
+          :to="{ name: 'login' }"
+          active-class="bg-cpurple text-cwhite"
+          class="text-cwhite hover:text-[#9a69fe] block rounded-md px-3 py-2 text-base font-medium"
+          >Connexion</router-link
+        >
+
+        <router-link
+          v-if="user.isConnected"
+          :to="{ name: 'register' }"
+          active-class="bg-cpurple text-cwhite"
+          class="text-cwhite hover:text-[#9a69fe] block rounded-md px-3 py-2 text-base font-medium"
+          >Inscription</router-link
+        >
+      </div>
+    </div>
+  </nav>
 </template>

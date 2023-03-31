@@ -77,7 +77,7 @@ const createEvent = async () => {
     }
   })
 
-  if (res.status == 201) {
+  if (res.status == 201 || res.status == 200) {
     router.push({ name: 'event', params: { id: res.data.event.id } })
   }
 }
@@ -207,7 +207,7 @@ onUnmounted(() => {
       <section id="page2" class="flex-shrink-0 w-full h-full p-4">
         <div
           id="inputs"
-          class="flex w-full h-full flex-grow flex-wrap flex-col-reverse justify-items-start md:flex-row"
+          class="flex w-full h-full flex-grow flex-wrap justify-items-start md:flex-row"
         >
           <div class="flex flex-col w-full md:w-2/4 p-4 gap-4">
             <div>
@@ -223,7 +223,7 @@ onUnmounted(() => {
               <label
                 for="isPrivate"
                 class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >Évenement privé ?</label
+                >Évenement fermé au public</label
               >
             </div>
             <div>
@@ -255,7 +255,7 @@ onUnmounted(() => {
               </ul>
             </div>
           </div>
-          <div class="flex flex-col w-2/4">
+          <div class="flex flex-col w-full md:w-2/4">
             <SearchUsers @onSearchResult="onResult"></SearchUsers>
             <ul class="flex flex-col gap-2 overflow-auto px-4 max-h-[328px]">
               <li class="flex items-center gap-2" v-for="user in searchResult.value" :key="user.id">

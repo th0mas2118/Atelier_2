@@ -42,51 +42,77 @@ const Register = async () => {
 <template>
   <div class="register-view flex w-full justify-center">
     <form
-      class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center p-10 h-full m-4 rounded-3xl shadow-lg text-cblack overflow-x-hidden">
+      class="bg-cwhite text-cblack flex flex-col h-auto justify-start items-center p-10 m-4 rounded-3xl shadow-lg text-cblack overflow-x-hidden"
+    >
       <h1 class="text-3xl font-bold mb-8 text-center">S'inscrire</h1>
       <div class="mb-4">
         <label class="block text-white-700 font-bold mb-2" for="username">Nom d'utilisateur</label>
         <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          type="text" placeholder="Username" v-model="log.username" />
+          class="shadow appearance-none border-[#E5E7EB] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]"
+          type="text"
+          placeholder="Username"
+          v-model="log.username"
+        />
       </div>
       <div class="mb-4">
         <label class="block text-white-700 font-bold mb-2" for="fistname">Prénom</label>
         <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          type="text" placeholder="Firstname" v-model="log.firstname" />
+          class="shadow appearance-none border-[#E5E7EB] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]"
+          type="text"
+          placeholder="Firstname"
+          v-model="log.firstname"
+        />
       </div>
       <div class="mb-4">
         <label class="block text-white-700 font-bold mb-2" for="lastname">Nom</label>
         <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          type="text" placeholder="Lastname" v-model="log.lastname" />
+          class="shadow appearance-none border-[#E5E7EB] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]"
+          type="text"
+          placeholder="Lastname"
+          v-model="log.lastname"
+        />
       </div>
       <div class="mb-4">
         <label class="block text-white-700 font-bold mb-2" for="email">Adresse email</label>
         <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          type="email" placeholder="Email" v-model="log.email" />
+          class="shadow appearance-none border-[#E5E7EB] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]"
+          type="email"
+          placeholder="Email"
+          v-model="log.email"
+        />
       </div>
       <div class="mb-6">
         <label class="block text-white-700 font-bold mb-2" for="password">Mot de passe</label>
         <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          type="password" placeholder="Password" v-model="password.password" />
+          class="shadow appearance-none border-[#E5E7EB] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]"
+          type="password"
+          placeholder="Password"
+          v-model="password.password"
+        />
       </div>
       <div class="mb-6">
-        <label class="block text-white-700 font-bold mb-2" for="password">Confirmation de mot de passe</label>
+        <label class="block text-white-700 font-bold mb-2" for="password"
+          >Confirmation de mot de passe</label
+        >
         <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          type="password" placeholder="Password confirmation" v-model="password.passwordConfirmation" />
+          class="shadow appearance-none border-[#E5E7EB] rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:ring-transparent focus:border-[#E5E7EB]"
+          type="password"
+          placeholder="Password confirmation"
+          v-model="password.passwordConfirmation"
+        />
       </div>
       <div class="flex items-center justify-between mt-11 gap-6">
         <button
           class="bg-cpurple hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="button" @click="Register()">
+          type="button"
+          @click="Register()"
+        >
           S'inscrire
         </button>
-        <router-link to="/login" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+        <router-link
+          to="/login"
+          class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+        >
           Déjà membre ?
         </router-link>
       </div>
