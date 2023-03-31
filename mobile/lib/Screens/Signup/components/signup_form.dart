@@ -104,7 +104,7 @@ class SignUpForm extends StatelessWidget {
               hintText: "Confirmation",
               prefixIcon: Padding(
                 padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.lock),
+                child: Icon(Icons.verified_user_outlined),
               ),
             ),
           ),
