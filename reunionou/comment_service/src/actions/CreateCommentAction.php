@@ -23,6 +23,8 @@ final class CreateCommentAction extends AbstractAction
 
         if (
             (!isset($body["content"]) || !v::stringVal()->validate($body["content"])) ||
+            (!isset($body["firstname"]) || !v::stringVal()->validate($body["firstname"])) ||
+            (!isset($body["lastname"]) || !v::stringVal()->validate($body["lastname"])) ||
             (!isset($body["event_id"]) || !v::stringVal()->validate($body["event_id"])) ||
             (!isset($body["member_id"]) || !v::stringVal()->validate($body["member_id"])))
         {
