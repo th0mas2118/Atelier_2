@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
+import '../../../provider/user_model.dart';
 
 class SignUpForm extends StatelessWidget {
-  const SignUpForm({
+  SignUpForm({
     Key? key,
   }) : super(key: key);
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController fristNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +24,10 @@ class SignUpForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             cursorColor: kPrimaryColor,
-            onSaved: (email) {},
             decoration: const InputDecoration(
               hintText: "Votre email",
               prefixIcon: Padding(
@@ -27,24 +36,98 @@ class SignUpForm extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-            child: TextFormField(
-              textInputAction: TextInputAction.done,
-              obscureText: true,
-              cursorColor: kPrimaryColor,
-              decoration: const InputDecoration(
-                hintText: "Votre mot de passe",
-                prefixIcon: Padding(
-                  padding: EdgeInsets.all(defaultPadding),
-                  child: Icon(Icons.lock),
-                ),
+          const Padding(padding: EdgeInsets.all(10)),
+          TextFormField(
+            controller: userNameController,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            cursorColor: kPrimaryColor,
+            decoration: const InputDecoration(
+              hintText: "Votre nom d'utilisateur",
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(defaultPadding),
+                child: Icon(Icons.person),
               ),
             ),
           ),
+          const Padding(padding: EdgeInsets.all(10)),
+          TextFormField(
+            controller: fristNameController,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            cursorColor: kPrimaryColor,
+            decoration: const InputDecoration(
+              hintText: "Votre nom",
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(defaultPadding),
+                child: Icon(Icons.person),
+              ),
+            ),
+          ),
+          const Padding(padding: EdgeInsets.all(10)),
+          TextFormField(
+            controller: lastNameController,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            cursorColor: kPrimaryColor,
+            decoration: const InputDecoration(
+              hintText: "Votre prénom",
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(defaultPadding),
+                child: Icon(Icons.person),
+              ),
+            ),
+          ),
+          const Padding(padding: EdgeInsets.all(10)),
+          TextFormField(
+            obscureText: true,
+            controller: passwordController,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            cursorColor: kPrimaryColor,
+            decoration: const InputDecoration(
+              hintText: "Mot de passe",
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(defaultPadding),
+                child: Icon(Icons.person),
+              ),
+            ),
+          ),
+          const Padding(padding: EdgeInsets.all(10)),
+          TextFormField(
+            controller: passwordConfirmController,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            cursorColor: kPrimaryColor,
+            obscureText: true,
+            decoration: const InputDecoration(
+              hintText: "Confirmation",
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(defaultPadding),
+                child: Icon(Icons.person),
+              ),
+            ),
+          ),
+          const Padding(padding: EdgeInsets.all(10)),
           const SizedBox(height: defaultPadding / 2),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              if (passwordController.text != passwordConfirmController.text) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Les mots de passe ne sont pas identiques"),
+                  ),
+                );
+                return;
+              }
+              Provider.of<UserModel>(context, listen: false).register(
+                  emailController.text,
+                  userNameController.text,
+                  fristNameController.text,
+                  lastNameController.text,
+                  passwordController.text,
+                  context);
+            },
             child: Text("S'inscrire".toUpperCase()),
           ),
           const SizedBox(height: defaultPadding),
