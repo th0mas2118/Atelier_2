@@ -135,4 +135,21 @@ final class InvitationService
             return false;
         }
     }
+
+    public function findAndUpdateParticipation(string $event_id, string $user_id, string $status): bool
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("invitation");
+
+            $invitation = $db->findOneAndUpdate(
+                ['event_id' => $event_id, 'user.id' => $user_id],
+                ['$set' => ['accepted' => $status == 'confirmed' ? true : false]],
+            );
+
+            return $invitation->getModifiedCount() > 0;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
 }

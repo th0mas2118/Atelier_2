@@ -31,6 +31,9 @@ final class UpdateParticipationAction extends AbstractAction
         $eventService = new EventService($this->container->get('mongo_url'));
         $event = $eventService->updateParticipation($args["event_id"], $body["user_id"], $body["status"]);
 
+        $invitationService = new InvitationService($this->container->get('mongo_url'));
+        $updatedInvitation = $invitationService->findAndUpdateParticipation($args["event_id"], $body["user_id"], $body["status"]);
+
         if (!isset($event) || !$event) {
             return (throw new HttpInternalServerErrorException($req, "La ressource demandée n'a pas pu être modifiée: " . $args['event_id']));
         }
