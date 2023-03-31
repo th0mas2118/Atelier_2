@@ -5,6 +5,7 @@ namespace reunionou\frontwebapp\actions\auth;
 use GuzzleHttp\Client;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
+use GuzzleHttp\Exception\RequestException;
 
 final class SignUpAction
 {
@@ -12,7 +13,12 @@ final class SignUpAction
     {
         $client  = new Client(['base_uri' => 'http://api.auth.reunionou'], ['timeout' => 2.0]);
 
-        $response = $client->request('POST', '/signup', ['body' => $rq->getBody()->getContents()]);
+        try {
+            $response = $client->request('POST', '/signup', ['body' => $rq->getBody()->getContents()]);
+        } catch (RequestException $e) {
+            $rs->getBody()->write($e->getResponse()->getBody()->getContents());
+            return $rs->withStatus(400)->withHeader('Content-Type', 'application/json');
+        }
 
         return $rs->withStatus($response->getStatusCode())->withHeader('Content-Type', $response->getHeader('Content-Type'))->withBody($response->getBody());
     }
