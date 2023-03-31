@@ -84,7 +84,7 @@ services:
     networks:
       - reunionou.net
   ##################
-  # EVENT SERVICES #
+  # COMMENT SERVICES #
   ##################
   api.comment:
     image: "canals/php:latest"
