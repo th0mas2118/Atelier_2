@@ -15,7 +15,7 @@ final class InvitationService
         $this->mongo = $link;
     }
 
-    public function createInvitation(string $event_id, ?string $member_id): ?string
+    public function createUniqueInvitation(string $event_id, string $guest_firstname, string $guest_lastname): ?string
     {
         try {
             $client = new \MongoDB\Client($this->mongo);
@@ -23,10 +23,12 @@ final class InvitationService
 
             $data = [];
             $data["event_id"] = $event_id;
-            $data["member_id"] = $member_id;
+            $data["is_guest"] = true;
+            $data["guest_firstname"] = $guest_firstname;
+            $data["guest_lastname"] = $guest_lastname;
             $data["expired"] = false;
             $data["accepted"] = false;
-            $data["expiration_date"] = $member_id ? null : new \MongoDB\BSON\UTCDateTime(strtotime("+7 days") * 1000);
+            $data["expiration_date"] = null;
 
             $invitation = $db->insertOne($data);
 
@@ -67,6 +69,20 @@ final class InvitationService
 
             $invitations = $db->find(['event_id' => $event_id]);
             return $invitations->toArray();
+        } catch (\Throwable $th) {
+            return null;
+        }
+    }
+
+    public function getInvitationWithUserAndEvent(string $event_id, string $user_id): string
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("invitation");
+
+            $invitation = $db->findOne(['event_id' => $event_id, 'user.id' => $user_id]);
+
+            return strval($invitation->id);
         } catch (\Throwable $th) {
             return null;
         }
@@ -136,16 +152,24 @@ final class InvitationService
         }
     }
 
-    public function findAndUpdateParticipation(string $event_id, string $user_id, string $status): bool
+    public function findAndUpdateParticipation(string $event_id, string $user_id, string $status, string $type): bool
     {
         try {
             $client = new \MongoDB\Client($this->mongo);
             $db = $client->selectDatabase("reunionou")->selectCollection("invitation");
 
-            $invitation = $db->findOneAndUpdate(
-                ['event_id' => $event_id, 'user.id' => $user_id],
-                ['$set' => ['accepted' => $status == 'confirmed' ? true : false]],
-            );
+            if ($type == 'guest')
+                $invitation = $db->findOneAndUpdate(
+                    ['event_id' => $event_id, '_id' => new ObjectId($user_id)],
+                    ['$set' => ['accepted' => $status == 'confirmed' ? true : false]],
+                );
+            else if ($type == 'user') {
+
+                $invitation = $db->findOneAndUpdate(
+                    ['event_id' => $event_id, 'user.id' => $user_id],
+                    ['$set' => ['accepted' => $status == 'confirmed' ? true : false]],
+                );
+            }
 
             return $invitation->getModifiedCount() > 0;
         } catch (\Throwable $th) {

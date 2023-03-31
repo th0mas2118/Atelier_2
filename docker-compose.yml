@@ -16,6 +16,9 @@ services:
     container_name: composer
     working_dir: /composer
     command: install
+    # environment:
+    #   - HTTP_PROXY=http://www-cache.iutnc.univ-lorraine.fr:3128/
+    #   - HTTPS_PROXY=http://www-cache.iutnc.univ-lorraine.fr:3128/
   #################
   # AUTH SERVICES #
   #################

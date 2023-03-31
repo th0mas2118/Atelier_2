@@ -12,7 +12,10 @@ use reunionou\event\actions\events\CreateEventAction;
 use reunionou\event\actions\events\DeleteEventAction;
 use reunionou\event\actions\events\UpdateEventAction;
 use reunionou\event\actions\comments\GetEventCommentsAction;
+use reunionou\event\actions\events\AddParticipantAction;
+use reunionou\event\actions\events\DeleteParticipantAction;
 use reunionou\event\actions\events\UpdateParticipationAction;
+use reunionou\event\actions\invitations\CreateEventUniqueInvitationAction;
 use reunionou\event\actions\invitations\CreateInvitationAction;
 use reunionou\event\actions\invitations\DeleteInvitationAction;
 use reunionou\event\actions\invitations\GetEventInvitationsAction;
@@ -40,8 +43,10 @@ $app->post('/events[/]', CreateEventAction::class)->setName("create_event");
 $app->put('/events/{id}[/]', UpdateEventAction::class)->setName("update_event");
 
 $app->patch('/events/{event_id}/participate[/]', UpdateParticipationAction::class)->setName("update_participation");
+$app->post('/events/{event_id}/participants[/]', AddParticipantAction::class)->setName("add_participant");
 
 $app->delete('/events/{id}[/]', DeleteEventAction::class)->setName("delete_event");
+$app->delete('/events/{id}/participants[/]', DeleteParticipantAction::class)->setName("delete_participant");
 
 // COMMENTS
 
@@ -52,6 +57,7 @@ $app->get('/comments/{id}[/]', GetEventCommentsAction::class)->setName("get_comm
 $app->get('/invitations/{id}[/]', GetInvitationAction::class)->setName("get_invitation");
 
 $app->post('/invitations/{id}[/]', CreateInvitationAction::class)->setName("create_invitation");
+$app->post('/invitations/{id}/guest[/]', CreateEventUniqueInvitationAction::class)->setName("create_unique_invitation");
 
 $app->patch('/invitations/{id}[/]', UpdateInvitationAction::class)->setName("update_invitation");
 

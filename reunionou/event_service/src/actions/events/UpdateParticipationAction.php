@@ -23,7 +23,8 @@ final class UpdateParticipationAction extends AbstractAction
 
         if (
             (!isset($body["user_id"]) || !v::stringVal()->validate($body["user_id"])) ||
-            (!isset($body["status"]) || !v::stringVal()->validate($body["status"]))
+            (!isset($body["status"]) || !v::stringVal()->validate($body["status"])) ||
+            (!isset($body["type"]) || !v::stringVal()->validate($body["type"]))
         ) {
             return (throw new HttpInputNotValid($req, "Les données envoyées ne sont pas valides"));
         }
@@ -32,7 +33,7 @@ final class UpdateParticipationAction extends AbstractAction
         $event = $eventService->updateParticipation($args["event_id"], $body["user_id"], $body["status"]);
 
         $invitationService = new InvitationService($this->container->get('mongo_url'));
-        $updatedInvitation = $invitationService->findAndUpdateParticipation($args["event_id"], $body["user_id"], $body["status"]);
+        $updatedInvitation = $invitationService->findAndUpdateParticipation($args["event_id"], $body["user_id"], $body["status"], $body["type"]);
 
         if (!isset($event) || !$event) {
             return (throw new HttpInternalServerErrorException($req, "La ressource demandée n'a pas pu être modifiée: " . $args['event_id']));

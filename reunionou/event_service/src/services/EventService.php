@@ -102,6 +102,48 @@ final class EventService
         }
     }
 
+    public function addParticipant(string $id, array $data): bool
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("event");
+
+            $eventExists = $db->findOne(['_id' => new ObjectId($id)]);
+
+            if (!$eventExists) return null;
+
+            $result = $db->updateOne(
+                ['_id' => new ObjectId($id)],
+                ['$push' => ['participants' => $data]]
+            );
+
+            return $result->getModifiedCount() > 0;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function deleteParticipant(string $id, string $user_id): bool
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("event");
+
+            $eventExists = $db->findOne(['_id' => new ObjectId($id)]);
+
+            if (!$eventExists) return null;
+
+            $result = $db->updateOne(
+                ['_id' => new ObjectId($id)],
+                ['$pull' => ['participants' => ['user.id' => $user_id]]]
+            );
+
+            return $result->getModifiedCount() > 0;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
     public function updateEvent(string $id, array $data): ?bool
     {
         try {

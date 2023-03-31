@@ -28,8 +28,11 @@ use reunionou\frontwebapp\actions\events\CreateEventAction;
 use reunionou\frontwebapp\actions\comment\GetCommentByIdEvent;
 
 use reunionou\frontwebapp\actions\auth\GetUserInvitationsAction;
+use reunionou\frontwebapp\actions\events\AddParticipantAction;
 use reunionou\frontwebapp\actions\events\UpdateInvitationAction;
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
+use reunionou\frontwebapp\actions\events\CreateEventUniqueInvitationAction;
+use reunionou\frontwebapp\actions\events\DeleteParticipantAction;
 
 $app = AppFactory::create();
 $app->addRoutingMiddleware();
@@ -82,8 +85,14 @@ $app->patch('/events/{event_id}/participate[/]', UpdateParticipationAction::clas
 
 $app->get('/messages/{id}[/]', GetComment::class)->setName('get_comment');
 
+$app->post('/events/{id}/participants[/]', AddParticipantAction::class)->setName('add_participant');
+
+$app->delete('/events/{id}/participants[/]', DeleteParticipantAction::class)->setName('add_participant');
+
 // INVITATIONS
 $app->patch('/invitations/{id}[/]', UpdateInvitationAction::class)->setName('update_invitation');
+
+$app->post('/invitations/{id}/guest[/]', CreateEventUniqueInvitationAction::class)->setName("create_unique_invitation");
 
 //COMMENT SERVICE
 $app->get('/messages/{id}/event[/]', GetCommentByIdEvent::class)->setName('getCommentByIdEvent');
