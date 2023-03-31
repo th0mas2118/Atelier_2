@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../constants.dart';
+import './components/create_event_form.dart';
 
 class CreateEventScreen extends StatelessWidget {
   const CreateEventScreen({Key? key}) : super(key: key);
@@ -7,11 +9,12 @@ class CreateEventScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Créer un événement'),
+        centerTitle: true,
+        title: const Text('Création de l\'événement'),
+        backgroundColor: kPrimaryColor,
+        automaticallyImplyLeading: false,
       ),
-      body: const Center(
-        child: Text('Créer un événement'),
-      ),
+      body: CreateEventForm(),
     );
   }
 }
