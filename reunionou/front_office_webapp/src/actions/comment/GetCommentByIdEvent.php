@@ -18,7 +18,7 @@ final class GetCommentByIdEvent
         }
         $client  = new Client(['base_uri' => 'http://api.comment.reunionou'], ['timeout' => 2.0]);
 
-        $url = "/messages/" . $id;
+        $url = "/messages/" . $id . "/event";
 
         $response = $client->request('GET', $url);
 
