@@ -1,6 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { auth } from '@/middlewares/auth'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,7 +24,10 @@ const router = createRouter({
     {
       path: '/event/:id',
       name: 'event',
-      component: () => import('../views/EventView.vue')
+      component: () => import('../views/EventView.vue'),
+      beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+        next();
+      },
     },
     {
       path: '/event/new',
@@ -34,7 +38,10 @@ const router = createRouter({
     {
       path: '/user/:id',
       name: 'user',
-      component: () => import('../views/UserView.vue')
+      component: () => import('../views/UserView.vue'),
+      beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+        next();
+      },
     },
     {
       path: '/about',
@@ -44,7 +51,11 @@ const router = createRouter({
     {
       path: '/messages/:id/event',
       name: 'message',
-      component: () => import('../views/MessageView.vue')
+      component: () => import('../views/MessageView.vue'),
+      beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+        // Your logic for ensuring the event page is fully loaded before continuing
+        next();
+      }
     },
     //defaut route
     {

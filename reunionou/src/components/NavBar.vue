@@ -98,6 +98,7 @@ onUnmounted(() => {
 
               <router-link
                 v-if="user.isConnected"
+                :key="$route.fullPath"
                 :to="{ name: 'newEvent' }"
                 active-class="bg-cpurple text-cwhite"
                 class="text-cwhite hover:text-[#9a69fe] rounded-md px-3 py-2 text-sm font-medium"

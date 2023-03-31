@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import EmojiPicker from 'vue3-emoji-picker'
 import axios from 'axios'
 import 'vue3-emoji-picker/css'
@@ -14,6 +14,7 @@ const showEmojiPicker = ref(false)
 const gpsError = ref(false)
 const searchResult = reactive([{}])
 const error = ref('')
+const route = useRoute()
 
 const setPage = async (page: number) => {
   error.value = ''
@@ -78,7 +79,7 @@ const createEvent = async () => {
   })
 
   if (res.status == 201 || res.status == 200) {
-    router.push({ name: 'event', params: { id: res.data.event.id } })
+    router.push('/event/' + res.data.event.id)
   }
 }
 
