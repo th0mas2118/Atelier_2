@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import Map from '../components/Map.vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 import EventDropdownMenu from './EventDropdownMenu.vue'
 import CreateInvitationLinkPopup from './CreateInvitationLinkPopup.vue'
+import ChatBox from './ChatBox.vue'
+
 const user = useUserStore()
 
 const currentView = ref(0)
@@ -58,26 +61,8 @@ const decline = async () => {
   }
 }
 
-const listenClick = (e: MouseEvent) => {
-  const target = e.target as HTMLInputElement
-
-  if (
-    target &&
-    target.id !== 'event-dropdown-menu' &&
-    target.id !== 'event-dropdown-button' &&
-    showOtherMenu.value == true
-  ) {
-    showOtherMenu.value = false
-  }
-}
-
-onUnmounted(() => {
-  window.removeEventListener('click', listenClick)
-})
-
 // get id from router
 onMounted(() => {
-  window.addEventListener('click', listenClick)
   const id = useRoute().params.id
   axios
     .get(`${import.meta.env.VITE_API_HOST}/events/${id}`)
@@ -90,7 +75,7 @@ onMounted(() => {
 
       if (
         response.data.event.participants.find((x: any) => x.user.id == user.member.id) ||
-        response.data.event.organizer.id == user.member.id ||
+        response.data.event.organizer_id == user.member.id ||
         user.member.level > 0 ||
         response.data.event.isPrivate == false
       ) {
@@ -112,7 +97,6 @@ onMounted(() => {
     class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center w-full h-full m-4 rounded-3xl shadow-lg text-cblack overflow-x-hidden"
     v-if="event.title && hasAccess"
   >
-    <!-- <CreateInvitationLinkPopup></CreateInvitationLinkPopup> -->
     <header
       class="p-8 w-full h-full flex flex-col md:flex-row justify-between items-start md:items-center border-solid border-b-2 border-cwhite2 gap-4"
     >
@@ -134,7 +118,7 @@ onMounted(() => {
       </div>
       <div
         id="header-controls"
-        class="flex items-center justify-center md:w-auto md:justify-between gap-2 w-full flex-wrap md:flex-nowrap relative"
+        class="flex items-center justify-center md:w-auto md:justify-between gap-2 w-full flex-wrap md:flex-nowrap"
       >
         <button
           :class="`${
@@ -167,42 +151,25 @@ onMounted(() => {
           <i class="fa-solid fa-cloud"></i>
         </button>
         <button
-          :class="`${
-            currentView == 3
-              ? 'bg-cpurple text-cwhite2 hover:bg-[#9a69fe]'
-              : 'bg-cwhite2 text-cpurple hover:bg-[#ececec]'
-          }  w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300 aspect-square`"
-          @click="currentView = 3"
-        >
-          <i class="fa-solid fa-comment"></i>
-        </button>
-        <button
-          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status != 'confirmed') && event.organizer.id != user.member.id"
+          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status != 'confirmed') && event.organizer_id != user.member.id"
           class="bg-cpurple hover:bg-[#9a69fe] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap"
           @click="participate"
         >
           Participer
         </button>
         <button
-          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status == 'confirmed') && event.organizer.id != user.member.id"
+          v-if="event.participants.find((x: any) => x.user.id == user.member.id && x.status == 'confirmed') && event.organizer_id != user.member.id"
           class="bg-cred hover:bg-[#ea384e] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap"
           @click="decline"
         >
           Décliner
         </button>
         <button
-          id="event-dropdown-button"
           class="bg-cwhite text-cgray w-10 h-10 flex justify-center items-center rounded-full transition-all duration-300 hover:bg-[#ececec] aspect-square"
           @click="showOtherMenu = !showOtherMenu"
         >
           <i class="fa-solid fa-ellipsis-vertical"></i>
         </button>
-        <EventDropdownMenu
-          id="event-dropdown-menu"
-          v-if="showOtherMenu"
-          :user="user"
-          :event="event"
-        ></EventDropdownMenu>
       </div>
     </header>
 
@@ -257,6 +224,7 @@ onMounted(() => {
         id="event-map"
         class="w-full h-full flex justify-between items-start p-4 gap-2 flex-shrink-0"
       >
+        <Map></Map>
         MAP
       </section>
       <section
@@ -266,10 +234,10 @@ onMounted(() => {
         METEO
       </section>
       <section
-        id="event-map"
+        id="event-message"
         class="w-full h-full flex justify-between items-start p-4 gap-2 flex-shrink-0"
       >
-        COMMENTS
+        <ChatBox></ChatBox>
       </section>
     </div>
   </div>
