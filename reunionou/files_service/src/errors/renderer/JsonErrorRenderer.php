@@ -21,6 +21,11 @@ class JsonErrorRenderer implements ErrorRendererInterface
             'line' => $exception->getLine(),
             'trace' => $exception->getTraceAsString()
         ];
-        return json_encode($data, JSON_PRETTY_PRINT);
+
+        $response = new Response();
+        $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT));
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->getBody();
     }
 }

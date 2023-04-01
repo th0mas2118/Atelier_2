@@ -21,11 +21,14 @@ final class GetAvatarAction extends AbstractAction
         $height = isset($args['height']) ? ($args['height'] == "default" ? "default" : intval($args['height'])) : null;
 
 
-        $image = Image::make($avatar)->resize($width == "default" ? null : $width, $height == "default" ? null : $height, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
-
+        if ($width && $height && $width != "default" && $height != "default") {
+            $image = Image::make($avatar)->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+        } else {
+            $image = Image::make($avatar);
+        }
 
         if (file_exists($avatar)) {
             $response = new Response();

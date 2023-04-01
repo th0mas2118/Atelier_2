@@ -3,6 +3,7 @@
 namespace reunionou\frontwebapp\actions\files;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
@@ -22,7 +23,7 @@ final class GetAvatarAction
             $client  = new Client(['base_uri' => 'http://api.files.reunionou'], ['timeout' => 2.0]);
 
             $response = $client->request('GET', "/avatars/$id/$width/$height", ['body' => $rq->getBody()->getContents()]);
-        } catch (ClientException $e) {
+        } catch (RequestException $e) {
             $response = $e->getResponse();
             return $rs->withStatus($response->getStatusCode())->withHeader('Content-Type', "application/json;charset=utf-8")->withBody($response->getBody());
         }

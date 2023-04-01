@@ -45,6 +45,7 @@ $config = ['settings' => [
 $app = AppFactory::create();
 // add $config to slim $app
 $app->addRoutingMiddleware();
+
 $errorMiddleware = $app->addErrorMiddleware(true, false, false);
 $errorMiddleware->getDefaultErrorHandler()->forceContentType('application/json');
 
@@ -110,6 +111,6 @@ $app->post('/messages[/]', PostCommentEvent::class)->setName('postCommentEvent')
 
 // FILES
 $app->post('/avatars/{id}[/]', CreateAvatarAction::class)->setName('create_avatar');
-$app->get('/avatars/{id}/{width}/{height}[/]', GetAvatarAction::class)->setName('get_avatar');
+$app->get('/avatars/{id}[/{width}[/{height}]]', GetAvatarAction::class)->setName('get_avatar');
 
 $app->run();
