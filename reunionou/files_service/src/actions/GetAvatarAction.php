@@ -17,8 +17,6 @@ final class GetAvatarAction extends AbstractAction
         $fileService = new FileService();
         $avatar = $fileService->getAvatar($args['id']);
 
-        $image = Image::make($avatar)->fit($args["width"], $args["height"]);
-
         $width = isset($args['width']) ? intval($args['width']) : null;
         $height = isset($args['height']) ? intval($args['height']) : null;
 
@@ -31,7 +29,7 @@ final class GetAvatarAction extends AbstractAction
         if (file_exists($avatar)) {
             $response = new Response();
 
-            $imageContent = $image->encode('jpeg')->getEncoded();
+            $imageContent = $image->encode('webp', 80)->getEncoded();
             $response->getBody()->write($imageContent);
 
             return $response

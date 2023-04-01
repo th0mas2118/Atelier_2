@@ -14,7 +14,7 @@ final class FileService
             if ($file->getError() === UPLOAD_ERR_OK) {
                 $target_dir = "/var/www/assets/images/avatars";
 
-                $filename = $user_id . '.' . pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
+                $filename = $user_id . '.' . "jpg";
 
                 $file->moveTo($target_dir . DIRECTORY_SEPARATOR . $filename);
 
