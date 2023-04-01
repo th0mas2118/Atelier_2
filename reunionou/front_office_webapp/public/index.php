@@ -22,21 +22,28 @@ use reunionou\frontwebapp\actions\auth\AddFriendAction;
 use reunionou\frontwebapp\actions\auth\DeleteUserAction;
 use reunionou\frontwebapp\actions\auth\UpdateUserAction;
 use reunionou\frontwebapp\actions\events\GetEventAction;
+use reunionou\frontwebapp\actions\files\GetAvatarAction;
+
 use reunionou\frontwebapp\actions\auth\DeleteFriendAction;
 
-use reunionou\frontwebapp\actions\events\CreateEventAction;
 
-
-use reunionou\frontwebapp\actions\comment\GetCommentByIdEvent;
 use reunionou\frontwebapp\actions\comment\PostCommentEvent;
-use reunionou\frontwebapp\actions\auth\GetUserInvitationsAction;
+use reunionou\frontwebapp\actions\events\CreateEventAction;
+use reunionou\frontwebapp\actions\files\CreateAvatarAction;
+use reunionou\frontwebapp\actions\comment\GetCommentByIdEvent;
 use reunionou\frontwebapp\actions\events\AddParticipantAction;
+use reunionou\frontwebapp\actions\auth\GetUserInvitationsAction;
 use reunionou\frontwebapp\actions\events\UpdateInvitationAction;
+use reunionou\frontwebapp\actions\events\DeleteParticipantAction;
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
 use reunionou\frontwebapp\actions\events\CreateEventUniqueInvitationAction;
-use reunionou\frontwebapp\actions\events\DeleteParticipantAction;
+
+$config = ['settings' => [
+    'outputBuffering' => false,
+]];
 
 $app = AppFactory::create();
+// add $config to slim $app
 $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, false, false);
 $errorMiddleware->getDefaultErrorHandler()->forceContentType('application/json');
@@ -48,6 +55,7 @@ $errorMiddleware->getDefaultErrorHandler()->forceContentType('application/json')
 $app->addBodyParsingMiddleware();
 
 $app->add(reunionou\frontwebapp\middlewares\Cors::class);
+
 
 $app->options(
     '/{routes:.+}',
@@ -100,5 +108,8 @@ $app->post('/invitations/{id}/guest[/]', CreateEventUniqueInvitationAction::clas
 $app->get('/messages/{id}/event[/]', GetCommentByIdEvent::class)->setName('getCommentByIdEvent');
 $app->post('/messages[/]', PostCommentEvent::class)->setName('postCommentEvent');
 
+// FILES
+$app->post('/avatars/{id}[/]', CreateAvatarAction::class)->setName('create_avatar');
+$app->get('/avatars/{id}/{width}/{height}[/]', GetAvatarAction::class)->setName('get_avatar');
 
 $app->run();

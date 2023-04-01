@@ -7,6 +7,7 @@ use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 use reunionou\files\services\FileService;
 use reunionou\files\actions\AbstractAction;
+use reunionou\files\errors\exceptions\HttpInputNotValid;
 use Slim\Exception\HttpInternalServerErrorException;
 
 final class CreateAvatarAction extends AbstractAction
@@ -17,7 +18,12 @@ final class CreateAvatarAction extends AbstractAction
         $routeContext = RouteContext::fromRequest($req);
         $routeParser = $routeContext->getRouteParser();
 
+        if (!isset($req->getUploadedFiles()['avatar'])) {
+            return (throw new HttpInputNotValid($req, "L'avatar n'a pas pu être trouvé"));
+        }
+
         $avatar = $fileService->createAvatar($req->getUploadedFiles()['avatar'], $args['id']);
+
 
         if (!isset($avatar)) {
             return (throw new HttpInternalServerErrorException($req, "La ressource demandée n'a pas pu être créée: " . $args['id']));
