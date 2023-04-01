@@ -6,16 +6,22 @@ import router from '@/router';
 
 const invitations = ref({})
 
+const userId = useRoute().params['id']
 const updateInvitStatus = (id: String, state: Boolean) => {
     axios
         .patch(`http://api.frontoffice.reunionou:49383/invitations/${id}`, {
             accepted: state,
+        }).then((response) => {
+            location.reload()
         })
 }
 
 axios
     .get(`http://api.frontoffice.reunionou:49383/user/${useRoute().params['id']}/invitations`)
-    .then((response) => invitations.value = response.data.invitations).then((response) => console.log(invitations.value[0]))
+    .then((response) => {
+        invitations.value = response.data.invitations
+
+    }).catch((error) => console.log(error))
 </script>
 
 <template>
