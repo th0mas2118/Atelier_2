@@ -1,7 +1,7 @@
 <template>
   <div class="mapbox">
     <l-map
-      v-on:dblclick="onMapClick"
+      @click="onMapClick"
       ref="map"
       class="map"
       v-model:center="props.center"
@@ -14,7 +14,13 @@
       <l-tile-layer :url="osmUrl" />
 
       <l-marker
-        v-for="marker in clickLocation ? [...props.markers, clickLocation] : props.markers"
+        v-for="marker in props.replaceMarker
+          ? clickLocation
+            ? [clickLocation]
+            : props.markers
+          : clickLocation
+          ? [...props.markers, clickLocation]
+          : props.markers"
         :key="marker.id.toString()"
         :lat-lng="marker.coordinates"
       >
@@ -65,13 +71,17 @@ const props = defineProps({
       coordinates: [Number, Number]
       address: String
     }>,
-    required: true
+    required: false
   },
   center: {
     type: Array<Number>,
     required: true
   },
   allowClick: {
+    type: Boolean,
+    required: false
+  },
+  replaceMarker: {
     type: Boolean,
     required: false
   }

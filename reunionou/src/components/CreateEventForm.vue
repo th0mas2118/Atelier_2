@@ -7,14 +7,35 @@ import { useUserStore } from '@/stores/user'
 import SearchUsers from '../components/SearchUsers.vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
+import Map from '../components/Map.vue'
 
 const user = useUserStore()
+
+const currentPosition = reactive([48.82768, 2.37907])
+const eventData = reactive({
+  title: '',
+  date: '',
+  address: '',
+  gps: currentPosition,
+  description: '',
+  icon: '',
+  isPrivate: true,
+  organizer: user.member,
+  participants: []
+})
+
 const currentPage = ref(0)
 const showEmojiPicker = ref(false)
 const gpsError = ref(false)
 const searchResult = reactive([{}])
 const error = ref('')
 const route = useRoute()
+const showMap = ref(false)
+const currentMarker = reactive({
+  id: 0,
+  coordinates: currentPosition,
+  address: eventData.address ?? ''
+})
 
 const setPage = async (page: number) => {
   error.value = ''
@@ -62,8 +83,30 @@ const getGPS = async (address: string) => {
     return
   }
 
-  eventData.gps = [parseFloat(res?.data[0]?.lat), parseFloat(res?.data[0]?.lon)]
+  currentPosition[0] = parseFloat(res?.data[0]?.lat ?? 0)
+  currentPosition[1] = parseFloat(res?.data[0]?.lon ?? 0)
   gpsError.value = false
+}
+
+const onMapClick = (e: any) => {
+  currentPosition[0] = e.coordinates[0]
+  currentPosition[1] = e.coordinates[1]
+  eventData.address = e.address
+  currentMarker.address = e.address
+}
+
+const getCurrentGPSPosition = async () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        currentPosition[0] = position.coords.latitude
+        currentPosition[1] = position.coords.longitude
+      },
+      (error) => {
+        console.log(error)
+      }
+    )
+  }
 }
 
 const createEvent = async () => {
@@ -87,18 +130,6 @@ const onResult = (e: any) => {
   searchResult.value = e
 }
 
-const eventData = reactive({
-  title: '',
-  date: '',
-  address: '',
-  gps: [0, 0],
-  description: '',
-  icon: '',
-  isPrivate: true,
-  organizer: user.member,
-  participants: []
-})
-
 const addParticipant = (user: { user: {}; type: string }) => {
   let index = eventData.participants.findIndex((x) => x.user.id == user.user.id)
 
@@ -111,6 +142,7 @@ const addParticipant = (user: { user: {}; type: string }) => {
 
 onMounted(async () => {
   window.addEventListener('click', listenClick)
+  getCurrentGPSPosition()
 })
 
 onUnmounted(() => {
@@ -119,6 +151,23 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <div v-if="showMap" class="absolute w-full h-full top-0 bottom-0 right-0 left-0 md:p-8 z-50">
+    <div
+      class="bg-cwhite text-cblack flex flex-col justify-start items-center w-full h-full m-auto md:rounded-3xl shadow-lg text-cblack overflow-x-hidden relative"
+    >
+      <!-- Close Button -->
+      <button class="absolute top-0 right-0 p-4 z-[999]" @click="showMap = false">
+        <i class="fas fa-xmark text-3xl text-cblack"></i>
+      </button>
+      <Map
+        :center="currentPosition"
+        :allowClick="true"
+        :markers="[currentMarker]"
+        :replaceMarker="true"
+        @onMapClick="onMapClick"
+      ></Map>
+    </div>
+  </div>
   <form
     action=""
     class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center max-w-[800px] w-full h-[calc(100vh-80px)] md:h-full m-auto md:rounded-3xl shadow-lg text-cblack overflow-x-hidden m-4"
@@ -166,9 +215,17 @@ onUnmounted(() => {
           </div>
           <div class="flex flex-col w-full md:w-2/4 p-4 gap-4">
             <div>
-              <label class="block text-white-700 text-sm font-bold mb-2" for="adresse">
-                Adresse
-              </label>
+              <div class="flex justify-between">
+                <label class="block text-white-700 text-sm font-bold mb-2" for="adresse">
+                  Adresse
+                </label>
+                <span
+                  class="block text-cpurple text-sm font-bold mb-2 cursor-pointer"
+                  @click="showMap = true"
+                  >Ouvrir la carte</span
+                >
+              </div>
+
               <input
                 :class="`${
                   'shadow appearance-none ' +

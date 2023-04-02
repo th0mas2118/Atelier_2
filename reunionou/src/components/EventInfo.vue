@@ -7,7 +7,7 @@ import { useUserStore } from '@/stores/user'
 import EventDropdownMenu from './EventDropdownMenu.vue'
 import CreateInvitationLinkPopup from './CreateInvitationLinkPopup.vue'
 import ChatBox from './ChatBox.vue'
-import CarteOS from '@/components/Map.vue'
+import Map from '@/components/Map.vue'
 const user = useUserStore()
 const route = useRoute()
 
@@ -278,11 +278,11 @@ onMounted(() => {
         </div>
       </section>
       <section id="event-map" class="w-full flex justify-between items-stretch gap-2 flex-shrink-0">
-        <CarteOS
+        <Map
           :center="event.gps"
           :markers="[{ id: 1, coordinates: event.gps, address: event.address }]"
           :allowClick="true"
-        ></CarteOS>
+        ></Map>
       </section>
       <section
         id="event-meteo"
