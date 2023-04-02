@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
 import '../../../provider/user_model.dart';
-import '../../class/event.dart';
+import '../../class/invitations.dart';
 import 'components/modify_my_info.dart';
 
 class MyPage extends StatefulWidget {
@@ -66,7 +66,7 @@ class _MyPageState extends State<MyPage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return InvitListScreen(
-                        eventList: snapshot.data as List<Event>);
+                        invitationsList: snapshot.data as List<Invitations>);
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }

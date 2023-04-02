@@ -1,17 +1,37 @@
 class Event {
   String id;
   String title;
-  String organizer;
-  bool accepted;
+  String date;
+  String description;
+  String organizerID;
+  String organizerUsername;
+  List gps;
+  List participants;
+  String address;
 
-  Event(this.id, this.title, this.organizer, this.accepted);
+  Event(
+    this.id,
+    this.title,
+    this.date,
+    this.description,
+    this.organizerID,
+    this.organizerUsername,
+    this.gps,
+    this.participants,
+    this.address,
+  );
 
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
-      json['event_id'],
-      json['event_title'],
+      json['id'],
+      json['title'],
+      json['date'],
+      json['description'],
+      json['organizer']['id'],
       json['organizer']['username'],
-      json['accepted'],
+      json['gps'],
+      json['participants'],
+      json['address'],
     );
   }
 }

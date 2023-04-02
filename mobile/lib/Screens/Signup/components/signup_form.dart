@@ -6,6 +6,7 @@ import '../../../constants.dart';
 import '../../Login/login_screen.dart';
 import '../../../provider/user_model.dart';
 
+// ignore: must_be_immutable
 class SignUpForm extends StatelessWidget {
   SignUpForm({
     Key? key,

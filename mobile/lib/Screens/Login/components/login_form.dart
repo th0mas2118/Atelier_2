@@ -6,6 +6,7 @@ import '../../Signup/signup_screen.dart';
 import 'package:provider/provider.dart';
 import '../../../provider/user_model.dart';
 
+// ignore: must_be_immutable
 class LoginForm extends StatelessWidget {
   LoginForm({
     Key? key,

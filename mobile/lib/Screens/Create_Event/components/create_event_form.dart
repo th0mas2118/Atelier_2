@@ -44,7 +44,6 @@ class CreateEventForm extends StatelessWidget {
               hintText: "Description de l'événement",
               prefixIcon: Padding(
                 padding: EdgeInsets.all(defaultPadding),
-<<<<<<< HEAD
                 child: Icon(Icons.title_outlined),
             ),
           ),
@@ -80,13 +79,11 @@ class CreateEventForm extends StatelessWidget {
                   child: Icon(Icons.description),
                 ),
               ) 
-=======
                 child: Icon(Icons.description),
->>>>>>> 81a7cbc (add list invatation, modify user info)
               ),
             
           ),
-        ),
+        ),),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: defaultPadding),
           child: TextFormField(
@@ -101,7 +98,6 @@ class CreateEventForm extends StatelessWidget {
               ),
             ),
           ),
-<<<<<<< HEAD
           const SizedBox(height: defaultPadding),
           Hero(
             tag: "login_btn",
@@ -118,7 +114,6 @@ class CreateEventForm extends StatelessWidget {
                 "Créer l'événement",
                 style: TextStyle(color: Colors.white),
               ),
-=======
         ),
         const SizedBox(height: defaultPadding),
         Hero(
@@ -134,19 +129,15 @@ class CreateEventForm extends StatelessWidget {
             child: const Text(
               "Créer l'événement",
               style: TextStyle(color: Colors.white),
->>>>>>> 81a7cbc (add list invatation, modify user info)
             ),
             )
           ),
-<<<<<<< HEAD
           const SizedBox(height: defaultPadding),
         ],
       ),
-=======
         ),
         const SizedBox(height: defaultPadding),
       ]),
->>>>>>> 81a7cbc (add list invatation, modify user info)
     );
   }
 }

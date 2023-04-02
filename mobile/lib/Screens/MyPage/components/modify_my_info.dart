@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../provider/user_model.dart';
 import '../../MyPage/mypage_screen.dart';
 
+// ignore: must_be_immutable
 class ModifyMyInfo extends StatelessWidget {
   ModifyMyInfo({Key? key}) : super(key: key);
 

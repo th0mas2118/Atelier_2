@@ -9,8 +9,8 @@ import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../Screens/Login/login_screen.dart';
-import '../class/event.dart';
-import '../provider/event_model.dart';
+import '../class/invitations.dart';
+import 'invitation_model.dart';
 import 'package:provider/provider.dart';
 
 class UserModel extends ChangeNotifier {
@@ -70,7 +70,7 @@ class UserModel extends ChangeNotifier {
 
   void updateUser(vemail, vfirstname, vlastname, vadresse) async {
     try {
-      await dio.put('$_baseUrl/user/${id}',
+      await dio.put('$_baseUrl/user/$id',
           options: Options(headers: {'Authorization': 'Bearer $accesToken'}),
           data: {
             'email': vemail,
@@ -160,15 +160,15 @@ class UserModel extends ChangeNotifier {
     }
   }
 
-  Future<List<Event>> getInvit(context) async {
+  Future<List<Invitations>> getInvit(context) async {
     try {
       final response =
           await http.get(Uri.parse('$_baseUrl/user/$id/invitations'));
-      List<Event> list = [];
+      List<Invitations> list = [];
       for (var element in jsonDecode(response.body)['invitations']) {
-        list.add(Event.fromJson(element));
-        Provider.of<EventModel>(context, listen: false)
-            .addEvent(Event.fromJson(element));
+        list.add(Invitations.fromJson(element));
+        Provider.of<InvitationsModel>(context, listen: false)
+            .addEvent(Invitations.fromJson(element));
       }
       return list;
     } catch (error) {

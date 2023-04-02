@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import 'package:flutter_auth/constants.dart';
+import 'package:flutter_auth/provider/event_model.dart';
 import 'package:provider/provider.dart';
 import '../provider/user_model.dart';
-import '../provider/event_model.dart';
+import 'provider/invitation_model.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserModel()),
+        ChangeNotifierProvider(create: (context) => InvitationsModel()),
         ChangeNotifierProvider(create: (context) => EventModel()),
       ],
       child: const MyApp(),

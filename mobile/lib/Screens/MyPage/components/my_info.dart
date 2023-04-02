@@ -39,11 +39,15 @@ class _MyInfoState extends State<MyInfo> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text("ID : ${user.id}"),
+                // Text("ID : ${user.id}"),
                 Text("Nom d'utilisateur : ${user.username}"),
+                const Padding(padding: EdgeInsets.all(5)),
                 Text('Prénom : ${user.firstname}'),
+                const Padding(padding: EdgeInsets.all(5)),
                 Text('Nom : ${user.lastname}'),
+                const Padding(padding: EdgeInsets.all(5)),
                 Text('Email : ${user.email}'),
+                const Padding(padding: EdgeInsets.all(5)),
                 Text('Adresse : ${user.adresse}'),
                 const SizedBox(
                   height: 20,
