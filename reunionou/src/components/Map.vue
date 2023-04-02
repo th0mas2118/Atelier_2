@@ -1,51 +1,98 @@
 <template>
-    <div class="mapbox">
-        <h2>Carte Open Street Map</h2>
+  <div class="mapbox">
+    <l-map
+      v-on:dblclick="onMapClick"
+      ref="map"
+      class="map"
+      v-model:center="props.center"
+      v-model:zoom="zoom"
+      :max-zoom="maxZoom"
+      :min-zoom="minZoom"
+      :zoom-control="false"
+      :useGlobalLeaflet="false"
+    >
+      <l-tile-layer :url="osmUrl" />
 
-        <l-map ref="map" class="map" v-model:center="center" v-model:zoom="zoom" :max-zoom="maxZoom" :min-zoom="minZoom"
-            :zoom-control="false">
-            <l-tile-layer :url="osmUrl" />
-
-            <l-marker v-for="marker in markers" :key="marker.id" :lat-lng="marker.coordinates" />
-
-        </l-map>
-    </div>
+      <l-marker
+        v-for="marker in clickLocation ? [...props.markers, clickLocation] : props.markers"
+        :key="marker.id.toString()"
+        :lat-lng="marker.coordinates"
+      >
+        <l-popup>{{ marker.address }}</l-popup>
+      </l-marker>
+    </l-map>
+  </div>
 </template>
 
-<script>
-import 'leaflet/dist/leaflet.css';
-import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet"
+<script setup lang="ts">
+import 'leaflet/dist/leaflet.css'
+import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
+import { ref, reactive, onMounted } from 'vue'
+import type { LeafletMouseEvent } from 'leaflet'
+import axios from 'axios'
 
-export default {
-    name: 'CarteOS',
-    components: { LMap, LTileLayer, LMarker },
+const emit = defineEmits(['onMapClick'])
 
-    data() {
-        return {
-            osmUrl: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            center: [48.6937223, 6.1792289],
-            zoom: 13,
-            maxZoom: 18, // indispensable pour faire fonctionner le zoom sur la carte
-            minZoom: 1, // idem
-            markers: [
-                { id: 1, coordinates: [48.6964074, 6.1792289] },
-                { id: 2, coordinates: [48.6844, 6.185] },
-                { id: 3, coordinates: [48.6935244, 6.1832861] }
-            ]
-        }
-    }
+const onMapClick = async (e: LeafletMouseEvent) => {
+  if (!e.latlng || !props.allowClick) return
+  clickLocation.value = {
+    id: 0,
+    coordinates: [e.latlng.lat, e.latlng.lng],
+    address: (await getAddress([e.latlng.lat, e.latlng.lng])) ?? 'Adresse inconnue'
+  }
+
+  emit('onMapClick', clickLocation.value)
 }
+
+const getAddress = async (gps: [Number, Number]): Promise<string | null> => {
+  try {
+    const res = await axios.get(`https://geocode.maps.co/reverse?lat=${gps[0]}&lon=${gps[1]}`)
+    const address = res.data.address
+
+    const formatedAddress = `${address.house_number ?? ''} ${address.road ?? ''}, ${
+      address.postcode ?? ''
+    } ${address.city ?? ''} ${address.country ?? ''}`.trim()
+    return formatedAddress
+  } catch (error) {
+    return null
+  }
+}
+
+const props = defineProps({
+  markers: {
+    type: Array<{
+      id: Number
+      coordinates: [Number, Number]
+      address: String
+    }>,
+    required: true
+  },
+  center: {
+    type: Array<Number>,
+    required: true
+  },
+  allowClick: {
+    type: Boolean,
+    required: false
+  }
+})
+
+const osmUrl = ref('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+const zoom = ref(13)
+const maxZoom = ref(18)
+const minZoom = ref(1)
+const clickLocation: object | null = ref(null)
 </script>
 
 <style>
 .map {
-    position: absolute;
+  position: absolute;
 }
 
 .mapbox {
-    position: relative;
-    margin: auto;
-    width: 600px;
-    height: 500px;
+  position: relative;
+  margin: auto;
+  width: 100%;
+  height: 100%;
 }
 </style>

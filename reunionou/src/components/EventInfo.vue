@@ -7,6 +7,7 @@ import { useUserStore } from '@/stores/user'
 import EventDropdownMenu from './EventDropdownMenu.vue'
 import CreateInvitationLinkPopup from './CreateInvitationLinkPopup.vue'
 import ChatBox from './ChatBox.vue'
+import CarteOS from '@/components/Map.vue'
 const user = useUserStore()
 const route = useRoute()
 
@@ -127,7 +128,7 @@ onMounted(() => {
 
 <template lang="">
   <div
-    class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center w-full h-full m-4 rounded-3xl shadow-lg text-cblack overflow-x-hidden"
+    class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center w-full h-full m-4 rounded-3xl shadow-lg text-cblack overflow-hidden"
     v-if="event.title && hasAccess"
   >
     <CreateInvitationLinkPopup
@@ -145,7 +146,7 @@ onMounted(() => {
         <div
           class="w-16 h-16 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default aspect-square"
         >
-          🔥
+          {{ event.icon }}
         </div>
         <div>
           <h1 class="text-2xl">{{ event.title }}</h1>
@@ -236,7 +237,7 @@ onMounted(() => {
     >
       <section
         id="event-info"
-        class="w-full h-full flex flex-col md:flex-row justify-between items-start p-4 gap-2 flex-shrink-0"
+        class="w-full flex flex-col md:flex-row justify-between items-stretch p-4 gap-2 flex-shrink-0"
       >
         <div id="event-description" class="w-full md:w-2/4">
           <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Description</h3>
@@ -276,21 +277,22 @@ onMounted(() => {
           </ul>
         </div>
       </section>
-      <section
-        id="event-map"
-        class="w-full h-full flex justify-between items-start p-4 gap-2 flex-shrink-0"
-      >
-        MAP
+      <section id="event-map" class="w-full flex justify-between items-stretch gap-2 flex-shrink-0">
+        <CarteOS
+          :center="event.gps"
+          :markers="[{ id: 1, coordinates: event.gps, address: event.address }]"
+          :allowClick="true"
+        ></CarteOS>
       </section>
       <section
         id="event-meteo"
-        class="w-full h-full flex justify-between items-start p-4 gap-2 flex-shrink-0"
+        class="w-full flex justify-between items-stretch p-4 gap-2 flex-shrink-0"
       >
         METEO
       </section>
       <section
         id="event-message"
-        class="w-full h-full flex justify-between items-start p-4 gap-2 flex-shrink-0"
+        class="w-full flex justify-between items-stretch p-4 gap-2 flex-shrink-0"
       >
         <ChatBox></ChatBox>
       </section>

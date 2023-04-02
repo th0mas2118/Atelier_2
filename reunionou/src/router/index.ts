@@ -36,7 +36,10 @@ const router = createRouter({
       path: '/event/new',
       name: 'newEvent',
       component: () => import('../views/CreateEventView.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
+      beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+        next();
+      },
     },
     {
       path: '/user/:id',
