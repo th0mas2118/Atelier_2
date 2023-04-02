@@ -37,6 +37,8 @@ const currentMarker = reactive({
   address: eventData.address ?? ''
 })
 
+const avatarUrl = import.meta.env.VITE_API_HOST + '/avatars/'
+
 const setPage = async (page: number) => {
   error.value = ''
   if (page == 1) {
@@ -296,11 +298,7 @@ onUnmounted(() => {
                   <div
                     class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
                   >
-                    <img
-                      src="https://www.gala.fr/imgre/fit/~1~gal~2021~08~02~ddad7c39-59ab-49d3-ba37-04f203f8029c.jpeg/480x480/quality/80/focus-point/757%2C593/photos-emmanuel-macron-en-t-shirt-a-bregancon-pas-le-1er-president-a-se-lacher-en-vacances.jpg"
-                      alt=""
-                      srcset=""
-                    />
+                    <img alt="" srcset="" />
                   </div>
                   <p>{{ user.user.firstname + ' ' + user.user.lastname }}</p>
                   <div
@@ -320,11 +318,7 @@ onUnmounted(() => {
                 <div
                   class="w-12 h-12 rounded-full bg-cwhite2 flex items-center justify-center text-2xl transition-all hover:text-3xl duration-300 cursor-default overflow-hidden"
                 >
-                  <img
-                    src="https://www.gala.fr/imgre/fit/~1~gal~2021~08~02~ddad7c39-59ab-49d3-ba37-04f203f8029c.jpeg/480x480/quality/80/focus-point/757%2C593/photos-emmanuel-macron-en-t-shirt-a-bregancon-pas-le-1er-president-a-se-lacher-en-vacances.jpg"
-                    alt=""
-                    srcset=""
-                  />
+                  <img alt="" :src="avatarUrl + user.id + '/80/80'" srcset="" />
                 </div>
                 <p>{{ user.firstname + ' ' + user.lastname }}</p>
                 <div class="cursor-pointer" @click="addParticipant({ user: user, type: 'user' })">
