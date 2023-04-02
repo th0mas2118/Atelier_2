@@ -240,7 +240,7 @@ onUnmounted(() => {
         >
 
         <router-link
-          v-if="user.isConnected"
+          v-if="!user.isConnected"
           :to="{ name: 'login' }"
           active-class="bg-cpurple text-cwhite"
           class="text-cwhite hover:text-[#9a69fe] block rounded-md px-3 py-2 text-base font-medium"
@@ -248,7 +248,7 @@ onUnmounted(() => {
         >
 
         <router-link
-          v-if="user.isConnected"
+          v-if="!user.isConnected"
           :to="{ name: 'register' }"
           active-class="bg-cpurple text-cwhite"
           class="text-cwhite hover:text-[#9a69fe] block rounded-md px-3 py-2 text-base font-medium"

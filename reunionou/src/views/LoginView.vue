@@ -1,12 +1,32 @@
 <script setup lang="ts">
 import FormButton from '../components/FormButton.vue'
 import { useUserStore } from '@/stores/user'
+import type { AxiosError } from 'axios'
 import { reactive, ref } from 'vue'
 const user = useUserStore()
 let log = reactive({
   email: '',
   password: ''
 })
+
+const login = async () => {
+  error.value = ''
+  if (!log.email || !log.password) {
+    error.value = 'Veuillez remplir tous les champs'
+    return
+  }
+  try {
+    await user.setConnected(log)
+  } catch (err: any) {
+    if (err.response.status == 401) {
+      error.value = 'Email ou mot de passe incorrect'
+    }
+
+    if (err.response.status == 404) {
+      error.value = "Cette adresse email n'est pas enregistrée"
+    }
+  }
+}
 
 const error = ref('')
 </script>
@@ -45,7 +65,7 @@ const error = ref('')
         <div class="flex items-center justify-between gap-5">
           <FormButton
             name="login"
-            :function="user.setConnected"
+            :function="login"
             :email="log.email"
             :password="log.password"
           ></FormButton>
@@ -55,7 +75,7 @@ const error = ref('')
             >S'inscrire ?
           </router-link>
         </div>
-        <span v-if="!error" class="pt-5 text-cred">{{ error }}</span>
+        <span v-if="error" class="pt-5 text-cred text-center">{{ error }}</span>
       </form>
     </div>
   </div>
