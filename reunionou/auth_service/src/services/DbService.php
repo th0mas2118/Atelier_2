@@ -122,6 +122,7 @@ final class DbService
                 throw new \Exception("User not found", 404);
             }
         }
+
         if (!password_verify($password, $user->password)) {
             throw new \Exception("Invalid password", 401);
         } else {

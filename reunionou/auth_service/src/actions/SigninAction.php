@@ -9,6 +9,7 @@ use Slim\Psr7\Response;
 use Respect\Validation\Validator as v;
 use reunionou\auth\services\DbService;
 use reunionou\auth\errors\exceptions\HttpNotAuthorized;
+use reunionou\auth\errors\exceptions\HttpNotFound;
 
 final class SigninAction extends AbstractAction
 {
@@ -31,7 +32,18 @@ final class SigninAction extends AbstractAction
         }
 
         $db_service = new DbService($this->container->get('mongo_url'));
-        $user = $db_service->signIn($username, $password);
+
+        try {
+            $user = $db_service->signIn($username, $password);
+        } catch (\Exception $th) {
+            if ($th->getCode() == 404) {
+                return (throw new HttpNotFound($req, $th->getMessage()));
+            }
+
+            if ($th->getCode() == 401) {
+                return (throw new HttpNotAuthorized($req, $th->getMessage()));
+            }
+        }
 
         $user->id = strval($user->_id);
 

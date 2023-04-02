@@ -17,7 +17,7 @@ final class SignInAction
             $response = $client->request('POST', '/signin', ['headers' => ['Authorization' => $rq->getHeader('Authorization')]]);
         } catch (RequestException $e) {
             $rs->getBody()->write($e->getResponse()->getBody()->getContents());
-            return $rs->withStatus(400)->withHeader('Content-Type', 'application/json');
+            return $rs->withStatus($e->getResponse()->getStatusCode())->withHeader('Content-Type', 'application/json');
         }
 
 

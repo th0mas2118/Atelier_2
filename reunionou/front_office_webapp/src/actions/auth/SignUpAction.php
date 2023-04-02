@@ -17,7 +17,7 @@ final class SignUpAction
             $response = $client->request('POST', '/signup', ['body' => $rq->getBody()->getContents()]);
         } catch (RequestException $e) {
             $rs->getBody()->write($e->getResponse()->getBody()->getContents());
-            return $rs->withStatus(400)->withHeader('Content-Type', 'application/json');
+            return $rs->withStatus($e->getResponse()->getStatusCode())->withHeader('Content-Type', 'application/json');
         }
 
         return $rs->withStatus($response->getStatusCode())->withHeader('Content-Type', $response->getHeader('Content-Type'))->withBody($response->getBody());

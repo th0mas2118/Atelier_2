@@ -9,8 +9,10 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 use Respect\Validation\Validator as v;
+use reunionou\auth\errors\exceptions\HttpAlreadyExists;
 use reunionou\auth\services\DbService;
 use reunionou\auth\errors\exceptions\HttpInputNotValid;
+use Slim\Exception\HttpInternalServerErrorException;
 
 final class SignUpAction extends AbstractAction
 {
@@ -33,7 +35,17 @@ final class SignUpAction extends AbstractAction
 
         $db_service = new DbService($this->container->get('mongo_url'));
         $body['email'] = strtolower($body['email']);
-        $user = $db_service->signUp($body);
+
+        try {
+            $user = $db_service->signUp($body);
+        } catch (\Exception $th) {
+            if ($th->getCode() == 409) {
+                return (throw new HttpAlreadyExists($rq, $th->getMessage()));
+            }
+
+            return (throw new HttpInternalServerErrorException($rq, $th->getMessage()));
+        }
+
         $routeContext = RouteContext::fromRequest($rq);
         $routeParser = $routeContext->getRouteParser();
 
