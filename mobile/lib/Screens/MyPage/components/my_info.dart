@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../provider/user_model.dart';
 
 class MyInfo extends StatefulWidget {
   const MyInfo({Key? key}) : super(key: key);
@@ -6,8 +9,6 @@ class MyInfo extends StatefulWidget {
   @override
   State<MyInfo> createState() => _MyInfoState();
 }
-
-test() {}
 
 class _MyInfoState extends State<MyInfo> {
   @override
@@ -17,20 +18,39 @@ class _MyInfoState extends State<MyInfo> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.network(
-              'https://images.unsplash.com/photo-1547721064-da6cfb341d50',
-              width: 280.0,
-            ),
-            const Text('isdgfhfngdfdfsgd'),
-            const Text('name'),
-            const Text('lastname'),
-            const Text('username'),
-            const Text('email'),
-            const Text('adres')
-          ],
+        const SizedBox(
+          height: 20,
+        ),
+        Consumer<UserModel>(
+          builder: (context, user, child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    CircleAvatar(
+                      radius: 60,
+                      backgroundImage: NetworkImage(
+                          'https://images.unsplash.com/photo-1547721064-da6cfb341d50'),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text("ID : ${user.id}"),
+                Text("Nom d'utilisateur : ${user.username}"),
+                Text('Prénom : ${user.firstname}'),
+                Text('Nom : ${user.lastname}'),
+                Text('Email : ${user.email}'),
+                Text('Adresse : ${user.adresse}'),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
+            );
+          },
         ),
       ],
     );

@@ -2,11 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
 import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../Screens/Login/login_screen.dart';
+import '../class/event.dart';
+import '../provider/event_model.dart';
+import 'package:provider/provider.dart';
 
 class UserModel extends ChangeNotifier {
   final String _baseUrl = 'http://api.frontoffice.reunionou:49383';
@@ -20,6 +25,7 @@ class UserModel extends ChangeNotifier {
   String password = '';
   String accesToken = '';
   String refreshToken = '';
+  String adresse = '';
   String id = '';
 
   Map<String, dynamic> get log => {
@@ -30,17 +36,20 @@ class UserModel extends ChangeNotifier {
         'accesToken': accesToken,
         'refreshToken': refreshToken,
         'id': id,
+        'adresse': adresse,
         'connected': connected
       };
+  String get loggedId => id;
 
-  void setUser(vid, vusername, vfirstname, vlastname, vemail, vaccesToken,
-      vrefreshToken) {
+  void setUser(vid, vusername, vfirstname, vlastname, vemail, vadresse,
+      vaccesToken, vrefreshToken) {
     connected = true;
     id = vid;
     username = vusername;
     firstname = vfirstname;
     lastname = vlastname;
     email = vemail;
+    adresse = vadresse;
     accesToken = vaccesToken;
     refreshToken = vrefreshToken;
     notifyListeners();
@@ -53,8 +62,29 @@ class UserModel extends ChangeNotifier {
     firstname = '';
     lastname = '';
     email = '';
+    adresse = '';
     accesToken = '';
     refreshToken = '';
+    notifyListeners();
+  }
+
+  void updateUser(vemail, vfirstname, vlastname, vadresse) async {
+    try {
+      await dio.put('$_baseUrl/user/${id}',
+          options: Options(headers: {'Authorization': 'Bearer $accesToken'}),
+          data: {
+            'email': vemail,
+            'firstname': vfirstname,
+            'lastname': vlastname,
+            'adresse': vadresse
+          });
+    } catch (error) {
+      rethrow;
+    }
+    email = vemail;
+    firstname = vfirstname;
+    lastname = vlastname;
+    adresse = vadresse;
     notifyListeners();
   }
 
@@ -70,6 +100,7 @@ class UserModel extends ChangeNotifier {
           decodetoken['firstname'],
           decodetoken['lastname'],
           decodetoken['usermail'],
+          decodetoken['adresse'],
           response.data['user']['acces_token'],
           response.data['user']['refresh_token']);
       Navigator.push(
@@ -124,6 +155,22 @@ class UserModel extends ChangeNotifier {
           },
         ),
       );
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<List<Event>> getInvit(context) async {
+    try {
+      final response =
+          await http.get(Uri.parse('$_baseUrl/user/$id/invitations'));
+      List<Event> list = [];
+      for (var element in jsonDecode(response.body)['invitations']) {
+        list.add(Event.fromJson(element));
+        Provider.of<EventModel>(context, listen: false)
+            .addEvent(Event.fromJson(element));
+      }
+      return list;
     } catch (error) {
       rethrow;
     }

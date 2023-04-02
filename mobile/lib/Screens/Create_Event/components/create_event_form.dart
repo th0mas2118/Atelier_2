@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
-import '../../Signup/signup_screen.dart';
 import 'package:provider/provider.dart';
 import '../../../provider/user_model.dart';
 import 'package:dio/dio.dart';
@@ -43,9 +41,10 @@ class CreateEventForm extends StatelessWidget {
             textInputAction: TextInputAction.next,
             cursorColor: kPrimaryColor,
             decoration: const InputDecoration(
-              hintText: "Titre de l'événement",
+              hintText: "Description de l'événement",
               prefixIcon: Padding(
                 padding: EdgeInsets.all(defaultPadding),
+<<<<<<< HEAD
                 child: Icon(Icons.title_outlined),
             ),
           ),
@@ -81,24 +80,28 @@ class CreateEventForm extends StatelessWidget {
                   child: Icon(Icons.description),
                 ),
               ) 
+=======
+                child: Icon(Icons.description),
+>>>>>>> 81a7cbc (add list invatation, modify user info)
               ),
             
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-            child: TextFormField(
-              controller: addressController,
-              textInputAction: TextInputAction.next,
-              cursorColor: kPrimaryColor,
-              decoration: const InputDecoration(
-                hintText: "Adresse de l'événement",
-                prefixIcon: Padding(
-                  padding: EdgeInsets.all(defaultPadding),
-                  child: Icon(Icons.location_on),
-                ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+          child: TextFormField(
+            controller: addressController,
+            textInputAction: TextInputAction.next,
+            cursorColor: kPrimaryColor,
+            decoration: const InputDecoration(
+              hintText: "Adresse de l'événement",
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(defaultPadding),
+                child: Icon(Icons.location_on),
               ),
             ),
           ),
+<<<<<<< HEAD
           const SizedBox(height: defaultPadding),
           Hero(
             tag: "login_btn",
@@ -115,13 +118,35 @@ class CreateEventForm extends StatelessWidget {
                 "Créer l'événement",
                 style: TextStyle(color: Colors.white),
               ),
+=======
+        ),
+        const SizedBox(height: defaultPadding),
+        Hero(
+          tag: "login_btn",
+          child: ElevatedButton(
+            onPressed: () {
+              Provider.of<UserModel>(context, listen: false).login(
+                  emailController.text, passwordController.text, context);
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(kPrimaryColor),
+            ),
+            child: const Text(
+              "Créer l'événement",
+              style: TextStyle(color: Colors.white),
+>>>>>>> 81a7cbc (add list invatation, modify user info)
             ),
             )
           ),
+<<<<<<< HEAD
           const SizedBox(height: defaultPadding),
         ],
       ),
+=======
+        ),
+        const SizedBox(height: defaultPadding),
+      ]),
+>>>>>>> 81a7cbc (add list invatation, modify user info)
     );
   }
 }
-    
