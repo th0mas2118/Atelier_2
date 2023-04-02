@@ -37,6 +37,7 @@ use reunionou\frontwebapp\actions\events\UpdateInvitationAction;
 use reunionou\frontwebapp\actions\events\DeleteParticipantAction;
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
 use reunionou\frontwebapp\actions\events\CreateEventUniqueInvitationAction;
+use reunionou\frontwebapp\middlewares\ValidateUserProperty;
 
 $config = ['settings' => [
     'outputBuffering' => false,
@@ -80,7 +81,7 @@ $app->get('/user/{id}/invitations', GetUserInvitationsAction::class)->setName('g
 $app->get('/user/{id}/friends', GetFriendsList::class)->setName('get_user_friends');
 $app->get('/users', GetUsersAction::class)->setName('get_users');
 
-$app->put('/user/{id}', UpdateUserAction::class)->setName('update_user')->add(new ValidateToken());
+$app->put('/user/{id}', UpdateUserAction::class)->setName('update_user')->add(new ValidateToken())->add(new ValidateUserProperty());
 $app->put('/user/{id}/friends', AddFriendAction::class)->setName('add_user_friend')->add(new ValidateToken());
 
 $app->delete('/user/{id}', DeleteUserAction::class)->setName('delete_user')->add(new ValidateToken());

@@ -155,19 +155,7 @@ final class DbService
     }
 
 
-
-    public function modifyAvatar($id, $data)
-    {
-        $client = new \MongoDB\Client($this->mongo);
-        $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
-        $user = $db->findOne(['_id' => new ObjectId($id)]);
-        if (!$user) {
-            throw new \Exception("User not found", 404);
-        }
-        $db->updateOne(['_id' => new ObjectId($id)], ['$set' => ['avatar' => $data]]);
-    }
-
-    public function modifyAdress($id, $data)
+    public function updateUser($id, $data)
     {
         $client = new \MongoDB\Client($this->mongo);
         $db = $client->selectDatabase("auth_reunionou")->selectCollection("user");
@@ -176,7 +164,7 @@ final class DbService
         if (!$user) {
             throw new \Exception("User not found", 404);
         }
-        $db->updateOne(['_id' => new ObjectId($id)], ['$set' => ['adress' => $data]]);
+        $db->updateOne(['_id' => new ObjectId($id)], ['$set' => $data]);
     }
 
     public function deleteUser($id)

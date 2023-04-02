@@ -21,24 +21,13 @@ final class UpdateUserAction extends AbstractAction
             $body = $req->getParsedBody();
         }
 
-        if (!isset($body['avatar']) && !isset($body['adresse'])) {
+        if (!isset($body['mail']) && !isset($body['adresse']) && !isset($body['firstname']) && !isset($body['lastname'])) {
             return (throw new HttpInputNotValid($req, "Les données envoyées ne sont pas valides"));
         }
 
 
         $db_service = new DbService($this->container->get('mongo_url'));
-        if (isset($body['avatar'])) {
-            if (!v::stringVal()->validate($body['avatar'])) {
-                return (throw new HttpInputNotValid($req, "Les données envoyées ne sont pas valides"));
-            }
-            $db_service->modifyAvatar($id, $body['avatar']);
-        }
-        if (isset($body['adresse'])) {
-            if (!v::stringVal()->validate($body['adresse'])) {
-                return (throw new HttpInputNotValid($req, "Les données envoyées ne sont pas valides"));
-            }
-            $db_service->modifyAdress($id, $body['adresse']);
-        }
+        $db_service->updateUser($id, $body);
 
         $routeContext = RouteContext::fromRequest($req);
         $routeParser = $routeContext->getRouteParser();
