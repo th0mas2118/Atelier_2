@@ -281,7 +281,6 @@ onMounted(() => {
         <Map
           :center="event.gps"
           :markers="[{ id: 1, coordinates: event.gps, address: event.address }]"
-          :allowClick="true"
         ></Map>
       </section>
       <section
