@@ -92,8 +92,19 @@ const zoom = ref(13)
 const maxZoom = ref(18)
 const minZoom = ref(1)
 const clickLocation: object | null = ref(null)
-</script>
 
+onMounted(async () => {
+  if (props.replaceMarker && props.allowClick && props.markers && props.markers.length > 0) {
+    if (props.markers[0].address == '') {
+      let marker = props.markers[0]
+      marker.address = (await getAddress(marker.coordinates)) ?? ''
+      clickLocation.value = marker
+      emit('onMapClick', clickLocation.value)
+    }
+  }
+})
+</script>
+s
 <style>
 .map {
   position: absolute;
