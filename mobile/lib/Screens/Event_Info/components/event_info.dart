@@ -19,8 +19,6 @@ class _EventInfoState extends State<EventInfo> {
     return list.where((element) => element['status'] == 'confirmed').length;
   }
 
-  bool isMap = false;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,11 +35,9 @@ class _EventInfoState extends State<EventInfo> {
             Row(
               children: [
                 IconButton(
+                    //go to comment page
                     onPressed: () {},
-                    icon: Icon(Icons.map_sharp, color: kPrimaryColor)),
-                IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.chat_bubble, color: kPrimaryColor)),
+                    icon: const Icon(Icons.chat_bubble, color: kPrimaryColor)),
               ],
             ),
           ],
@@ -120,14 +116,16 @@ class _EventInfoState extends State<EventInfo> {
           },
         ),
         const Padding(padding: EdgeInsets.all(8)),
-        (isMap)
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  EventMap(gps: Provider.of<EventModel>(context).event.gps)
-                ],
-              )
-            : Container(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            SizedBox(
+              width: 300,
+              height: 300,
+              child: EventMap(),
+            )
+          ],
+        )
       ],
     );
   }
