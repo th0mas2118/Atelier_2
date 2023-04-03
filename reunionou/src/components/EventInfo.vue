@@ -92,7 +92,7 @@ const removeParticipant = async (id: string, userType: string) => {
       {
         data: {
           member_id: id,
-          type: userType
+          is_guest: userType == 'guest' ? true : false
         }
       }
     )
