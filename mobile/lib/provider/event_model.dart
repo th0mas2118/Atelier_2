@@ -6,7 +6,7 @@ import '../class/event.dart';
 class EventModel extends ChangeNotifier {
   Dio dio = Dio();
 
-  final Event _event = Event('', '', '', '', '', '', [], [], '');
+  final Event _event = Event('', '', '', '', '', '', [], [], '', '');
 
   Event get event => _event;
 
@@ -21,6 +21,7 @@ class EventModel extends ChangeNotifier {
     _event.organizerUsername = event.organizerUsername;
     _event.gps = event.gps;
     _event.address = event.address;
+    _event.icon = event.icon;
     notifyListeners();
   }
 
@@ -34,6 +35,7 @@ class EventModel extends ChangeNotifier {
     _event.organizerUsername = '';
     _event.gps = [];
     _event.address = '';
+    _event.icon = '';
     notifyListeners();
   }
 }

@@ -50,7 +50,8 @@ class MobileSignupScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        const SignUpScreenTopImage(),
+        Text("S'inscrire", style: Theme.of(context).textTheme.titleLarge),
+        const SizedBox(height: defaultPadding),
         Row(
           children: [
             const Spacer(),

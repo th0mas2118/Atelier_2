@@ -55,6 +55,16 @@ class LoginForm extends StatelessWidget {
             tag: "login_btn",
             child: ElevatedButton(
               onPressed: () {
+                if (emailController.text.isEmpty ||
+                    passwordController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Veuillez remplir tous les champs"),
+                    ),
+                  );
+                  return;
+                }
+
                 Provider.of<UserModel>(context, listen: false).login(
                     emailController.text, passwordController.text, context);
               },

@@ -28,11 +28,11 @@ class _MyInfoState extends State<MyInfo> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     CircleAvatar(
                       radius: 60,
                       backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1547721064-da6cfb341d50'),
+                          'http://api.frontoffice.reunionou:49383/avatars/${user.id}/200/200'),
                     ),
                   ],
                 ),
