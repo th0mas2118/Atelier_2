@@ -121,6 +121,19 @@ class SignUpForm extends StatelessWidget {
                 );
                 return;
               }
+              if (emailController.text.isEmpty ||
+                  userNameController.text.isEmpty ||
+                  fristNameController.text.isEmpty ||
+                  lastNameController.text.isEmpty ||
+                  passwordController.text.isEmpty ||
+                  passwordConfirmController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Veuillez remplir tous les champs"),
+                  ),
+                );
+                return;
+              }
               Provider.of<UserModel>(context, listen: false).register(
                   emailController.text,
                   userNameController.text,
