@@ -49,6 +49,22 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
               ),
+              SizedBox(
+                width: 64,
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            //Ou tu veux aller
+                            return const MyPage();
+                          },
+                        ),
+                      );
+                    },
+                    child: const Text('Créer un évènement')),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
