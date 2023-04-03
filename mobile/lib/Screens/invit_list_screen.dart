@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/Event_Info/event_screen.dart';
 import 'package:flutter_auth/components/available_badge.dart';
 import 'package:flutter_auth/constants.dart';
+import 'package:flutter_auth/provider/invitation_model.dart';
+import 'package:provider/provider.dart';
 
 import '../class/invitations.dart';
 
@@ -24,14 +26,21 @@ class InvitListScreen extends StatelessWidget {
             leading: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AvailableBadge(
-                  state: invitationsList[index].accepted,
-                ),
+                TextButton(
+                  onPressed: () {
+                    Provider.of<InvitationsModel>(context, listen: false)
+                        .updatInvitations(index, invitationsList[index].id,
+                            !invitationsList[index].accepted);
+                  },
+                  child: AvailableBadge(
+                    state: invitationsList[index].accepted,
+                  ),
+                )
               ],
             ),
             trailing: TextButton(
               onPressed: () {
-                fetchEvent(context, invitationsList[index].id);
+                fetchEvent(context, invitationsList[index].eventId);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

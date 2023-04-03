@@ -32,7 +32,7 @@ class _MyInfoState extends State<MyInfo> {
                     CircleAvatar(
                       radius: 60,
                       backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1547721064-da6cfb341d50'),
+                          'http://api.frontoffice.reunionou:49383/avatars/test/200/200'),
                     ),
                   ],
                 ),

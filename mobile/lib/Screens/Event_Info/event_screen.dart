@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_auth/Screens/Event_Info/components/event_info.dart';
 import 'package:provider/provider.dart';
+import '../../../constants.dart';
 
 import '../../class/event.dart';
 import '../../provider/event_model.dart';
@@ -30,17 +32,20 @@ class _EventScreenState extends State<EventScreen> {
       builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(Provider.of<EventModel>(context).event.title),
+            backgroundColor: kPrimaryColor,
+            title: RichText(
+              text: TextSpan(
+                text:
+                    '${Provider.of<EventModel>(context).event.icon} ${Provider.of<EventModel>(context).event.title}', // emoji characters
+                style: const TextStyle(
+                  fontFamily: 'EmojiOne',
+                  fontSize: 30,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ),
-          body: Column(
-            children: [
-              Text(Provider.of<EventModel>(context).event.title),
-              Text(Provider.of<EventModel>(context).event.description),
-              Text(Provider.of<EventModel>(context).event.date),
-              Text(Provider.of<EventModel>(context).event.address),
-              Text(Provider.of<EventModel>(context).event.organizerUsername),
-            ],
-          ),
+          body: const EventInfo(),
         );
       },
     );
