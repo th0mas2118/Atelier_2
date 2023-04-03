@@ -15,7 +15,7 @@ final class InvitationService
         $this->mongo = $link;
     }
 
-    public function createUniqueInvitation(string $event_id, string $guest_firstname, string $guest_lastname): ?string
+    public function createUniqueInvitation(string $event_id, string $guest_firstname, string $guest_lastname, string $event_tile): ?string
     {
         try {
             $client = new \MongoDB\Client($this->mongo);
@@ -29,6 +29,7 @@ final class InvitationService
             $data["expired"] = false;
             $data["accepted"] = false;
             $data["expiration_date"] = null;
+            $data["event_title"] = $event_title;
 
             $invitation = $db->insertOne($data);
 

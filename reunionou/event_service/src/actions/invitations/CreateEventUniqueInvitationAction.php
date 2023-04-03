@@ -22,7 +22,7 @@ final class CreateEventUniqueInvitationAction extends AbstractAction
         }
 
         $invitationService = new InvitationService($this->container->get('mongo_url'));
-        $invitation = $invitationService->createUniqueInvitation($args["id"], $body['guest_firstname'], $body['guest_lastname']);
+        $invitation = $invitationService->createUniqueInvitation($args["id"], $body['guest_firstname'], $body['guest_lastname'], $body['event_title']);
         $routeContext = RouteContext::fromRequest($req);
         $routeParser = $routeContext->getRouteParser();
 
