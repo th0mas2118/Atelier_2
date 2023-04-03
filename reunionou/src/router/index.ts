@@ -33,6 +33,12 @@ const router = createRouter({
       },
     },
     {
+      path: '/events',
+      name: 'events',
+      meta: { requiresAuth: true },
+      component: () => import('../views/EventsView.vue'),
+    },
+    {
       path: '/event/new',
       name: 'newEvent',
       component: () => import('../views/CreateEventView.vue'),

@@ -4,7 +4,8 @@ import { reactive, ref } from 'vue'
 
 const guestData = reactive({
   guest_firstname: '',
-  guest_lastname: ''
+  guest_lastname: '',
+  event_title: ''
 })
 
 const invitationLink = ref('')
@@ -17,8 +18,8 @@ const props = defineProps({
 
 const createInvitationLink = () => {
   if (guestData.guest_firstname == '' || guestData.guest_lastname == '') return
-  console.log(props.event)
-  axios
+  guestData.event_title = props.event.title
+  guestData.axios
     .post(`${import.meta.env.VITE_API_HOST}/invitations/${props.event.id}/guest`, guestData)
     .then((response) => {
       invitationLink.value =
