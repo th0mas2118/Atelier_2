@@ -158,8 +158,11 @@ onUnmounted(() => {
       class="bg-cwhite text-cblack flex flex-col justify-start items-center w-full h-full m-auto md:rounded-3xl shadow-lg text-cblack overflow-x-hidden relative"
     >
       <!-- Close Button -->
-      <button class="absolute top-0 right-0 p-4 z-[999]" @click="showMap = false">
-        <i class="fas fa-xmark text-3xl text-cblack"></i>
+      <button
+        class="absolute top-4 right-4 w-10 h-10 z-[999] rounded-full bg-cwhite flex align-center justify-center"
+        @click="showMap = false"
+      >
+        <i class="m-auto fas fa-xmark text-2xl text-cpurple"></i>
       </button>
       <Map
         :center="currentPosition"

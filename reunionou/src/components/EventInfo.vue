@@ -18,6 +18,7 @@ const hasAccess = ref(false)
 const showCreateInvitationLinkPopup = ref(false)
 const isGuest = ref(false)
 const guestId = ref('')
+const currentUser = user
 
 const avatarUrl = import.meta.env.VITE_API_HOST + '/avatars/'
 
@@ -83,6 +84,25 @@ const listenClick = (e: MouseEvent) => {
   }
 }
 
+const removeParticipant = async (id: string, userType: string) => {
+  event.value.participants = event.value.participants.filter((x) => x.user.id != id)
+  try {
+    const result = await axios.delete(
+      `${import.meta.env.VITE_API_HOST}/events/${event.value.id}/participants/`,
+      {
+        data: {
+          member_id: id,
+          type: userType
+        }
+      }
+    )
+
+    console.log(result)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 onUnmounted(() => {
   window.removeEventListener('click', listenClick)
 })
@@ -104,11 +124,12 @@ onMounted(() => {
       isGuest.value = response.data.event.participants.find(
         (x: any) => x.user.id == route.query?.guest
       )
+      console.log(event.value)
       if (
         response.data.event.participants.find((x: any) => x.user.id == user.member.id) ||
         response.data.event.organizer.id == user.member.id ||
         user.member.level > 0 ||
-        isGuest ||
+        isGuest.value ||
         response.data.event.isPrivate == false
       ) {
         hasAccess.value = true
@@ -290,13 +311,18 @@ onMounted(() => {
                 />
               </div>
               <span>{{ user.user.firstname + ' ' + user.user.lastname }}</span>
-              <div>
+              <div class="flex gap-2">
                 <i
                   v-if="user.status == 'confirmed'"
                   class="fa-solid fa-check-circle text-cgreen"
                 ></i>
                 <i v-if="user.status == 'declined'" class="fa-solid fa-xmark-circle text-cred"></i>
                 <i v-if="user.status == 'waiting'" class="fa-solid fa-clock text-cblack"></i>
+                <i
+                  v-if="currentUser.member.id == event.organizer.id"
+                  @click="removeParticipant(user.user.id, user.type)"
+                  class="fa-solid fa-minus-circle text-cred cursor-pointer"
+                ></i>
               </div>
             </li>
           </ul>
