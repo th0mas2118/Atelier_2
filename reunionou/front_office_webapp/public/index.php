@@ -27,9 +27,11 @@ use reunionou\frontwebapp\actions\files\GetAvatarAction;
 use reunionou\frontwebapp\actions\auth\DeleteFriendAction;
 
 
+use reunionou\frontwebapp\actions\auth\GetUserEventsAction;
 use reunionou\frontwebapp\actions\comment\PostCommentEvent;
 use reunionou\frontwebapp\actions\events\CreateEventAction;
 use reunionou\frontwebapp\actions\files\CreateAvatarAction;
+use reunionou\frontwebapp\middlewares\ValidateUserProperty;
 use reunionou\frontwebapp\actions\comment\GetCommentByIdEvent;
 use reunionou\frontwebapp\actions\events\AddParticipantAction;
 use reunionou\frontwebapp\actions\auth\GetUserInvitationsAction;
@@ -37,7 +39,6 @@ use reunionou\frontwebapp\actions\events\UpdateInvitationAction;
 use reunionou\frontwebapp\actions\events\DeleteParticipantAction;
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
 use reunionou\frontwebapp\actions\events\CreateEventUniqueInvitationAction;
-use reunionou\frontwebapp\middlewares\ValidateUserProperty;
 
 $config = ['settings' => [
     'outputBuffering' => false,
@@ -78,6 +79,7 @@ $app->post('/signup', SignUpAction::class)->setName('signup');
 
 $app->get('/user/{id}', GetUserAction::class)->setName('get_user');
 $app->get('/user/{id}/invitations', GetUserInvitationsAction::class)->setName('get_user_invitations');
+$app->get('/user/{id}/events', GetUserEventsAction::class)->setName('get_user_events');
 $app->get('/user/{id}/friends', GetFriendsList::class)->setName('get_user_friends');
 $app->get('/users', GetUsersAction::class)->setName('get_users');
 
