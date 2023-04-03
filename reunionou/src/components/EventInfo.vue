@@ -27,6 +27,11 @@ const getConfirmatedParticipantsCount = (): number => {
     .length
 }
 
+const commentParticipate = () => {
+  return event.value.participants.find(
+    (participant: any) => participant.user.id == (isGuest.value ? guestId.value : user.member.id)
+  )
+}
 const participate = async () => {
   let eventParticipant = event.value.participants.findIndex(
     (participant: any) => participant.user.id == (isGuest.value ? guestId.value : user.member.id)
@@ -344,7 +349,7 @@ onMounted(() => {
         id="event-message"
         class="w-full flex justify-between items-stretch p-4 gap-2 flex-shrink-0"
       >
-        <ChatBox></ChatBox>
+        <ChatBox :guest="commentParticipate()"> </ChatBox>
       </section>
     </div>
   </div>

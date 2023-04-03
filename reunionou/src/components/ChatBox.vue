@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { useUserStore } from '@/stores/user'
 import { reactive, onMounted, ref } from 'vue'
 import router from '@/router'
@@ -9,12 +9,18 @@ let route = useRoute()
 
 const user = useUserStore()
 const event = route.params['id']
+const props = defineProps({
+  guest: {
+    required: false
+  }
+})
+
 let message = reactive({
   content: '',
-  firstname: user.member.firstname,
-  lastname: user.member.lastname,
+  firstname: user.isConnected == true ? user.member.firstname : props.guest.user.firstname,
+  lastname: user.isConnected == true ? user.member.lastname : props.guest.user.lastname,
   event_id: event,
-  member_id: user.member.id
+  member_id: user.isConnected == true ? user.member.id : props.guest.user.id
 })
 
 const state = reactive({
@@ -43,14 +49,7 @@ const Comment = async () => {
   })
 }
 
-function scrollToBottom() {
-  const el = document.getElementById('chatbox')
-  el.scrollTo(0, el.scrollHeight)
-}
-
-onMounted(() => {
-  window.addEventListener('load', scrollToBottom)
-  //scrollToBottom()
+function getComment() {
   axios
     .get(`http://api.frontoffice.reunionou:49383/messages/${event}/event`)
     .then((response) => {
@@ -59,6 +58,16 @@ onMounted(() => {
     .then((response) => {
       console.log(state.channels)
     })
+}
+
+function scrollToBottom() {
+  const el = document.getElementById('chatbox')
+  el.scrollTo(0, el.scrollHeight)
+}
+
+onMounted(() => {
+  getComment()
+  window.addEventListener('load', scrollToBottom)
 })
 </script>
 
@@ -70,9 +79,11 @@ onMounted(() => {
   <div class="container mx-auto h-[60vh] flex flex-col">
     <div class="flex-grow overflow-y-scroll px-4" id="chatbox">
       <div v-for="channel in state.channels">
-        <div class="flex justify-end mb-4" v-if="channel.member_id == user.member.id">
+        <div class="flex justify-end mb-4" v-if="channel.member_id == message.member_id">
           <div class="w-6/12">
-            <span class="text-sm text-cpurple">{{ channel.firstname + channel.firstname }}</span>
+            <span class="text-sm text-cpurple">{{
+              channel.firstname.toLowerCase() + ' ' + channel.lastname.toLowerCase()
+            }}</span>
             <div class="flex flex-col bg-cpurple rounded-lg list-inside mt-2 p-4">
               <div class="flex items-center mb-4">
                 <p class="leading-normal">
@@ -86,7 +97,9 @@ onMounted(() => {
         <div class="flex justify-start mb-4" v-else>
           <img class="w-12 h-12 object-cover rounded-full mr-4 self-end ml-4" src="" alt="avatar" />
           <div class="w-6/12">
-            <span class="text-sm text-cpurple">{{ channel.firstname + channel.firstname }}</span>
+            <span class="text-sm text-cpurple">{{
+              channel.firstname.toLowerCase() + ' ' + channel.lastname.toLowerCase()
+            }}</span>
             <div class="flex flex-col bg-gray-100 rounded-lg list-inside mt-2 p-4">
               <div class="flex items-center mb-4">
                 <div>
