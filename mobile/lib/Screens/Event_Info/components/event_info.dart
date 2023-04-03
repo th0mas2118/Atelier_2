@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/Event_Info/components/event_map.dart';
+import 'package:flutter_auth/provider/user_model.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
@@ -48,11 +49,15 @@ class _EventInfoState extends State<EventInfo> {
             Padding(
               padding: const EdgeInsets.all(8),
               child: Column(
-                children: const [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(
-                        'http://api.frontoffice.reunionou:49383/avatars/test/100/100'),
+                children: [
+                  Consumer<EventModel>(
+                    builder: (context, value, child) {
+                      return CircleAvatar(
+                        radius: 30,
+                        backgroundImage: NetworkImage(
+                            'http://api.frontoffice.reunionou:49383/avatars/${value.event.organizerID}/100/100'),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -90,10 +95,10 @@ class _EventInfoState extends State<EventInfo> {
           itemBuilder: (context, index) {
             return ListTile(
                 contentPadding: const EdgeInsets.all(5),
-                leading: const CircleAvatar(
+                leading: CircleAvatar(
                   radius: 30,
                   backgroundImage: NetworkImage(
-                      'http://api.frontoffice.reunionou:49383/avatars/test/100/100'),
+                      'http://api.frontoffice.reunionou:49383/avatars/${Provider.of<EventModel>(context).event.participants[index]['user']['id']}/100/100'),
                 ),
                 title: Row(
                   children: [

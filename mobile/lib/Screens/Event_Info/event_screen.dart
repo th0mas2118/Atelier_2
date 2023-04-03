@@ -31,22 +31,24 @@ class _EventScreenState extends State<EventScreen> {
     return Consumer(
       builder: (context, value, child) {
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: kPrimaryColor,
-            title: RichText(
-              text: TextSpan(
-                text:
-                    '${Provider.of<EventModel>(context).event.icon} ${Provider.of<EventModel>(context).event.title}', // emoji characters
-                style: const TextStyle(
-                  fontFamily: 'EmojiOne',
-                  fontSize: 30,
-                  color: Colors.white,
+            appBar: AppBar(
+              backgroundColor: kPrimaryColor,
+              title: RichText(
+                text: TextSpan(
+                  text:
+                      '${Provider.of<EventModel>(context).event.icon} ${Provider.of<EventModel>(context).event.title}', // emoji characters
+                  style: const TextStyle(
+                    fontFamily: 'EmojiOne',
+                    fontSize: 30,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
-          body: const EventInfo(),
-        );
+            body: const Padding(
+              padding: EdgeInsets.all(10),
+              child: EventInfo(),
+            ));
       },
     );
   }
