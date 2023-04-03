@@ -100,7 +100,7 @@ class UserModel extends ChangeNotifier {
           decodetoken['firstname'],
           decodetoken['lastname'],
           decodetoken['usermail'],
-          decodetoken['adresse'],
+          decodetoken['adresse'] ?? "",
           response.data['user']['acces_token'],
           response.data['user']['refresh_token']);
       Navigator.push(
