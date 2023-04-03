@@ -45,8 +45,11 @@ final class FileService
 
             if (file_exists($target_dir . DIRECTORY_SEPARATOR . $filename)) {
                 return $target_dir . DIRECTORY_SEPARATOR . $filename;
+            } else {
+                if (file_exists($target_dir . DIRECTORY_SEPARATOR . 'default.jpg')) {
+                    return $target_dir . DIRECTORY_SEPARATOR . 'default.jpg';
+                }
             }
-
 
             return null;
         } catch (\Throwable $th) {

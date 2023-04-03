@@ -20,17 +20,17 @@ final class GetAvatarAction extends AbstractAction
         $width = isset($args['width']) ? ($args['width'] == "default" ? "default" : intval($args['width'])) : null;
         $height = isset($args['height']) ? ($args['height'] == "default" ? "default" : intval($args['height'])) : null;
 
-
-        if ($width && $height && $width != "default" && $height != "default") {
-            $image = Image::make($avatar)->resize($width, $height, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-        } else {
-            $image = Image::make($avatar);
-        }
-
         if (file_exists($avatar)) {
+
+            if ($width && $height && $width != "default" && $height != "default") {
+                $image = Image::make($avatar)->resize($width, $height, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+            } else {
+                $image = Image::make($avatar);
+            }
+
             $response = new Response();
 
             $imageContent = $image->encode('webp', 80)->getEncoded();
