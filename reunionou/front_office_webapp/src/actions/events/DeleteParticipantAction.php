@@ -16,7 +16,7 @@ final class DeleteParticipantAction
         }
         $client  = new Client(['base_uri' => 'http://api.event.reunionou'], ['timeout' => 2.0]);
 
-        $response = $client->request('DELETE', "/events/$id/participants", ['body' => $rq->getBody()->getContents()]);
+        $response = $client->request('DELETE', "/events/$id/participants/", ['body' => $rq->getBody()->getContents()]);
 
         if (empty($response->getHeader('Content-Type'))) {
             return $rs->withStatus($response->getStatusCode())->withBody($response->getBody());

@@ -99,7 +99,7 @@ $app->get('/messages/{id}[/]', GetComment::class)->setName('get_comment');
 
 $app->post('/events/{id}/participants[/]', AddParticipantAction::class)->setName('add_participant');
 
-$app->delete('/events/{id}/participants[/]', DeleteParticipantAction::class)->setName('add_participant');
+$app->delete('/events/{id}/participants[/]', DeleteParticipantAction::class)->setName('delete_participant');
 
 // INVITATIONS
 $app->patch('/invitations/{id}[/]', UpdateInvitationAction::class)->setName('update_invitation');
