@@ -48,7 +48,7 @@ final class SigninAction extends AbstractAction
         $user->id = strval($user->_id);
 
 
-        $payload = ['iss' => 'http://api.auth.local', 'aud' => 'http://api.auth.local', 'iat' => time(), 'nbf' => time(), 'exp' => time() + 3600, 'username' => $user->username, "usermail" => $user->mail, 'lvl' => $user->level, 'uid' => $user->id, 'firstname' => $user->firstname, 'lastname' => $user->lastname, 'adresse' => $user->adress];
+        $payload = ['iss' => 'http://api.auth.local', 'aud' => 'http://api.auth.local', 'iat' => time(), 'nbf' => time(), 'exp' => time() + 3600, 'username' => $user->username, "usermail" => $user->mail, 'lvl' => $user->level, 'uid' => $user->id, 'firstname' => $user->firstname, 'lastname' => $user->lastname, 'adresse' => isset($user->adresse) ? $user->adresse : null];
         $token = JWT::encode($payload, $this->container->get('secret'), 'HS512');
 
         $db_service->updateToken($user->_id, $token);
