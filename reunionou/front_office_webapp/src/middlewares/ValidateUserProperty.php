@@ -17,7 +17,9 @@ final class ValidateUserProperty
             'timeout' => 5.0
         ]);
 
-        $response = $client->request('GET', '/validateUser/6422eb255b822975fe06dc92', [
+        $routeArguments = \Slim\Routing\RouteContext::fromRequest($rq)->getRoute()->getArguments();
+        $id = $routeArguments['id'];
+        $response = $client->request('GET', '/validateUser/' . $id, [
             'headers' => [
                 'Authorization' => $rq->getHeader('Authorization')[0]
             ]
