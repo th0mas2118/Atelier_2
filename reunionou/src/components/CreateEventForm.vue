@@ -119,6 +119,7 @@ const createEvent = async () => {
 
   const res = await axios.post(`${import.meta.env.VITE_API_HOST}/events`, eventData, {
     headers: {
+      Authorization: `Bearer ${user.member.acces_token}`,
       'Content-Type': 'application/json'
     }
   })
@@ -175,7 +176,7 @@ onUnmounted(() => {
   </div>
   <form
     action=""
-    class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center max-w-[800px] w-full h-[calc(100vh-80px)] md:h-full m-auto md:rounded-3xl shadow-lg text-cblack overflow-x-hidden m-4"
+    class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center max-w-[800px] w-full h-[calc(100vh-64px)] md:h-full m-auto md:rounded-3xl shadow-lg text-cblack overflow-x-hidden m-4"
   >
     <h1 class="text-cblack font-bold min-w-[250px] text-2xl w-full text-center p-4">
       CRÉER UN EVENEMENT ({{ currentPage + 1 + '/' + 3 }})

@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
+import { onMounted } from 'vue'
+import router from '@/router'
 const user = useUserStore()
+
+onMounted(() => {
+  if (user.isConnected) {
+    router.push({ name: 'events' })
+  }
+})
 </script>
 
 <template>

@@ -80,20 +80,13 @@ onUnmounted(() => {
         </div>
         <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
           <div class="flex flex-shrink-0 items-center">
-            <img
-              class="block h-8 w-auto lg:hidden"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-              alt="Your Company"
-            />
-            <img
-              class="hidden h-8 w-auto lg:block"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-              alt="Your Company"
-            />
+            <img class="block h-8 w-auto lg:hidden" src="/images/logo.svg" alt="Your Company" />
+            <img class="hidden h-8 w-auto lg:block" src="/images/logo.svg" alt="Your Company" />
           </div>
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex space-x-4">
               <router-link
+                v-if="!user.isConnected"
                 :to="{ name: 'home' }"
                 active-class="bg-cpurple text-cwhite hover:text-cwhite"
                 class="text-cwhite hover:text-[#9a69fe] rounded-md px-3 py-2 text-sm font-medium"
@@ -214,9 +207,15 @@ onUnmounted(() => {
     </div>
 
     <!-- Mobile menu, show/hide based on menu state. -->
-    <div class="absolute bg-cblack w-full sm:hidden" id="mobile-menu" v-if="showMobileMenu">
+    <div
+      class="absolute bg-cblack w-full sm:hidden z-[1000]"
+      id="mobile-menu"
+      v-if="showMobileMenu"
+    >
       <div class="space-y-1 px-2 pb-3 pt-2 text-center">
         <router-link
+          @click="showMobileMenu = false"
+          v-if="!user.isConnected"
           :to="{ name: 'home' }"
           active-class="bg-cpurple text-cwhite hover:text-cwhite"
           class="text-cwhite hover:text-[#9a69fe] block rounded-md px-3 py-2 text-base font-medium"
@@ -224,6 +223,7 @@ onUnmounted(() => {
         >
 
         <router-link
+          @click="showMobileMenu = false"
           v-if="user.isConnected"
           :to="{ name: 'newEvent' }"
           active-class="bg-cpurple text-cwhite"
@@ -232,14 +232,16 @@ onUnmounted(() => {
         >
 
         <router-link
+          @click="showMobileMenu = false"
           v-if="user.isConnected"
-          to="/events"
+          :to="{ name: 'events' }"
           active-class="bg-cpurple text-cwhite"
           class="text-cwhite hover:text-[#9a69fe] block rounded-md px-3 py-2 text-base font-medium"
           >Mes évenements</router-link
         >
 
         <router-link
+          @click="showMobileMenu = false"
           v-if="!user.isConnected"
           :to="{ name: 'login' }"
           active-class="bg-cpurple text-cwhite"
@@ -248,6 +250,7 @@ onUnmounted(() => {
         >
 
         <router-link
+          @click="showMobileMenu = false"
           v-if="!user.isConnected"
           :to="{ name: 'register' }"
           active-class="bg-cpurple text-cwhite"

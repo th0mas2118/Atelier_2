@@ -156,7 +156,7 @@ onMounted(() => {
 
 <template lang="">
   <div
-    class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center w-full h-full m-4 rounded-3xl shadow-lg text-cblack overflow-hidden"
+    class="bg-cwhite text-cblack flex flex-col min-h-[600px] justify-start items-center w-full h-full md:m-4 md:rounded-3xl shadow-lg text-cblack overflow-hidden"
     v-if="event.title && hasAccess"
   >
     <CreateInvitationLinkPopup

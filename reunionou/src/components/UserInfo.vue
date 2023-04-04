@@ -87,7 +87,6 @@ onMounted(() => {
       user_data.value = response.data.user
       userModify.adresse = user_data.value.adresse
       userModify.mail = user_data.value.mail
-      console.log(us)
     })
     .catch((error) => {
       console.error(error)
@@ -98,10 +97,13 @@ onMounted(() => {
   <div
     class="bg-cwhite text-cblack flex flex-col justify-start items-center w-full h-full m-4 rounded-3xl shadow-lg text-cblack"
   >
-    <section id="content" class="content flex flex-row w-11/12 gap-11 mt-5 mb-6">
+    <section
+      id="content"
+      class="content flex flex-col align-center justify-center md:flex-row w-11/12 gap-11 mt-5 mb-6"
+    >
       <div class="avatar">
         <img
-          class="w-[200px] h-[200px] overflow-hidden rounded-full"
+          class="w-[200px] h-[200px] overflow-hidden rounded-full m-auto"
           :src="avatarUrl"
           alt="avatar"
         />
