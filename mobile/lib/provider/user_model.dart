@@ -12,6 +12,7 @@ import '../Screens/Login/login_screen.dart';
 import '../class/invitations.dart';
 import 'invitation_model.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserModel extends ChangeNotifier {
   final String _baseUrl = 'http://api.frontoffice.reunionou:49383';
@@ -27,6 +28,7 @@ class UserModel extends ChangeNotifier {
   String refreshToken = '';
   String adresse = '';
   String id = '';
+  bool isLoggedIn = false;
 
   Map<String, dynamic> get log => {
         'username': username,
@@ -37,12 +39,24 @@ class UserModel extends ChangeNotifier {
         'refreshToken': refreshToken,
         'id': id,
         'adresse': adresse,
-        'connected': connected
+        'connected': connected,
+        'isLoggedIn': isLoggedIn // ajout de la variable
       };
   String get loggedId => id;
 
   void setUser(vid, vusername, vfirstname, vlastname, vemail, vadresse,
-      vaccesToken, vrefreshToken) {
+      vaccesToken, vrefreshToken) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('id', vid);
+    await prefs.setString('username', vusername);
+    await prefs.setString('firstname', vfirstname);
+    await prefs.setString('lastname', vlastname);
+    await prefs.setString('email', vemail);
+    await prefs.setString('adresse', vadresse);
+    await prefs.setString('accesToken', vaccesToken);
+    await prefs.setString('refreshToken', vrefreshToken);
+    await prefs.setBool('isLoggedIn', true); // ajout de la variable
+
     connected = true;
     id = vid;
     username = vusername;
@@ -52,10 +66,14 @@ class UserModel extends ChangeNotifier {
     adresse = vadresse;
     accesToken = vaccesToken;
     refreshToken = vrefreshToken;
+    isLoggedIn = true; // mise à jour de la variable
     notifyListeners();
   }
 
-  void removeUser() {
+  void removeUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
     connected = false;
     id = '';
     username = '';
@@ -65,10 +83,12 @@ class UserModel extends ChangeNotifier {
     adresse = '';
     accesToken = '';
     refreshToken = '';
+    isLoggedIn = false; // mise à jour de la variable
     notifyListeners();
   }
 
   void updateUser(vemail, vfirstname, vlastname, vadresse) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       await dio.put('$_baseUrl/user/$id',
           options: Options(headers: {'Authorization': 'Bearer $accesToken'}),
@@ -85,10 +105,15 @@ class UserModel extends ChangeNotifier {
     firstname = vfirstname;
     lastname = vlastname;
     adresse = vadresse;
+    await prefs.setString('firstname', vfirstname);
+    await prefs.setString('lastname', vlastname);
+    await prefs.setString('email', vemail);
+    await prefs.setString('adresse', vadresse);
     notifyListeners();
   }
 
   Future<void> login(String username, String password, $context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = 'Basic ${base64Encode(utf8.encode('$username:$password'))}';
     try {
       final response = await dio.post('$_baseUrl/signin',
@@ -112,6 +137,27 @@ class UserModel extends ChangeNotifier {
         ),
       );
     } catch (error) {
+      String? id = prefs.getString('id');
+      String? username = prefs.getString('username');
+      String? firstname = prefs.getString('firstname');
+      String? lastname = prefs.getString('lastname');
+      String? email = prefs.getString('email');
+      String? adresse = prefs.getString('adresse');
+      String? accesToken = prefs.getString('accesToken');
+      String? refreshToken = prefs.getString('refreshToken');
+      bool? isLoggedIn = prefs.getBool('isLoggedIn');
+
+      if (id != null &&
+          username != null &&
+          firstname != null &&
+          lastname != null &&
+          email != null &&
+          accesToken != null &&
+          refreshToken != null) {
+        setUser(id, username, firstname, lastname, email, adresse, accesToken,
+            refreshToken);
+      }
+
       rethrow;
     }
   }
@@ -157,6 +203,30 @@ class UserModel extends ChangeNotifier {
       );
     } catch (error) {
       rethrow;
+    }
+  }
+
+  Future<void> loadUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? id = prefs.getString('id');
+    String? username = prefs.getString('username');
+    String? firstname = prefs.getString('firstname');
+    String? lastname = prefs.getString('lastname');
+    String? email = prefs.getString('email');
+    String? adresse = prefs.getString('adresse');
+    String? accesToken = prefs.getString('accesToken');
+    String? refreshToken = prefs.getString('refreshToken');
+    bool? isLoggedIn = prefs.getBool('isLoggedIn');
+
+    if (id != null &&
+        username != null &&
+        firstname != null &&
+        lastname != null &&
+        email != null &&
+        accesToken != null &&
+        refreshToken != null) {
+      setUser(id, username, firstname, lastname, email, adresse ?? "",
+          accesToken, refreshToken);
     }
   }
 

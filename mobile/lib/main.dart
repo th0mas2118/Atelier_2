@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
 import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/provider/event_model.dart';
 import 'package:provider/provider.dart';
 import '../provider/user_model.dart';
 import 'provider/invitation_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
   runApp(
     MultiProvider(
       providers: [
@@ -14,16 +19,29 @@ void main() {
         ChangeNotifierProvider(create: (context) => InvitationsModel()),
         ChangeNotifierProvider(create: (context) => EventModel()),
       ],
-      child: const MyApp(),
+      child: MyApp(isLoggedIn: isLoggedIn),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
+
+  final bool isLoggedIn;
 
   @override
   Widget build(BuildContext context) {
+    Widget homeScreen;
+    if (isLoggedIn) {
+      // Si l'utilisateur est connecté, afficher votre page ici
+      Provider.of<UserModel>(context, listen: false).loadUser();
+
+      homeScreen = const MyPage();
+    } else {
+      // Sinon, afficher la page de bienvenue
+      homeScreen = const WelcomeScreen();
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Reunionou',
@@ -51,8 +69,7 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
           )),
-      home: const WelcomeScreen(),
-      // home: const MyPage(),
+      home: homeScreen,
     );
   }
 }
