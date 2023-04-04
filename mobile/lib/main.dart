@@ -6,6 +6,7 @@ import 'package:flutter_auth/provider/event_model.dart';
 import 'package:flutter_auth/provider/message_provider.dart';
 import 'package:provider/provider.dart';
 import '../provider/user_model.dart';
+import 'home.dart';
 import 'provider/invitation_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       // Si l'utilisateur est connecté, afficher votre page ici
       Provider.of<UserModel>(context, listen: false).loadUser();
 
-      homeScreen = const MyPage();
+      homeScreen = const MyHomePageState();
     } else {
       // Sinon, afficher la page de bienvenue
       homeScreen = const WelcomeScreen();
@@ -47,6 +48,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Reunionou',
+      routes: {
+        '/welcome': (context) => const WelcomeScreen(),
+        '/mypage': (context) => const MyPage(),
+      },
       theme: ThemeData(
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white,

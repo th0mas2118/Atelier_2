@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_auth/home.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
@@ -132,7 +133,7 @@ class UserModel extends ChangeNotifier {
         $context,
         MaterialPageRoute(
           builder: (context) {
-            return const MyPage();
+            return const MyHomePageState();
           },
         ),
       );
