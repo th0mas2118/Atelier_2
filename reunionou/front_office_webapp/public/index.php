@@ -40,6 +40,9 @@ use reunionou\frontwebapp\actions\events\DeleteParticipantAction;
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
 use reunionou\frontwebapp\actions\events\CreateEventUniqueInvitationAction;
 
+use OpenApi\Annotations as OA;
+
+
 $config = ['settings' => [
     'outputBuffering' => false,
 ]];
@@ -71,8 +74,16 @@ $app->options(
     }
 );
 
+/**
+ * @OA\Info(
+ *     title="My First API",
+ *     version="0.1"
+ * )
+ */
+
 
 // AUTH SERVICE
+
 $app->post('/signin', SignInAction::class)->setName('signin');
 $app->post('/signout', SignOutAction::class)->setName('signout')->add(new ValidateToken());
 $app->post('/signup', SignUpAction::class)->setName('signup');

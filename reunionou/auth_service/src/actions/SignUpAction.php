@@ -14,6 +14,92 @@ use reunionou\auth\services\DbService;
 use reunionou\auth\errors\exceptions\HttpInputNotValid;
 use Slim\Exception\HttpInternalServerErrorException;
 
+/** 
+ * @OA\Post(
+ *   path="/signup",
+ *   tags={"Authentification"},
+ *   @OA\RequestBody(
+ *     description="Informations de l'utilisateur",
+ *     required=true,
+ *     @OA\JsonContent(
+ *       type="object",
+ *       @OA\Property(
+ *         property="email",
+ *         type="string",
+ *         example="example@example.com"
+ *         ),
+ *         @OA\Property(
+ *           property="username",
+ *           type="string",
+ *           example="JohnDoe"
+ *           ),
+ *           @OA\Property(
+ *             property="firstname",
+ *             type="string",
+ *             example="John"
+ *             ),
+ *             @OA\Property(
+ *               property="lastname",
+ *               type="string",
+ *               example="Doe"
+ *               ),
+ *               @OA\Property(
+ *                 property="password",
+ *                 type="string",
+ *                 example="password"
+ *                 )
+ *                 )
+ *                 ),
+ *                 @OA\Response(
+ *                   response="201",
+ *                   description="Utilisateur créé",
+ *                  ),
+ *                  @OA\Response(
+ *                    response="400",
+ *                    description="Les données envoyées ne sont pas valides",
+ *                    @OA\JsonContent(
+ *                      type="object",
+ *                      @OA\Property(
+ *                        property="type",
+ *                        type="string",
+ *                        example="error"
+ *                        ),
+ *                        @OA\Property(
+ *                          property="message",
+ *                          type="string",
+ *                          example="Les données envoyées ne sont pas valides"
+ *                          ),
+ *                          @OA\Property(
+ *                            property="code",
+ *                            type="integer",
+ *                            example="400"
+ *                            )
+ *                            )
+ *                            ),
+ *                            @OA\Response(
+ *                              response="409",
+ *                              description="L'utilisateur existe déjà",
+ *                              @OA\JsonContent(
+ *                                type="object",
+ *                                @OA\Property(
+ *                                  property="type",
+ *                                  type="string",
+ *                                  example="error"
+ *                                  ),
+ *                                  @OA\Property(
+ *                                    property="message",
+ *                                    type="string",
+ *                                    example="L'utilisateur existe déjà"
+ *                                    ),
+ *                                    @OA\Property(
+ *                                      property="code",
+ *                                      type="integer",
+ *                                      example="409"
+ *                                      )
+ *                                      )
+ *                                      )
+ *                                      )
+ */
 final class SignUpAction extends AbstractAction
 {
     public function __invoke(Request $rq, Response $rs, array $args): Response

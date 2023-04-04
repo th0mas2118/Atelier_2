@@ -8,6 +8,96 @@ use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 use reunionou\auth\services\DbService;
 
+/**
+ * @OA\Get(
+ *     path="/user/{id}",
+ *     tags={"User"},
+ *    @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="id de l'utilisateur",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="200",
+ *         description="Utilisateur trouvé",
+ *        @OA\JsonContent(
+ *            type="object",
+ *           @OA\Property(
+ *             property="type",
+ *            type="string",
+ *           example="ressource"
+ *          ),
+ *          @OA\Property(
+ *            property="user",
+ *            type="object",
+ *        @OA\Property(
+ *         property="id",
+ *       type="string",
+ *    example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ * ),
+ * @OA\Property(
+ * property="firstname",
+ * type="string",
+ * example="John"
+ * ),
+ * @OA\Property(
+ * property="lastname",
+ * type="string",
+ * example="Doe"
+ * ),
+ * @OA\Property(
+ * property="mail",
+ * type="string",
+ * example="example@example.com"
+ * ),
+ * @OA\Property(
+ * property="username",
+ * type="string",
+ * example="johndoe"
+ * ),
+ * @OA\Property(
+ * property="level",
+ * type="integer",
+ * example=1
+ * ),
+ * @OA\Property(
+ * property="adresse",
+ * type="string",
+ * example="1 rue de la paix"
+ * ),
+ *     ),
+ * )
+ * ),
+ * @OA\Response(
+ *      response="404",
+ *      description="Utilisateur non trouvé",
+ *      @OA\JsonContent(
+ *        type="object",
+ *        @OA\Property(
+ *          property="type",
+ *          type="string",
+ *          example="error"
+ *          ),
+ *          @OA\Property(
+ *            property="message",
+ *              type="string",
+ *                  example="L'identifiant de la ressources demandée ne corrspond à aucune ressource disponile: 5f9f1b9b9b9b9b9b9b9b9b9b"
+ *                  ),
+ *                 @OA\Property(
+ *                   property="code",
+ *                   type="integer",
+ *                   example="404",
+ *                 )
+ *                  ),
+ *                  ),
+ *                  )   
+ *                      
+ */
 final class GetUserAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

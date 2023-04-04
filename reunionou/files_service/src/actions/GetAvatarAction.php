@@ -10,6 +10,50 @@ use reunionou\files\actions\AbstractAction;
 use Slim\Exception\HttpInternalServerErrorException;
 use Intervention\Image\ImageManagerStatic as Image;
 
+/**
+ * @OA\Get(
+ *     path="/users/{id}/avatar",
+ *     tags={"User"},
+ *    @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="id de l'utilisateur",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *         )
+ *     ),
+ *     @OA\Parameter(
+ *         name="width",
+ *         in="query",
+ *         description="Largeur de l'image",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="integer",
+ *             example="100"
+ *         )
+ *     ),
+ *     @OA\Parameter(
+ *         name="height",
+ *         in="query",
+ *         description="Hauteur de l'image",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="integer",
+ *             example="100"
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="200",
+ *         description="Avatar de l'utilisateur"
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         description="Avatar non trouvé"
+ *     )
+ * )
+ */
 final class GetAvatarAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

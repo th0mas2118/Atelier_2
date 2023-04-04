@@ -10,6 +10,45 @@ use reunionou\event\actions\AbstractAction;
 use reunionou\event\errors\exceptions\HttpInputNotValid;
 use reunionou\event\services\InvitationService;
 
+/**
+ * @OA\Patch(
+ *     path="/invitations/{id}/",
+ *     tags={"Event"},
+ *     summary="Modifier une invitation pour un utilisateur",
+ *     description="Modifier une invitation pour un utilisateur",
+ *     operationId="updateInvitation",
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID de l'événement",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             example="5f9b9b9b9b9b9b9b9b9b9b9b"
+ *         )
+ *     ),
+ *     @OA\RequestBody(
+ *         description="Informations de l'invitation",
+ *         required=true
+ *     ),
+ *     @OA\Response(
+ *         response=204,
+ *         description="Invitation modifiée"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Données invalides"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Invitation non trouvée"
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Erreur interne"
+ *     )
+ * )
+ */
 final class UpdateInvitationAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

@@ -8,6 +8,61 @@ use reunionou\event\services\EventService;
 use reunionou\event\actions\AbstractAction;
 use Slim\Exception\HttpInternalServerErrorException;
 
+/**
+ * @OA\Post(
+ *     path="/events/{event_id}/participants",
+ *     tags={"Event"},
+ *    @OA\Parameter(
+ *         name="event_id",
+ *         in="path",
+ *         description="id de l'événement",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *         )
+ *     ),
+ *     @OA\RequestBody(
+ *         description="Ajout d'un participant",
+ *         required=true,
+ *         @OA\JsonContent(
+ *            type="object",
+ *            @OA\Property(
+ *              property="type",
+ *              type="string",
+ *              example="user | guest"
+ *            ),
+ *            @OA\Property(
+ *              property="user",
+ *              type="object",
+ *              @OA\Property(
+ *                property="id",
+ *                type="string",
+ *                example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *              ),
+ *              @OA\Property(
+ *                property="firstname",
+ *                type="string",
+ *                example="John"
+ *              ),
+ *              @OA\Property(
+ *                property="lastname",
+ *                type="string",
+ *                example="Doe"
+ *              )
+ *            )
+ *         )
+ *      ),
+ *      @OA\Response(
+ *        response="204",
+ *        description="Participant ajouté"
+ *      ),
+ *      @OA\Response(
+ *        response="500",
+ *        description="Erreur interne du serveur"
+ *      )
+ * )  
+ */
 final class AddParticipantAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

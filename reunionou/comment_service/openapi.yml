@@ -1,0 +1,126 @@
+openapi: 3.0.0
+paths:
+  /comment:
+    post:
+      tags:
+        - Comment
+      summary: 'Créer un commentaire'
+      description: 'Créer un commentaire'
+      operationId: createComment
+      requestBody:
+        description: 'Informations du commentaire'
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                content:
+                  type: string
+                  example: "C'était super !"
+                firstname:
+                  type: string
+                  example: John
+                lastname:
+                  type: string
+                  example: Doe
+                event_id:
+                  type: string
+                  example: 5f9f1b9b9b9b9b9b9b9b9b9b
+                member_id:
+                  type: string
+                  example: 5f9f1b9b9b9b9b9b9b9b9b9b
+              type: object
+      responses:
+        '200':
+          description: 'Commentaire créé'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  comment: { properties: { content: { type: string, example: "C'était super !" }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, event_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, member_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b } }, type: object }
+                type: object
+        '400':
+          description: 'Données envoyées non valides'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: 'Données envoyées non valides' }
+                  code: { type: integer, example: '400' }
+                type: object
+  '/comment/{id}':
+    get:
+      tags:
+        - Comment
+      summary: 'Récupérer un commentaire'
+      description: 'Récupérer un commentaire'
+      operationId: getComment
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Identifiant du commentaire'
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        '200':
+          description: 'Commentaire récupéré'
+          content:
+            application/json:
+              schema:
+                properties:
+                  content: { type: string, example: "C'était super !" }
+                  firstname: { type: string, example: John }
+                  lastname: { type: string, example: Doe }
+                  event_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }
+                  member_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }
+                  links: { properties: { self: { properties: { href: { type: string, example: 'http://localhost:8080/comment/5f9f1b9b9b9b9b9b9b9b9b9b' } }, type: object } }, type: object }
+                type: object
+        '404':
+          description: 'Commentaire non trouvé'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible: 5f9f1b9b9b9b9b9b9b9b9b9b" }
+                type: object
+    delete:
+      tags:
+        - Comment
+      summary: 'Supprimer un commentaire'
+      description: 'Supprimer un commentaire'
+      operationId: deleteComment
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Identifiant du commentaire'
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        '200':
+          description: 'Commentaire supprimé'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  message: { type: string, example: 'Commentaire supprimé avec succès.' }
+                  links: { properties: { self: { properties: { href: { type: string, example: 'http://localhost:8080/comment/5f9f1b9b9b9b9b9b9b9b9b9b' } }, type: object } }, type: object }
+                type: object
+        '404':
+          description: 'Commentaire non trouvé'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible: 5f9f1b9b9b9b9b9b9b9b9b9b" }
+                type: object

@@ -11,7 +11,176 @@ use reunionou\event\actions\AbstractAction;
 use reunionou\event\services\InvitationService;
 use reunionou\event\errors\exceptions\HttpInputNotValid;
 
-
+/**
+ * @OA\Post(
+ *     path="/events",
+ *     tags={"Event"},
+ *     summary="Créer un événement",
+ *     description="Créer un événement",
+ *     operationId="createEvent",
+ *     @OA\RequestBody(
+ *         description="Informations de l'événement",
+ *         required=true,
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(
+ *                 property="title",
+ *                 type="string",
+ *                 example="Anniversaire de John"
+ *             ),
+ *             @OA\Property(
+ *                 property="description",
+ *                 type="string",
+ *                 example="C'est l'anniversaire de John, on va faire la fête !"
+ *             ),
+ *             @OA\Property(
+ *                 property="date",
+ *                 type="string",
+ *                 example="2020-10-31T12:00:00+02:00"
+ *             ),
+ *             @OA\Property(
+ *                 property="address",
+ *                 type="string",
+ *                 example="1 rue de la Réunion"
+ *             ),
+ *             @OA\Property(
+ *                 property="gps",
+ *                 type="array",
+ *                 @OA\Items(
+ *                     type="number",
+ *                     example="48.123456"
+ *                 )
+ *             ),
+ *             @OA\Property(
+ *                 property="organizer",
+ *                 type="object",
+ *                 @OA\Property(
+ *                     property="firstname",
+ *                     type="string",
+ *                     example="John"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="lastname",
+ *                     type="string",
+ *                     example="Doe"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="email",
+ *                     type="string",
+ *                     example="example@example.com"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="username",
+ *                     type="string",
+ *                     example="johndoe"
+ *                 )
+ *             ),
+ *             @OA\Property(
+ *                 property="isPrivate",
+ *                 type="boolean",
+ *                 example="false"
+ *             ),
+ *             @OA\Property(
+ *                 property="participants",
+ *                 type="array",
+ *                 @OA\Items(
+ *                     type="object",
+ *                     @OA\Property(
+ *                         property="user",
+ *                         type="object",
+ *                         @OA\Property(
+ *                             property="firstname",
+ *                             type="string",
+ *                             example="Jane"
+ *                         ),
+ *                         @OA\Property(
+ *                             property="lastname",
+ *                             type="string",
+ *                             example="Doe"
+ *                         ),
+ *                         @OA\Property(
+ *                             property="id",
+ *                             type="string",
+ *                             example="5f9b9b9b9b9b9b9b9b9b9b9b"
+ *                         )
+ *                     )
+ *                 )
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="L'événement a été créé",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(
+ *                 property="type",
+ *                 type="string",
+ *                 example="resource"
+ *             ),
+ *             @OA\Property(
+ *                 property="event",
+ *                 type="object (comme dans le body de la requête)",
+ *                 @OA\Property(
+ *                 )
+ *             ),
+ *             @OA\Property(
+ *                 property="links",
+ *                 type="object",
+ *                 @OA\Property(
+ *                     property="self",
+ *                     type="string",
+ *                     example="/event/5f9b9b9b9b9b9b9b9b9b9b9b"
+ *                 )
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Les données envoyées ne sont pas valides",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(
+ *                 property="type",
+ *                 type="string",
+ *                 example="error"
+ *             ),
+ *             @OA\Property(
+ *                 property="message",
+ *                 type="string",
+ *                 example="Les données envoyées ne sont pas valides"
+ *             ),
+ *             @OA\Property(
+ *                 property="code",
+ *                 type="integer",
+ *                 example=400
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="La ressource demandée n'a pas pu être créée",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(
+ *                 property="type",
+ *                 type="string",
+ *                 example="error"
+ *             ),
+ *             @OA\Property(
+ *                 property="message",
+ *                 type="string",
+ *                 example="La ressource demandée n'a pas pu être créée"
+ *             ),
+ *             @OA\Property(
+ *                 property="code",
+ *                 type="integer",
+ *                 example=500
+ *             )
+ *         )
+ *     )
+ * )
+ */
 final class CreateEventAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

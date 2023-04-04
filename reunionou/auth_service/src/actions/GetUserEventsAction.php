@@ -10,6 +10,168 @@ use reunionou\auth\actions\AbstractAction;
 use reunionou\auth\errors\exceptions\HttpNotFound;
 use reunionou\auth\services\EventService;
 
+
+/**
+ * @OA\Get(
+ *     path="/user/{id}/events",
+ *     tags={"User", "Event"},
+ *    @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="id de l'utilisateur",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="200",
+ *         description="Liste des évenements",
+ *        @OA\JsonContent(
+ *            type="object",
+ *           @OA\Property(
+ *             property="type",
+ *            type="string",
+ *           example="collection"
+ *          ),
+ *          @OA\Property(
+ *            property="events",
+ *            type="array",
+ *            @OA\Items(
+ *                type="object",
+ *                @OA\Property(
+ *                    property="id",
+ *                    type="string",
+ *                    example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *                ),
+ *                @OA\Property(
+ *                    property="title",
+ *                    type="string",
+ *                    example="Anniversaire de John"
+ *                ),
+ *                @OA\Property(
+ *                    property="description",
+ *                    type="string",
+ *                    example="Anniversaire de John"
+ *                ),
+ *                @OA\Property(
+ *                    property="date",
+ *                    type="string",
+ *                    example="2023-04-02T12:24"
+ *                ),
+ *                @OA\Property(
+ *                    property="address",
+ *                    type="string",
+ *                    example="1 rue de la paix"
+ *                ),
+ *                @OA\Property(
+ *                    property="gps",
+ *                    type="array",
+ *                    @OA\Items(
+ *                        type="number",
+ *                        example=1.2345
+ *                    ),
+ *                    @OA\Items(
+ *                        type="number",
+ *                        example=1.2345
+ *                    )
+ *                ),
+ *                @OA\Property(
+ *                    property="organizer",
+ *                    type="object",
+ *                    @OA\Property(
+ *                        property="id",
+ *                        type="string",
+ *                        example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *                    ),
+ *                    @OA\Property(
+ *                        property="firstname",
+ *                        type="string",
+ *                        example="John"
+ *                    ),
+ *                    @OA\Property(
+ *                        property="lastname",
+ *                        type="string",
+ *                        example="Doe"
+ *                    ),
+ *                    @OA\Property(
+ *                        property="email",
+ *                        type="string",
+ *                        example="test@example.com"
+ *                    ),
+ *                    @OA\Property(
+ *                        property="username",
+ *                        type="string",
+ *                        example="johndoe"
+ *                    ),
+ *                   ),
+ *                 @OA\Property(
+ *                   property="participants",
+ *                   type="array",
+ *                   @OA\Items(
+ *                     type="object",
+ *                     @OA\Property(
+ *                       property="type",
+ *                       type="string",
+ *                       example="guest | user"
+ *                     ),
+ *                     @OA\Property(
+ *                       property="user",
+ *                       type="object",
+ *                       @OA\Property(
+ *                       property="id",
+ *                       type="string",
+ *                       example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *                     ),
+ *                     @OA\Property(
+ *                       property="firstname",
+ *                       type="string",
+ *                       example="John"
+ *                     ),
+ *                     @OA\Property(
+ *                       property="lastname",
+ *                       type="string",
+ *                       example="Doe"
+ *                     ),
+ *                    ),
+ *                    @OA\Property(
+ *                      property="status",
+ *                      type="string",
+ *                      example="waiting | accepted | declined"
+ *                      ),
+ *                      ),
+ *                      ),
+ *                ),
+ *            )
+ *        )
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         description="L'identifiant de la ressource demandée ne correspond à aucune ressource disponible",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(
+ *                 property="type",
+ *                 type="string",
+ *                 example="error"
+ *             ),
+ *             @OA\Property(
+ *                 property="message",
+ *                 type="string",
+ *                 example="L'identifiant de la ressource demandée ne correspond à aucune ressource disponible"
+ *             ),
+ *             @OA\Property(
+ *                 property="code",
+ *                 type="integer",
+ *                 example=404
+ *             ),
+ *           )
+ *       )
+ * )
+    
+
+ */
 final class GetUserEventsAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

@@ -11,6 +11,111 @@ use reunionou\auth\services\DbService;
 use reunionou\auth\errors\exceptions\HttpNotAuthorized;
 use reunionou\auth\errors\exceptions\HttpNotFound;
 
+/** 
+ * @OA\Post(
+ *   path="/signin",
+ *   tags={"Authentification"},
+ *   @OA\Parameter(
+ *     name="Authorization",
+ *     in="header",
+ *     required=true,
+ *     @OA\Schema(
+ *       type="string",
+ *       example="Basic username:password"
+ *     )
+ *   ),
+ *          @OA\Response(
+ *            response="200",
+ *            description="Utilisateur trouvé",
+ *            @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(
+ *                property="type",
+ *                type="string",
+ *                example="ressource"
+ *                ),
+ *                @OA\Property(
+ *                  property="user",
+ *                  type="object",
+ *                  @OA\Property(
+ *                    property="acces_token",
+ *                    type="string",
+ *                  ),
+ *                  @OA\Property(
+ *                    property="refresh_token",
+ *                    type="string",
+ *                  )
+ *                  )
+ *                  )
+ *                  ),
+ *                  @OA\Response(
+ *                    response="400",
+ *                    description="Les données envoyées ne sont pas valides",
+ *                    @OA\JsonContent(
+ *                      type="object",
+ *                      @OA\Property(
+ *                        property="type",
+ *                        type="string",
+ *                        example="error"
+ *                        ),
+ *                        @OA\Property(
+ *                          property="message",
+ *                          type="string",
+ *                          example="Les données envoyées ne sont pas valides"
+ *                          ),
+ *                          @OA\Property(
+ *                            property="code",
+ *                            type="integer",
+ *                            example="400"
+ *                            )
+ *                            )
+ *                            ),
+ *                            @OA\Response(
+ *                              response="401",
+ *                              description="Mot de passe invalide",
+ *                              @OA\JsonContent(
+ *                                type="object",
+ *                                @OA\Property(
+ *                                  property="type",
+ *                                  type="string",
+ *                                  example="error"
+ *                                  ),
+ *                                  @OA\Property(
+ *                                    property="message",
+ *                                    type="string",
+ *                                    example="Mot de passe invalide"
+ *                                    ),
+ *                                    @OA\Property(
+ *                                      property="code",
+ *                                      type="integer",
+ *                                      example="401"
+ *                                      )
+ *                                      )
+ *                                      ),
+ *                                      @OA\Response(
+ *                                        response="404",
+ *                                        description="Utilisateur non trouvé",
+ *                                        @OA\JsonContent(
+ *                                          type="object",
+ *                                          @OA\Property(
+ *                                            property="type",
+ *                                            type="string",
+ *                                            example="error"
+ *                                            ),
+ *                                            @OA\Property(
+ *                                              property="message",
+ *                                              type="string",
+ *                                              example="Utilisateur non trouvé"
+ *                                              ),
+ *                                              @OA\Property(
+ *                                                property="code",
+ *                                                type="integer",
+ *                                                example="404"
+ *                                                )
+ *                                                )
+ *                                                )
+ *                                                )                
+ */
 final class SigninAction extends AbstractAction
 {
 

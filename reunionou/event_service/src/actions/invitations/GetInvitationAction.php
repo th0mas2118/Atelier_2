@@ -10,6 +10,121 @@ use reunionou\event\actions\AbstractAction;
 use reunionou\event\errors\exceptions\HttpNotFound;
 use reunionou\event\services\InvitationService;
 
+/**
+ *   @OA\Get(
+ *       path="/invitations/{id}",
+ *       tags={"Invitation"},
+ *       summary="Récupère une invitation",
+ *       description="Récupère une invitation",
+ *       @OA\Parameter(
+ *           name="id",
+ *           in="path",
+ *           description="id de l'invitation",
+ *           required=true,
+ *           @OA\Schema(
+ *               type="string",
+ *               example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *           )
+ *       ),
+ *       @OA\Response(
+ *           response="200",
+ *           description="Invitation",
+ *           @OA\JsonContent(
+ *               type="object",
+ *               @OA\Property(
+ *                   property="type",
+ *                   type="string",
+ *                   example="resource"
+ *               ),
+ *               @OA\Property(
+ *                   property="invitation",
+ *                   type="object",
+ *@OA\Property(
+ *                 property="event_title",
+ *                 type="string",
+ *                 example="Anniversaire de John"
+ *             ),
+ *             @OA\Property(
+ *                 property="organizer",
+ *                 type="object",
+ *                 @OA\Property(
+ *                     property="firstname",
+ *                     type="string",
+ *                     example="John"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="lastname",
+ *                     type="string",
+ *                     example="Doe"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="email",
+ *                     type="string",
+ *                     example="example@example.com"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="username",
+ *                     type="string",
+ *                     example="johndoe"
+ *                 )
+ *             ),
+ *             @OA\Property(
+ *                 property="user",
+ *                 type="object",
+ *                 @OA\Property(
+ *                     property="firstname",
+ *                     type="string",
+ *                     example="John"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="lastname",
+ *                     type="string",
+ *                     example="Doe"
+ *                 ),
+ *                 @OA\Property(
+ *                     property="mail",
+ *                     type="string",
+ *                     example=""
+ *                 ),
+ *                 @OA\Property(
+ *                     property="username",
+ *                     type="string",
+ *                     example="johndoe"
+ *                 )
+ *             ),
+ *             @OA\Property(
+ *               property="status",
+ *               type="string",
+ *               example="pending"
+ *               ),
+ *               @OA\Property(
+ *                 property="id",
+ *                 type="string",
+ *                 example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *                 ),
+ *                 @OA\Property(
+ *                   property="links",
+ *                   type="object",
+ *                   @OA\Property(
+ *                     property="self",
+ *                     type="object",
+ *                     @OA\Property(
+ *                       property="href",
+ *                       type="string",
+ *                       example="http://localhost:8080/invitations/5f9f1b9b9b9b9b9b9b9b9b9b"
+ *                       )
+ *                       )
+ *                       )
+ *                       )
+ *                       )
+ *                       ),
+ *                       @OA\Response(
+ *                         response="404",
+ *                         description="L'identifiant de la ressource demandée ne correspond à aucune ressource disponible"
+ *                         )
+ *                         )
+ *                         
+ */
 final class GetInvitationAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

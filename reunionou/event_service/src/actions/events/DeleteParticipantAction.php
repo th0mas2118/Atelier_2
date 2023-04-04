@@ -9,6 +9,65 @@ use reunionou\event\actions\AbstractAction;
 use reunionou\event\services\InvitationService;
 use Slim\Exception\HttpInternalServerErrorException;
 
+/**
+ * @OA\Delete(
+ *     path="/events/{event_id}/participants",
+ *     tags={"Event"},
+ *    @OA\Parameter(
+ *         name="event_id",
+ *         in="path",
+ *         description="id de l'événement",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *         )
+ *     ),
+ *     @OA\RequestBody(
+ *         description="Suppression d'un participant",
+ *         required=true,
+ *         @OA\JsonContent(
+ *            type="object",
+ *            @OA\Property(
+ *              property="member_id",
+ *              type="string",
+ *              example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *            ),
+ *            @OA\Property(
+ *              property="is_guest",
+ *              type="boolean",
+ *              example="true"
+ *            )
+ *         )
+ *      ),
+ *      @OA\Response(
+ *        response="204",
+ *        description="Participant supprimé"
+ *      ),
+ *      @OA\Response(
+ *        response="500",
+ *        description="Erreur lors de la suppression du participant",
+ *       @OA\JsonContent(
+ *            type="object",
+ *            @OA\Property(
+ *              property="message",
+ *              type="string",
+ *              example="La ressource demandée n'a pas pu être supprimée: 5f9f1b9b9b9b9b9b9b9b9b9b"
+ *            ),
+ *           @OA\Property(
+ *              property="type",
+ *              type="string",
+ *              example="error"
+ *            ),
+ *           @OA\Property(
+ *              property="code",
+ *              type="integer",
+ *              example="500"
+ *            )
+ *         )
+ *      )
+ * )
+ */
 final class DeleteParticipantAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

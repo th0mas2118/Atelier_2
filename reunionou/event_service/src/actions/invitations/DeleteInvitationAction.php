@@ -10,6 +10,30 @@ use reunionou\event\services\InvitationService;
 use reunionou\event\errors\exceptions\HttpNotFound;
 use Slim\Exception\HttpInternalServerErrorException;
 
+/** 
+ * @OA\Delete(
+ *     path="/invitations/{id}",
+ *     tags={"Invitation"},
+ *    @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="id de l'invitation",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response="204",
+ *         description="Invitation supprimée"
+ *     ),
+ *     @OA\Response(
+ *         response="404",
+ *         description="Invitation non trouvée"
+ *     ),
+ * )
+ */
 final class DeleteInvitationAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

@@ -1,0 +1,264 @@
+openapi: 3.0.0
+paths:
+  '/user/{id}':
+    get:
+      tags:
+        - User
+      parameters:
+        -
+          name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        '200':
+          description: 'Utilisateur trouvé'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: ressource }
+                  user: { properties: { id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, mail: { type: string, example: example@example.com }, username: { type: string, example: johndoe }, level: { type: integer, example: 1 }, adresse: { type: string, example: '1 rue de la paix' } }, type: object }
+                type: object
+        '404':
+          description: 'Utilisateur non trouvé'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressources demandée ne corrspond à aucune ressource disponile: 5f9f1b9b9b9b9b9b9b9b9b9b" }
+                  code: { type: integer, example: '404' }
+                type: object
+    delete:
+      tags:
+        - User
+      parameters:
+        -
+          name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        '204':
+          description: 'Utilisateur supprimé'
+  '/user/{id}/events':
+    get:
+      tags:
+        - User
+        - Event
+      parameters:
+        -
+          name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        '200':
+          description: 'Liste des évenements'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: collection }
+                  events: { type: array, items: { properties: { id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, title: { type: string, example: 'Anniversaire de John' }, description: { type: string, example: 'Anniversaire de John' }, date: { type: string, example: '2023-04-02T12:24' }, address: { type: string, example: '1 rue de la paix' }, gps: { type: array, items: { type: number, example: 1.2345 } }, organizer: { properties: { id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, email: { type: string, example: test@example.com }, username: { type: string, example: johndoe } }, type: object }, participants: { type: array, items: { properties: { type: { type: string, example: 'guest | user' }, user: { properties: { id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe } }, type: object }, status: { type: string, example: 'waiting | accepted | declined' } }, type: object } } }, type: object } }
+                type: object
+        '404':
+          description: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible" }
+                  code: { type: integer, example: 404 }
+                type: object
+  '/user/{id}/invitations':
+    get:
+      tags:
+        - User
+        - Invitation
+      parameters:
+        -
+          name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        '200':
+          description: 'Liste des invitations'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: collection }
+                  count: { type: integer, example: 1 }
+                  invitations: { type: array, items: { properties: { id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, event_title: { type: string, example: 'Anniversaire de John' }, event_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, "user (si l'utilisateur invité est inscrit)": { properties: { id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, username: { type: string, example: johndoe }, mail: { type: string, example: example@example.com }, adresse: { type: string, example: '1 rue de la paix' } }, type: object }, accepted: { type: boolean, example: 'false' }, organizer: { properties: { id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, email: { type: string, example: test@example.com }, username: { type: string, example: johndoe } }, type: object }, "is_guest (si l'utilisateur invité n'est pas inscrit)": { type: boolean, example: 'true' }, "guest_firstname (si l'utilisateur invité n'est pas inscrit)": { type: string, example: John }, "guest_lastname (si l'utilisateur invité n'est pas inscrit)": { type: string, example: Doe } }, type: object } }
+                type: object
+  /signout:
+    post:
+      tags:
+        - Authentification
+      parameters:
+        -
+          name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: 'Bearer access_token'
+      responses:
+        '200':
+          description: 'Utilisateur déconnecté'
+        '400':
+          description: 'Les données envoyées ne sont pas valides'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: 'No authorization header present' }
+                type: object
+        '401':
+          description: "L'utilisateur n'est pas connecté"
+  /signup:
+    post:
+      tags:
+        - Authentification
+      requestBody:
+        description: "Informations de l'utilisateur"
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: example@example.com
+                username:
+                  type: string
+                  example: JohnDoe
+                firstname:
+                  type: string
+                  example: John
+                lastname:
+                  type: string
+                  example: Doe
+                password:
+                  type: string
+                  example: password
+              type: object
+      responses:
+        '201':
+          description: 'Utilisateur créé'
+        '400':
+          description: 'Les données envoyées ne sont pas valides'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: 'Les données envoyées ne sont pas valides' }
+                  code: { type: integer, example: '400' }
+                type: object
+        '409':
+          description: "L'utilisateur existe déjà"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'utilisateur existe déjà" }
+                  code: { type: integer, example: '409' }
+                type: object
+  /signin:
+    post:
+      tags:
+        - Authentification
+      parameters:
+        -
+          name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: 'Basic username:password'
+      responses:
+        '200':
+          description: 'Utilisateur trouvé'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: ressource }
+                  user: { properties: { acces_token: { type: string }, refresh_token: { type: string } }, type: object }
+                type: object
+        '400':
+          description: 'Les données envoyées ne sont pas valides'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: 'Les données envoyées ne sont pas valides' }
+                  code: { type: integer, example: '400' }
+                type: object
+        '401':
+          description: 'Mot de passe invalide'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: 'Mot de passe invalide' }
+                  code: { type: integer, example: '401' }
+                type: object
+        '404':
+          description: 'Utilisateur non trouvé'
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: 'Utilisateur non trouvé' }
+                  code: { type: integer, example: '404' }
+                type: object
+  '/users/{id}':
+    put:
+      tags:
+        - User
+      parameters:
+        -
+          name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      requestBody:
+        description: "Données de l'utilisateur (basé sur les données envoyées lors de la création d'un utilisateur)"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '204':
+          description: 'Utilisateur modifié'
+        '400':
+          description: 'Données envoyées non valides'
+        '404':
+          description: 'Utilisateur non trouvé'

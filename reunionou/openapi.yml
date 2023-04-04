@@ -1,0 +1,1055 @@
+openapi: 3.0.0
+paths:
+  "/user/{id}":
+    get:
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "200":
+          description: "Utilisateur trouvé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: ressource }
+                  user:
+                    {
+                      properties:
+                        {
+                          id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                          firstname: { type: string, example: John },
+                          lastname: { type: string, example: Doe },
+                          mail: { type: string, example: example@example.com },
+                          username: { type: string, example: johndoe },
+                          level: { type: integer, example: 1 },
+                          adresse: { type: string, example: "1 rue de la paix" },
+                        },
+                      type: object,
+                    }
+                type: object
+        "404":
+          description: "Utilisateur non trouvé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressources demandée ne corrspond à aucune ressource disponile: 5f9f1b9b9b9b9b9b9b9b9b9b" }
+                  code: { type: integer, example: "404" }
+                type: object
+    delete:
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "204":
+          description: "Utilisateur supprimé"
+  "/user/{id}/events":
+    get:
+      tags:
+        - User
+        - Event
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "200":
+          description: "Liste des évenements"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: collection }
+                  events:
+                    {
+                      type: array,
+                      items:
+                        {
+                          properties:
+                            {
+                              id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                              title: { type: string, example: "Anniversaire de John" },
+                              description: { type: string, example: "Anniversaire de John" },
+                              date: { type: string, example: "2023-04-02T12:24" },
+                              address: { type: string, example: "1 rue de la paix" },
+                              gps: { type: array, items: { type: number, example: 1.2345 } },
+                              organizer:
+                                {
+                                  properties:
+                                    {
+                                      id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                                      firstname: { type: string, example: John },
+                                      lastname: { type: string, example: Doe },
+                                      email: { type: string, example: test@example.com },
+                                      username: { type: string, example: johndoe },
+                                    },
+                                  type: object,
+                                },
+                              participants:
+                                {
+                                  type: array,
+                                  items:
+                                    {
+                                      properties:
+                                        {
+                                          type: { type: string, example: "guest | user" },
+                                          user: { properties: { id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe } }, type: object },
+                                          status: { type: string, example: "waiting | accepted | declined" },
+                                        },
+                                      type: object,
+                                    },
+                                },
+                            },
+                          type: object,
+                        },
+                    }
+                type: object
+        "404":
+          description: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible" }
+                  code: { type: integer, example: 404 }
+                type: object
+  "/user/{id}/invitations":
+    get:
+      tags:
+        - User
+        - Invitation
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "200":
+          description: "Liste des invitations"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: collection }
+                  count: { type: integer, example: 1 }
+                  invitations:
+                    {
+                      type: array,
+                      items:
+                        {
+                          properties:
+                            {
+                              id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                              event_title: { type: string, example: "Anniversaire de John" },
+                              event_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                              "user (si l'utilisateur invité est inscrit)":
+                                {
+                                  properties:
+                                    {
+                                      id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                                      firstname: { type: string, example: John },
+                                      lastname: { type: string, example: Doe },
+                                      username: { type: string, example: johndoe },
+                                      mail: { type: string, example: example@example.com },
+                                      adresse: { type: string, example: "1 rue de la paix" },
+                                    },
+                                  type: object,
+                                },
+                              accepted: { type: boolean, example: "false" },
+                              organizer:
+                                {
+                                  properties:
+                                    {
+                                      id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                                      firstname: { type: string, example: John },
+                                      lastname: { type: string, example: Doe },
+                                      email: { type: string, example: test@example.com },
+                                      username: { type: string, example: johndoe },
+                                    },
+                                  type: object,
+                                },
+                              "is_guest (si l'utilisateur invité n'est pas inscrit)": { type: boolean, example: "true" },
+                              "guest_firstname (si l'utilisateur invité n'est pas inscrit)": { type: string, example: John },
+                              "guest_lastname (si l'utilisateur invité n'est pas inscrit)": { type: string, example: Doe },
+                            },
+                          type: object,
+                        },
+                    }
+                type: object
+  /signout:
+    post:
+      tags:
+        - Authentification
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "Bearer access_token"
+      responses:
+        "200":
+          description: "Utilisateur déconnecté"
+        "400":
+          description: "Les données envoyées ne sont pas valides"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "No authorization header present" }
+                type: object
+        "401":
+          description: "L'utilisateur n'est pas connecté"
+  /signup:
+    post:
+      tags:
+        - Authentification
+      requestBody:
+        description: "Informations de l'utilisateur"
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: example@example.com
+                username:
+                  type: string
+                  example: JohnDoe
+                firstname:
+                  type: string
+                  example: John
+                lastname:
+                  type: string
+                  example: Doe
+                password:
+                  type: string
+                  example: password
+              type: object
+      responses:
+        "201":
+          description: "Utilisateur créé"
+        "400":
+          description: "Les données envoyées ne sont pas valides"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "Les données envoyées ne sont pas valides" }
+                  code: { type: integer, example: "400" }
+                type: object
+        "409":
+          description: "L'utilisateur existe déjà"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'utilisateur existe déjà" }
+                  code: { type: integer, example: "409" }
+                type: object
+  /signin:
+    post:
+      tags:
+        - Authentification
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: "Basic username:password"
+      responses:
+        "200":
+          description: "Utilisateur trouvé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: ressource }
+                  user: { properties: { acces_token: { type: string }, refresh_token: { type: string } }, type: object }
+                type: object
+        "400":
+          description: "Les données envoyées ne sont pas valides"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "Les données envoyées ne sont pas valides" }
+                  code: { type: integer, example: "400" }
+                type: object
+        "401":
+          description: "Mot de passe invalide"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "Mot de passe invalide" }
+                  code: { type: integer, example: "401" }
+                type: object
+        "404":
+          description: "Utilisateur non trouvé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "Utilisateur non trouvé" }
+                  code: { type: integer, example: "404" }
+                type: object
+  "/users/{id}":
+    put:
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      requestBody:
+        description: "Données de l'utilisateur (basé sur les données envoyées lors de la création d'un utilisateur)"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "204":
+          description: "Utilisateur modifié"
+        "400":
+          description: "Données envoyées non valides"
+        "404":
+          description: "Utilisateur non trouvé"
+  /comment:
+    post:
+      tags:
+        - Comment
+      summary: "Créer un commentaire"
+      description: "Créer un commentaire"
+      operationId: createComment
+      requestBody:
+        description: "Informations du commentaire"
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                content:
+                  type: string
+                  example: "C'était super !"
+                firstname:
+                  type: string
+                  example: John
+                lastname:
+                  type: string
+                  example: Doe
+                event_id:
+                  type: string
+                  example: 5f9f1b9b9b9b9b9b9b9b9b9b
+                member_id:
+                  type: string
+                  example: 5f9f1b9b9b9b9b9b9b9b9b9b
+              type: object
+      responses:
+        "200":
+          description: "Commentaire créé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  comment:
+                    {
+                      properties:
+                        {
+                          content: { type: string, example: "C'était super !" },
+                          firstname: { type: string, example: John },
+                          lastname: { type: string, example: Doe },
+                          event_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                          member_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                        },
+                      type: object,
+                    }
+                type: object
+        "400":
+          description: "Données envoyées non valides"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "Données envoyées non valides" }
+                  code: { type: integer, example: "400" }
+                type: object
+  "/comment/{id}":
+    get:
+      tags:
+        - Comment
+      summary: "Récupérer un commentaire"
+      description: "Récupérer un commentaire"
+      operationId: getComment
+      parameters:
+        - name: id
+          in: path
+          description: "Identifiant du commentaire"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "200":
+          description: "Commentaire récupéré"
+          content:
+            application/json:
+              schema:
+                properties:
+                  content: { type: string, example: "C'était super !" }
+                  firstname: { type: string, example: John }
+                  lastname: { type: string, example: Doe }
+                  event_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }
+                  member_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }
+                  links: { properties: { self: { properties: { href: { type: string, example: "http://localhost:8080/comment/5f9f1b9b9b9b9b9b9b9b9b9b" } }, type: object } }, type: object }
+                type: object
+        "404":
+          description: "Commentaire non trouvé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible: 5f9f1b9b9b9b9b9b9b9b9b9b" }
+                type: object
+    delete:
+      tags:
+        - Comment
+      summary: "Supprimer un commentaire"
+      description: "Supprimer un commentaire"
+      operationId: deleteComment
+      parameters:
+        - name: id
+          in: path
+          description: "Identifiant du commentaire"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "200":
+          description: "Commentaire supprimé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  message: { type: string, example: "Commentaire supprimé avec succès." }
+                  links: { properties: { self: { properties: { href: { type: string, example: "http://localhost:8080/comment/5f9f1b9b9b9b9b9b9b9b9b9b" } }, type: object } }, type: object }
+                type: object
+        "404":
+          description: "Commentaire non trouvé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible: 5f9f1b9b9b9b9b9b9b9b9b9b" }
+                type: object
+  "/event/{event_id}/participants":
+    post:
+      tags:
+        - Event
+      parameters:
+        - name: event_id
+          in: path
+          description: "id de l'événement"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      requestBody:
+        description: "Ajout d'un participant"
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                type:
+                  type: string
+                  example: "user | guest"
+                user:
+                  properties: { id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe } }
+                  type: object
+              type: object
+      responses:
+        "204":
+          description: "Participant ajouté"
+        "500":
+          description: "Erreur interne du serveur"
+    delete:
+      tags:
+        - Event
+      parameters:
+        - name: event_id
+          in: path
+          description: "id de l'événement"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      requestBody:
+        description: "Suppression d'un participant"
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                member_id:
+                  type: string
+                  example: 5f9f1b9b9b9b9b9b9b9b9b9b
+                is_guest:
+                  type: boolean
+                  example: "true"
+              type: object
+      responses:
+        "204":
+          description: "Participant supprimé"
+        "500":
+          description: "Erreur lors de la suppression du participant"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: "La ressource demandée n'a pas pu être supprimée: 5f9f1b9b9b9b9b9b9b9b9b9b" }
+                  type: { type: string, example: error }
+                  code: { type: integer, example: "500" }
+                type: object
+  /event:
+    post:
+      tags:
+        - Event
+      summary: "Créer un événement"
+      description: "Créer un événement"
+      operationId: createEvent
+      requestBody:
+        description: "Informations de l'événement"
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  type: string
+                  example: "Anniversaire de John"
+                description:
+                  type: string
+                  example: "C'est l'anniversaire de John, on va faire la fête !"
+                date:
+                  type: string
+                  example: "2020-10-31T12:00:00+02:00"
+                address:
+                  type: string
+                  example: "1 rue de la Réunion"
+                gps:
+                  type: array
+                  items: { type: number, example: "48.123456" }
+                organizer:
+                  properties: { firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, email: { type: string, example: example@example.com }, username: { type: string, example: johndoe } }
+                  type: object
+                isPrivate:
+                  type: boolean
+                  example: "false"
+                participants:
+                  type: array
+                  items: { properties: { user: { properties: { firstname: { type: string, example: Jane }, lastname: { type: string, example: Doe }, id: { type: string, example: 5f9b9b9b9b9b9b9b9b9b9b9b } }, type: object } }, type: object }
+              type: object
+      responses:
+        "201":
+          description: "L'événement a été créé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  event: { properties: { "": {} }, type: "object (comme dans le body de la requête)" }
+                  links: { properties: { self: { type: string, example: /event/5f9b9b9b9b9b9b9b9b9b9b9b } }, type: object }
+                type: object
+        "400":
+          description: "Les données envoyées ne sont pas valides"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "Les données envoyées ne sont pas valides" }
+                  code: { type: integer, example: 400 }
+                type: object
+        "500":
+          description: "La ressource demandée n'a pas pu être créée"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "La ressource demandée n'a pas pu être créée" }
+                  code: { type: integer, example: 500 }
+                type: object
+  "/events/{id}":
+    get:
+      tags:
+        - Event
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'évenement"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "200":
+          description: Évenement
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  event:
+                    {
+                      properties:
+                        {
+                          id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                          title: { type: string, example: "Anniversaire de John" },
+                          description: { type: string, example: "Anniversaire de John" },
+                          date: { type: string, example: "2020-10-31T00:00:00+00:00" },
+                          location: { type: string, example: Paris },
+                          organizer: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                          participants: { type: array, items: { type: object } },
+                          links: { properties: { self: { properties: { href: { type: string, example: "http://localhost:8080/event/5f9f1b9b9b9b9b9b9b9b9b9b" } }, type: object } }, type: object },
+                        },
+                      type: object,
+                    }
+                type: object
+        "404":
+          description: "Évenement non trouvé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible: 5f9f1b9b9b9b9b9b9b9b9b9b" }
+                  code: { type: integer, example: "404" }
+                type: object
+    delete:
+      tags:
+        - Event
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'évenement"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "204":
+          description: "Évenement supprimé"
+        "404":
+          description: "Évenement non trouvé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible: 5f9f1b9b9b9b9b9b9b9b9b9b" }
+                type: object
+  "/events/{event_id}/participants":
+    patch:
+      tags:
+        - Event
+      parameters:
+        - name: event_id
+          in: path
+          description: "id de l'événement"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      requestBody:
+        description: "Modification de la participation d'un participant"
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                user_id:
+                  type: string
+                  example: 5f9f1b9b9b9b9b9b9b9b9b9b
+                status:
+                  type: string
+                  example: "accepted | declined | waiting"
+                type:
+                  type: string
+                  example: "user | guest"
+              type: object
+      responses:
+        "204":
+          description: "Participant modifié"
+        "400":
+          description: "Les données envoyées ne sont pas valides"
+        "404":
+          description: "L'événement n'existe pas"
+        "500":
+          description: "La ressource demandée n'a pas pu être modifiée"
+  "/invitations/{id}/guest":
+    post:
+      tags:
+        - Event
+      summary: "Créer une invitation unique"
+      description: "Créer une invitation unique"
+      operationId: createUniqueInvitation
+      parameters:
+        - name: id
+          in: path
+          description: "ID de l'événement"
+          required: true
+          schema:
+            type: string
+            example: 5f9b9b9b9b9b9b9b9b9b9b9b
+      requestBody:
+        description: "Informations de l'invitation"
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                guest_firstname:
+                  type: string
+                  example: John
+                guest_lastname:
+                  type: string
+                  example: Doe
+                event_title:
+                  type: string
+                  example: "Anniversaire de John"
+              type: object
+      responses:
+        "201":
+          description: "Invitation créée"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  id: { type: string, example: 5f9b9b9b9b9b9b9b9b9b9b9b }
+                type: object
+        "400":
+          description: "Données invalides"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "Données invalides" }
+                type: object
+        "404":
+          description: "Ressource non trouvée"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "Ressource non trouvée" }
+                type: object
+  "/invitations/{id}/":
+    post:
+      tags:
+        - Event
+      summary: "Créer une invitation pour un utilisateur"
+      description: "Créer une invitation pour un utilisateur"
+      operationId: createInvitation
+      parameters:
+        - name: id
+          in: path
+          description: "ID de l'événement"
+          required: true
+          schema:
+            type: string
+            example: 5f9b9b9b9b9b9b9b9b9b9b9b
+      requestBody:
+        description: "Informations de l'invitation"
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                event_title:
+                  type: string
+                  example: "Anniversaire de John"
+                organizer:
+                  properties: { firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, email: { type: string, example: example@example.com }, username: { type: string, example: johndoe } }
+                  type: object
+                user:
+                  properties: { firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, mail: { type: string, example: "" }, username: { type: string, example: johndoe } }
+                  type: object
+              type: object
+      responses:
+        "201":
+          description: "Invitation créée"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  invitation: { properties: { link: { type: string, example: "http://localhost:8080/invitations/5f9b9b9b9b9b9b9b9b9b9b9b" } }, type: object }
+                type: object
+        "400":
+          description: "Données invalides"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "Données invalides" }
+                  code: { type: integer, example: 400 }
+                type: object
+        "404":
+          description: "Événement non trouvé"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "Événement non trouvé" }
+                  code: { type: integer, example: 404 }
+                type: object
+    patch:
+      tags:
+        - Event
+      summary: "Modifier une invitation pour un utilisateur"
+      description: "Modifier une invitation pour un utilisateur"
+      operationId: updateInvitation
+      parameters:
+        - name: id
+          in: path
+          description: "ID de l'événement"
+          required: true
+          schema:
+            type: string
+            example: 5f9b9b9b9b9b9b9b9b9b9b9b
+      requestBody:
+        description: "Informations de l'invitation"
+        required: true
+      responses:
+        "204":
+          description: "Invitation modifiée"
+        "400":
+          description: "Données invalides"
+        "404":
+          description: "Invitation non trouvée"
+        "500":
+          description: "Erreur interne"
+  "/invitations/{id}":
+    get:
+      tags:
+        - Invitation
+      summary: "Récupère une invitation"
+      description: "Récupère une invitation"
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'invitation"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "200":
+          description: Invitation
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  invitation:
+                    {
+                      properties:
+                        {
+                          event_title: { type: string, example: "Anniversaire de John" },
+                          organizer:
+                            { properties: { firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, email: { type: string, example: example@example.com }, username: { type: string, example: johndoe } }, type: object },
+                          user: { properties: { firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, mail: { type: string, example: "" }, username: { type: string, example: johndoe } }, type: object },
+                          status: { type: string, example: pending },
+                          id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                          links: { properties: { self: { properties: { href: { type: string, example: "http://localhost:8080/invitations/5f9f1b9b9b9b9b9b9b9b9b9b" } }, type: object } }, type: object },
+                        },
+                      type: object,
+                    }
+                type: object
+        "404":
+          description: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible"
+    delete:
+      tags:
+        - Invitation
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'invitation"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "204":
+          description: "Invitation supprimée"
+        "404":
+          description: "Invitation non trouvée"
+  "/events/{id}/invitations":
+    get:
+      tags:
+        - Invitation
+        - Event
+      summary: "Liste des invitations d'un évenement"
+      description: "Liste des invitations d'un évenement"
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'évenement"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      responses:
+        "200":
+          description: "Liste des invitations"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: collection }
+                  count: { type: integer, example: 1 }
+                  invitations:
+                    {
+                      type: array,
+                      items:
+                        {
+                          properties:
+                            {
+                              id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                              event_title: { type: string, example: "Titre de l'évenement" },
+                              event_id: { type: string, example: 5f9f1b9b9b9b9b9b9b9b9b9b },
+                              user: { properties: { firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, mail: { type: string, example: "" }, username: { type: string, example: johndoe } }, type: object },
+                              status: { type: string, example: pending },
+                              uri: { type: string, example: "http://localhost:8080/invitations/5f9f1b9b9b9b9b9b9b9b9b9b" },
+                            },
+                          type: object,
+                        },
+                    }
+                  links: { properties: { self: { properties: { href: { type: string, example: "http://localhost:8080/events/5f9f1b9b9b9b9b9b9b9b9b9b/invitations" } }, type: object } }, type: object }
+                type: object
+        "404":
+          description: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: error }
+                  message: { type: string, example: "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible: 5f9f1b9b9b9b9b9b9b9b9b9b" }
+                type: object
+  "/users/{id}/avatar":
+    get:
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+        - name: width
+          in: query
+          description: "Largeur de l'image"
+          required: false
+          schema:
+            type: integer
+            example: "100"
+        - name: height
+          in: query
+          description: "Hauteur de l'image"
+          required: false
+          schema:
+            type: integer
+            example: "100"
+      responses:
+        "200":
+          description: "Avatar de l'utilisateur"
+        "404":
+          description: "Avatar non trouvé"
+    post:
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      requestBody:
+        description: "Avatar de l'utilisateur"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+              type: object
+      responses:
+        "201":
+          description: "Avatar de l'utilisateur"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  avatar: { properties: { link: { type: string, example: "http://localhost:8080/avatars/5f9f1b9b9b9b9b9b9b9b9b9b" } }, type: object }
+                type: object
+        "400":
+          description: "L'avatar n'a pas pu être trouvé"
+        "500":
+          description: "La ressource demandée n'a pas pu être créée"

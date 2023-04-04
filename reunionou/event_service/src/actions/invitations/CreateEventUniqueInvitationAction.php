@@ -11,6 +11,98 @@ use reunionou\event\actions\AbstractAction;
 use reunionou\event\services\InvitationService;
 use reunionou\event\errors\exceptions\HttpInputNotValid;
 
+/**
+ * @OA\Post(
+ *     path="/invitations/{id}/guest",
+ *     tags={"Event"},
+ *     summary="Créer une invitation unique", 
+ *     description="Créer une invitation unique",
+ *     operationId="createUniqueInvitation",
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID de l'événement",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             example="5f9b9b9b9b9b9b9b9b9b9b9b"
+ *         )
+ *     ),
+ *     @OA\RequestBody(
+ *         description="Informations de l'invitation",
+ *         required=true,
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(
+ *                 property="guest_firstname",
+ *                 type="string",
+ *                 example="John"
+ *             ),
+ *             @OA\Property(
+ *                 property="guest_lastname",
+ *                 type="string",
+ *                 example="Doe"
+ *             ),
+ *             @OA\Property(
+ *                 property="event_title",
+ *                 type="string",
+ *                 example="Anniversaire de John"
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Invitation créée",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(
+ *                 property="type",
+ *                 type="string",
+ *                 example="resource"
+ *             ),
+ *             @OA\Property(
+ *                 property="id",
+ *                 type="string",
+ *                 example="5f9b9b9b9b9b9b9b9b9b9b9b"
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Données invalides",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(
+ *                 property="type",
+ *                 type="string",
+ *                 example="error"
+ *             ),
+ *             @OA\Property(
+ *                 property="message",
+ *                 type="string",
+ *                 example="Données invalides"
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Ressource non trouvée",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(
+ *                 property="type",
+ *                 type="string",
+ *                 example="error"
+ *             ),
+ *             @OA\Property(
+ *                 property="message",
+ *                 type="string",
+ *                 example="Ressource non trouvée"
+ *             )
+ *         )
+ *     )
+ * )
+ */
 final class CreateEventUniqueInvitationAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

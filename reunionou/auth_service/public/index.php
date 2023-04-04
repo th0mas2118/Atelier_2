@@ -20,6 +20,7 @@ use reunionou\auth\actions\RefreshTokenAction;
 use reunionou\auth\actions\GetUserEventsAction;
 use reunionou\auth\actions\ValidateUserIdentity;
 use reunionou\auth\actions\GetUserInvitationsAction;
+use OpenApi\Annotations as OA;
 
 $builder = new ContainerBuilder();
 $builder->addDefinitions(__DIR__ . '/../conf/settings.php');

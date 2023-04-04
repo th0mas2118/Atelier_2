@@ -1,0 +1,73 @@
+openapi: 3.0.0
+paths:
+  '/users/{id}/avatar':
+    get:
+      tags:
+        - User
+      parameters:
+        -
+          name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+        -
+          name: width
+          in: query
+          description: "Largeur de l'image"
+          required: false
+          schema:
+            type: integer
+            example: '100'
+        -
+          name: height
+          in: query
+          description: "Hauteur de l'image"
+          required: false
+          schema:
+            type: integer
+            example: '100'
+      responses:
+        '200':
+          description: "Avatar de l'utilisateur"
+        '404':
+          description: 'Avatar non trouvé'
+    post:
+      tags:
+        - User
+      parameters:
+        -
+          name: id
+          in: path
+          description: "id de l'utilisateur"
+          required: true
+          schema:
+            type: string
+            example: 5f9f1b9b9b9b9b9b9b9b9b9b
+      requestBody:
+        description: "Avatar de l'utilisateur"
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+              type: object
+      responses:
+        '201':
+          description: "Avatar de l'utilisateur"
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, example: resource }
+                  avatar: { properties: { link: { type: string, example: 'http://localhost:8080/avatars/5f9f1b9b9b9b9b9b9b9b9b9b' } }, type: object }
+                type: object
+        '400':
+          description: "L'avatar n'a pas pu être trouvé"
+        '500':
+          description: "La ressource demandée n'a pas pu être créée"

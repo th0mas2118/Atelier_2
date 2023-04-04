@@ -9,6 +9,146 @@ use reunionou\auth\services\InvitationService;
 use reunionou\auth\actions\AbstractAction;
 use reunionou\auth\errors\exceptions\HttpNotFound;
 
+/**
+ * @OA\Get(
+ *    path="/user/{id}/invitations",
+ *    tags={"User", "Invitation"},
+ *    @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="id de l'utilisateur",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string",
+ *             example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *         )
+ *     ),
+ *     @OA\Response(
+ *       response="200",
+ *       description="Liste des invitations",
+ *       @OA\JsonContent(
+ *         type="object",
+ *         @OA\Property(
+ *           property="type",
+ *           type="string",
+ *           example="collection"
+ *         ),
+ *         @OA\Property(
+ *           property="count",
+ *           type="integer",
+ *           example=1
+ *           ),
+ *           @OA\Property(
+ *             property="invitations",
+ *             type="array",
+ *             @OA\Items(
+ *               type="object",
+ *               @OA\Property(
+ *                 property="id",
+ *                 type="string",
+ *                 example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *               ),
+ *               @OA\Property(
+ *                 property="event_title",
+ *                 type="string",
+ *                 example="Anniversaire de John"
+ *               ),
+ *               @OA\Property(
+ *                 property="event_id",
+ *                 type="string",
+ *                 example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *               ),
+ *               @OA\Property(
+ *                 property="user (si l'utilisateur invité est inscrit)",
+ *                 type="object",
+ *        @OA\Property(
+ *         property="id",
+ *       type="string",
+ *    example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ * ),
+ * @OA\Property(
+ * property="firstname",
+ * type="string",
+ * example="John"
+ * ),
+ * @OA\Property(
+ * property="lastname",
+ * type="string",
+ * example="Doe"
+ * ),
+ * @OA\Property(
+ * property="username",
+ * type="string",
+ * example="johndoe"
+ * ),
+ * @OA\Property(
+ * property="mail",
+ * type="string",
+ * example="example@example.com"
+ * ),
+ * @OA\Property(
+ * property="adresse",
+ * type="string",
+ * example="1 rue de la paix"
+ * ),
+ * 
+ *                   
+ *               ),
+ *               @OA\Property(
+ *                 property="accepted",
+ *                 type="boolean",
+ *                 example="false"
+ *                 ),
+ *                 @OA\Property(
+ *                    property="organizer",
+ *                    type="object",
+ *                    @OA\Property(
+ *                        property="id",
+ *                        type="string",
+ *                        example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *                    ),
+ *                    @OA\Property(
+ *                        property="firstname",
+ *                        type="string",
+ *                        example="John"
+ *                    ),
+ *                    @OA\Property(
+ *                        property="lastname",
+ *                        type="string",
+ *                        example="Doe"
+ *                    ),
+ *                    @OA\Property(
+ *                        property="email",
+ *                        type="string",
+ *                        example="test@example.com"
+ *                    ),
+ *                    @OA\Property(
+ *                        property="username",
+ *                        type="string",
+ *                        example="johndoe"
+ *                    ),
+ *                   ),
+ *                   @OA\Property(
+ *                     property="is_guest (si l'utilisateur invité n'est pas inscrit)",
+ *                     type="boolean",
+ *                     example="true"
+ *                ),
+ *                @OA\Property(
+ *                  property="guest_firstname (si l'utilisateur invité n'est pas inscrit)",
+ *                  type="string",
+ *                  example="John"
+ *                  ),
+ *                  @OA\Property(
+ *                    property="guest_lastname (si l'utilisateur invité n'est pas inscrit)",
+ *                    type="string",
+ *                    example="Doe"
+ *                    ),
+ *                ),
+ *                )
+ *                ),
+ * )
+ * )
+ */
 final class GetUserInvitationsAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response

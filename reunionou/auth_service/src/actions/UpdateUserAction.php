@@ -9,7 +9,41 @@ use Respect\Validation\Validator as v;
 use reunionou\auth\services\DbService;
 use reunionou\auth\errors\exceptions\HttpInputNotValid;
 
-
+/**
+ * @OA\Put(
+ *   path="/users/{id}",
+ *   tags={"User"},
+ *   @OA\Parameter(
+ *     name="id",
+ *     in="path",
+ *     description="id de l'utilisateur",
+ *     required=true,
+ *     @OA\Schema(
+ *       type="string",
+ *       example="5f9f1b9b9b9b9b9b9b9b9b9b"
+ *     )
+ *   ),
+ *   @OA\RequestBody(
+ *     description="Données de l'utilisateur (basé sur les données envoyées lors de la création d'un utilisateur)",
+ *     required=true,
+ *     @OA\JsonContent(
+ *       type="object",
+ *     )
+ *   ),
+ *   @OA\Response(
+ *     response="204",
+ *     description="Utilisateur modifié",
+ *   ),
+ *   @OA\Response(
+ *     response="400",
+ *     description="Données envoyées non valides",
+ *   ),
+ *   @OA\Response(
+ *     response="404",
+ *     description="Utilisateur non trouvé",
+ *   )
+ * )
+ */
 final class UpdateUserAction extends AbstractAction
 {
     public function __invoke(Request $req, Response $rs, array $args): Response
