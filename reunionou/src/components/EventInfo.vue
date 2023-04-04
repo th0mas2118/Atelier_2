@@ -8,6 +8,7 @@ import EventDropdownMenu from './EventDropdownMenu.vue'
 import CreateInvitationLinkPopup from './CreateInvitationLinkPopup.vue'
 import ChatBox from './ChatBox.vue'
 import Map from '@/components/Map.vue'
+import moment from 'moment'
 const user = useUserStore()
 const route = useRoute()
 
@@ -177,9 +178,12 @@ onMounted(() => {
           {{ event.icon }}
         </div>
         <div>
-          <h1 class="text-2xl">{{ event.title }}</h1>
+          <h1 class="text-2xl">
+            {{ event.title }}
+          </h1>
           <p class="text-md text-cgray">
-            {{ event.participants ? getConfirmatedParticipantsCount() : 0 }} participants
+            {{ event.participants ? getConfirmatedParticipantsCount() : 0 }} participants -
+            {{ moment(event.date).format('MM/DD/YY h:mm:ss') }}
           </p>
         </div>
       </div>
