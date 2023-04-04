@@ -15,7 +15,7 @@ final class InvitationService
         $this->mongo = $link;
     }
 
-    public function createUniqueInvitation(string $event_id, string $guest_firstname, string $guest_lastname, string $event_tile): ?string
+    public function createUniqueInvitation(string $event_id, string $guest_firstname, string $guest_lastname, string $event_title): ?string
     {
         try {
             $client = new \MongoDB\Client($this->mongo);
@@ -148,6 +148,20 @@ final class InvitationService
             $invitation = $db->updateOne(['_id' => new ObjectId($id)], ['$set' => $data]);
 
             return $invitation->getModifiedCount() > 0;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function deleteEventInvitations(string $event_id): ?bool
+    {
+        try {
+            $client = new \MongoDB\Client($this->mongo);
+            $db = $client->selectDatabase("reunionou")->selectCollection("invitation");
+
+            $invitation = $db->deleteMany(['event_id' => $event_id]);
+
+            return $invitation->getDeletedCount() > 0;
         } catch (\Throwable $th) {
             return false;
         }

@@ -7,6 +7,7 @@ use Slim\Psr7\Response;
 use Slim\Routing\RouteContext;
 use reunionou\event\services\EventService;
 use reunionou\event\actions\AbstractAction;
+use reunionou\event\services\InvitationService;
 use reunionou\event\errors\exceptions\HttpNotFound;
 use Slim\Exception\HttpInternalServerErrorException;
 
@@ -53,6 +54,9 @@ final class DeleteEventAction extends AbstractAction
     {
         $eventService = new EventService($this->container->get('mongo_url'));
         $event = $eventService->deleteEvent($args['id']);
+
+        $invitationService = new InvitationService($this->container->get('mongo_url'));
+        $invitationService->deleteEventInvitations($args['id']);
 
         if (!isset($event)) {
             return (throw new HttpNotFound($req, "L'identifiant de la ressource demandée ne correspond à aucune ressource disponible: " . $args['id']));

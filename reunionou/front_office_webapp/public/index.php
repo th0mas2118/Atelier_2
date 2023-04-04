@@ -8,11 +8,12 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Slim\Factory\AppFactory;
 
+use OpenApi\Annotations as OA;
 use reunionou\frontwebapp\middlewares\Cors;
 use reunionou\frontwebapp\actions\auth\SignInAction;
 use reunionou\frontwebapp\actions\auth\SignUpAction;
-use reunionou\frontwebapp\middlewares\ValidateToken;
 
+use reunionou\frontwebapp\middlewares\ValidateToken;
 use reunionou\frontwebapp\actions\auth\GetUserAction;
 use reunionou\frontwebapp\actions\auth\SignOutAction;
 use reunionou\frontwebapp\actions\comment\GetComment;
@@ -22,14 +23,15 @@ use reunionou\frontwebapp\actions\auth\AddFriendAction;
 use reunionou\frontwebapp\actions\auth\DeleteUserAction;
 use reunionou\frontwebapp\actions\auth\UpdateUserAction;
 use reunionou\frontwebapp\actions\events\GetEventAction;
+
 use reunionou\frontwebapp\actions\files\GetAvatarAction;
 
+
 use reunionou\frontwebapp\actions\auth\DeleteFriendAction;
-
-
 use reunionou\frontwebapp\actions\auth\GetUserEventsAction;
 use reunionou\frontwebapp\actions\comment\PostCommentEvent;
 use reunionou\frontwebapp\actions\events\CreateEventAction;
+use reunionou\frontwebapp\actions\events\DeleteEventAction;
 use reunionou\frontwebapp\actions\files\CreateAvatarAction;
 use reunionou\frontwebapp\middlewares\ValidateUserProperty;
 use reunionou\frontwebapp\actions\comment\GetCommentByIdEvent;
@@ -37,10 +39,9 @@ use reunionou\frontwebapp\actions\events\AddParticipantAction;
 use reunionou\frontwebapp\actions\auth\GetUserInvitationsAction;
 use reunionou\frontwebapp\actions\events\UpdateInvitationAction;
 use reunionou\frontwebapp\actions\events\DeleteParticipantAction;
+
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
 use reunionou\frontwebapp\actions\events\CreateEventUniqueInvitationAction;
-
-use OpenApi\Annotations as OA;
 
 
 $config = ['settings' => [
@@ -113,6 +114,7 @@ $app->get('/messages/{id}[/]', GetComment::class)->setName('get_comment');
 $app->post('/events/{id}/participants[/]', AddParticipantAction::class)->setName('add_participant');
 
 $app->delete('/events/{id}/participants[/]', DeleteParticipantAction::class)->setName('delete_participant');
+$app->delete('/events/{id}[/]', DeleteEventAction::class)->setName('delete_event');
 
 // INVITATIONS
 $app->patch('/invitations/{id}[/]', UpdateInvitationAction::class)->setName('update_invitation');
