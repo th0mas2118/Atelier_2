@@ -85,8 +85,9 @@ onMounted(() => {
     .get(`http://api.frontoffice.reunionou:49383/user/${useRoute().params['id']}`)
     .then((response) => {
       user_data.value = response.data.user
-      userModify.adresse = user_data.value.adress
+      userModify.adresse = user_data.value.adresse
       userModify.mail = user_data.value.mail
+      console.log(us)
     })
     .catch((error) => {
       console.error(error)
@@ -111,7 +112,7 @@ onMounted(() => {
         <p>Nom : {{ user_data.lastname }}</p>
         <p>Nom d'utilisateur : {{ user_data.username }}</p>
         <p>Email : {{ user_data.mail }}</p>
-        <p>Adresse : {{ user_data.adress === null ? 'Non renseigné' : user_data.adress }}</p>
+        <p>Adresse : {{ user_data.adresse === null ? 'Non renseigné' : user_data.adresse }}</p>
       </div>
       <div class="button form flex flex-col justify-center" v-if="isMyPage">
         <button
