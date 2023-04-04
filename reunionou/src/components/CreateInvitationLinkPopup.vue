@@ -19,7 +19,7 @@ const props = defineProps({
 const createInvitationLink = () => {
   if (guestData.guest_firstname == '' || guestData.guest_lastname == '') return
   guestData.event_title = props.event.title
-  guestData.axios
+  axios
     .post(`${import.meta.env.VITE_API_HOST}/invitations/${props.event.id}/guest`, guestData)
     .then((response) => {
       invitationLink.value =

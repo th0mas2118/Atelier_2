@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import axios from 'axios'
+import router from '@/router'
 
 const props = defineProps({
   user: {
@@ -12,6 +14,20 @@ const props = defineProps({
 })
 
 const organizerId = ref(props.event.organizer.id)
+
+const deleteEvent = async () => {
+  try {
+    const res = await axios.delete(`${import.meta.env.VITE_API_HOST}/events/${props.event.id}`, {
+      headers: {
+        Authorization: `Bearer ${props.user.token}`
+      }
+    })
+
+    router.push({ name: 'events' })
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <template lang="">
@@ -31,6 +47,15 @@ const organizerId = ref(props.event.organizer.id)
       id="user-menu-item-1"
       @click="$emit('openCreateLinkPopup')"
       >Créer un lien d'invitation</a
+    >
+    <a
+      v-if="user.isConnected && user.member.id == organizerId"
+      class="block px-4 py-2 text-sm text-cblack cursor-pointer"
+      role="menuitem"
+      tabindex="-1"
+      id="user-menu-item-1"
+      @click="deleteEvent"
+      >Supprimer l'événement</a
     >
   </div>
 </template>
