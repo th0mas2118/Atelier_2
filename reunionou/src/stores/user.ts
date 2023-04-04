@@ -42,7 +42,7 @@ export const useUserStore = defineStore(
         member.level = decodedToken.lvl
         member.acces_token = response.data.user.acces_token
         isConnected.value = true
-        router.push('/')
+        router.push(`/user/${member.id}`)
       }
     }
 
