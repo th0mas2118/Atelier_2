@@ -22,16 +22,17 @@ class Sidebar extends StatelessWidget {
           title: Text(title),
           centerTitle: true,
           backgroundColor: Colors.purple,
+          automaticallyImplyLeading: false,
         ),
         body: body,
-        drawer: Consumer<UserModel>(builder: (context, value, child) {
+        endDrawer: Consumer<UserModel>(builder: (context, value, child) {
           return value.isLoggedIn
               ? Drawer(
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
                       SizedBox(
-                          height: 80,
+                          height: 64,
                           child: DrawerHeader(
                               decoration: const BoxDecoration(
                                 color: Colors.purple,
@@ -39,8 +40,8 @@ class Sidebar extends StatelessWidget {
                               child: Stack(
                                 children: <Widget>[
                                   Positioned(
-                                    top: 0,
-                                    right: 10,
+                                    top: -8,
+                                    right: 0,
                                     child: IconButton(
                                       icon: const Icon(
                                         Icons.logout,
