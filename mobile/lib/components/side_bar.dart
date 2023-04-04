@@ -7,6 +7,7 @@ import '../../../constants.dart';
 import '../../../provider/user_model.dart';
 import '../../class/invitations.dart';
 import '../Screens/MyPage/mypage_screen.dart';
+import '../Screens/messageScreen.dart';
 
 class SideBar extends StatefulWidget {
   const SideBar({Key? key}) : super(key: key);
@@ -41,6 +42,22 @@ class _SideBarState extends State<SideBar> {
                     )),
               ),
             ),
+          ),
+          SizedBox(
+            width: 64,
+            child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        //Ou tu veux aller
+                        return MessageScreen();
+                      },
+                    ),
+                  );
+                },
+                child: const Text('Message')),
           ),
           SizedBox(
             width: 64,
