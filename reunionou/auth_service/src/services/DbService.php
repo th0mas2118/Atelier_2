@@ -43,7 +43,7 @@ final class DbService
             'mail' => $data['email'],
             'level' => $data['level'],
             'avatar' => null,
-            'adress' => null
+            'adresse' => null
         ];
 
         $refresh_token = bin2hex(random_bytes(32));
