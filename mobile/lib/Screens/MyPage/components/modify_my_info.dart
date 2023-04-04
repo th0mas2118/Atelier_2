@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 import 'package:provider/provider.dart';
 import '../../../provider/user_model.dart';
 import '../../MyPage/mypage_screen.dart';
+import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
 class ModifyMyInfo extends StatelessWidget {
@@ -99,6 +102,19 @@ class ModifyMyInfo extends StatelessWidget {
                 ),
               ),
               const Padding(padding: EdgeInsets.all(10)),
+              ElevatedButton(
+                onPressed: () async {
+                  final pickedFile =
+                      await ImagePicker().getImage(source: ImageSource.gallery);
+                  if (pickedFile != null) {
+                    // TODO: envoyer l'image à l'API
+                    Provider.of<UserModel>(context, listen: false)
+                        .setImage(File(pickedFile.path));
+                  }
+                },
+                child: const Text('Sélectionner une image'),
+              ),
+              const Padding(padding: EdgeInsets.all(10)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -123,13 +139,14 @@ class ModifyMyInfo extends StatelessWidget {
                       child: FractionallySizedBox(
                     widthFactor: 0.7,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         Provider.of<UserModel>(context, listen: false)
                             .updateUser(
-                                emailController.text,
-                                firstnameController.text,
-                                lastNameController.text,
-                                adresseController.text);
+                          emailController.text,
+                          firstnameController.text,
+                          lastNameController.text,
+                          adresseController.text,
+                        );
                         Navigator.push(
                           context,
                           MaterialPageRoute(
