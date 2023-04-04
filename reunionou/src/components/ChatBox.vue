@@ -15,6 +15,8 @@ const props = defineProps({
   }
 })
 
+const avatarUrl = import.meta.env.VITE_API_HOST + '/avatars/'
+
 let message = reactive({
   content: '',
   firstname: user.isConnected == true ? user.member.firstname : props.guest.user.firstname,
@@ -92,10 +94,18 @@ onMounted(() => {
               </div>
             </div>
           </div>
-          <img class="w-12 h-12 object-cover rounded-full mr-4 self-end ml-4" src="" alt="avatar" />
+          <img
+            class="w-12 h-12 object-cover rounded-full mr-4 self-end ml-4"
+            :src="avatarUrl + channel.member_id"
+            alt="avatar"
+          />
         </div>
         <div class="flex justify-start mb-4" v-else>
-          <img class="w-12 h-12 object-cover rounded-full mr-4 self-end ml-4" src="" alt="avatar" />
+          <img
+            class="w-12 h-12 object-cover rounded-full mr-4 self-end ml-4"
+            :src="avatarUrl + channel.member_id"
+            alt="avatar"
+          />
           <div class="w-6/12">
             <span class="text-sm text-cpurple">{{
               channel.firstname.toLowerCase() + ' ' + channel.lastname.toLowerCase()
