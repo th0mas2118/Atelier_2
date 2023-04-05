@@ -21,7 +21,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => UserModel()),
         ChangeNotifierProvider(create: (context) => InvitationsModel()),
         ChangeNotifierProvider(create: (context) => EventModel()),
-        ChangeNotifierProvider(create: (context) => Message_provider())
+        ChangeNotifierProvider(create: (context) => MessageProvider())
       ],
       child: MyApp(isLoggedIn: isLoggedIn),
     ),

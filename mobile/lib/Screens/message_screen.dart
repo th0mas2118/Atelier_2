@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/message_provider.dart';
-import '../provider/user_model.dart';
 import '../model/message.dart';
 
 class MessageScreen extends StatefulWidget {
@@ -23,22 +22,22 @@ class _MessageScreenState extends State<MessageScreen> {
 
   Widget _buildTextComposer() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         children: <Widget>[
           Flexible(
             child: TextField(
               controller: _textController,
               onSubmitted: _handleSubmitted,
-              decoration: InputDecoration.collapsed(
+              decoration: const InputDecoration.collapsed(
                 hintText: "Envoyer le message",
               ),
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 4.0),
+            margin: const EdgeInsets.symmetric(horizontal: 4.0),
             child: IconButton(
-              icon: Icon(Icons.send),
+              icon: const Icon(Icons.send),
               onPressed: () => _handleSubmitted(_textController.text),
             ),
           ),
@@ -49,11 +48,11 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final messageProvider = Provider.of<Message_provider>(context);
+    final messageProvider = Provider.of<MessageProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Messages'),
+        title: const Text('My Messages'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -84,8 +83,8 @@ class _MessageScreenState extends State<MessageScreen> {
                   itemBuilder: (context, index) {
                     final message = messages[index];
                     return Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5.0, horizontal: 10.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

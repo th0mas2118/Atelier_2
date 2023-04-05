@@ -1,15 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 
-import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
-import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import '../model/message.dart';
 
-class Message_provider extends ChangeNotifier {
+class MessageProvider extends ChangeNotifier {
   //Event Messages
   final String _getEventMessages =
       "http://api.frontoffice.reunionou:49383/messages/{id}/event";
@@ -34,13 +28,12 @@ class Message_provider extends ChangeNotifier {
   //String event_id = '642accf124b181e796096862';
 
   //Get event messages
-  Future<List<EventMessage>> getMessages(String event_id) async {
+  Future<List<EventMessage>> getMessages(String eventId) async {
     try {
       //Call api
-      var _getEventMessages =
-          this._getEventMessages.replaceAll('{id}', event_id);
+      var getEventMessages = _getEventMessages.replaceAll('{id}', eventId);
       var response = await Dio().get(
-        _getEventMessages,
+        getEventMessages,
         options: Options(
           headers: {
             //'Origin': "flutter",
@@ -54,8 +47,8 @@ class Message_provider extends ChangeNotifier {
         for (var msg in response.data['comments']) {
           var temp = EventMessage(
               id: msg['id'],
-              event_id: msg['event_id'],
-              member_id: msg['member_id'],
+              eventId: msg['event_id'],
+              memberId: msg['member_id'],
               firstname: msg['firstname'],
               lastname: msg['lastname'],
               content: msg['content']);

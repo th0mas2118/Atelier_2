@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/Event_Info/components/event_map.dart';
-import 'package:flutter_auth/provider/user_model.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 

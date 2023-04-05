@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 import 'package:provider/provider.dart';
 import '../../../provider/user_model.dart';
-import '../../MyPage/mypage_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable

@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/MyPage/components/my_info.dart';
-import 'package:flutter_auth/Screens/invit_list_screen.dart';
-import 'package:provider/provider.dart';
 import '../../../constants.dart';
-
-import '../../../provider/user_model.dart';
-import '../../class/invitations.dart';
-import 'components/modify_my_info.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({Key? key}) : super(key: key);

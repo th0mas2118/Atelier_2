@@ -3,8 +3,6 @@ import 'package:flutter_auth/Screens/Event_Info/components/event_info.dart';
 import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
 import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import 'package:flutter_auth/components/sidebar.dart';
-import 'package:flutter_auth/provider/user_model.dart';
-import 'package:provider/provider.dart';
 
 class MyHomePageState extends StatefulWidget {
   const MyHomePageState({Key? key}) : super(key: key);
@@ -34,7 +32,7 @@ class _MyHomePageStateState extends State<MyHomePageState> {
     'Mon compte',
     'Mon événement',
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
