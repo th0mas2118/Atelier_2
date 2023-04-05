@@ -270,20 +270,21 @@ class UserModel extends ChangeNotifier {
       List<Event> list = [];
       for (var element in jsonDecode(response.body)['events']) {
         Event event = Event(
-            element.id,
-            element.title,
-            element.date,
-            element.description,
-            element.organizer.id,
-            element.organizer.username,
-            element.gps,
-            element.participants,
-            element.address,
-            element.icon);
-        print(event);
+            element['id'],
+            element['title'],
+            element['date'],
+            element['description'],
+            element['organizer']["id"],
+            element['organizer]["username'],
+            element['gps'],
+            element['participants'],
+            element['address'],
+            element['icon']);
+
         list.add(event);
+
+        print(event);
       }
-      print(list[0]);
       return list;
     } catch (error) {
       rethrow;
