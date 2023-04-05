@@ -14,7 +14,7 @@ class CreateEventScreen extends StatelessWidget {
         backgroundColor: kPrimaryColor,
         automaticallyImplyLeading: false,
       ),
-      body: CreateEventForm(),
+      body: const CreateEventForm(),
     );
   }
 }
