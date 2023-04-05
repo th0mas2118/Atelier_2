@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import '../class/message.dart';
 import 'package:provider/provider.dart';
 import './user_model.dart';
+import './event_model.dart';
 
 class MessageModel extends ChangeNotifier {
   //Event Messages
@@ -59,9 +60,9 @@ class MessageModel extends ChangeNotifier {
     //Call api
     try {
       final user = Provider.of<UserModel>(context, listen: false).log;
-      String event_id = '642accf124b181e796096862';
+      // String event_id = '642accf124b181e796096862';
       var parsedMessage = {
-        "event_id": event_id,
+        "event_id": eventId,
         "content": message,
         "member_id": user['id'],
         "lastname": user['lastname'],
@@ -81,7 +82,7 @@ class MessageModel extends ChangeNotifier {
       );
 
       if (response.statusCode == 201) {
-        await getMessages('642accf124b181e796096862');
+        await getMessages(Provider.of<EventModel>(context).event.id);
         notifyListeners();
         return true;
       }
