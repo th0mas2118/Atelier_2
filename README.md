@@ -2,7 +2,7 @@
 ## Membre
 ### Pierson Thomas, DRAGUN Anthony, RAKOTOARISON Asley, DEMANGE Sébastien
 
-
+Une branche par module
 
 ## Installation globale:
 Cloner chaque partie (mobile, front,back) séparément
