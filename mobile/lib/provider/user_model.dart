@@ -16,6 +16,7 @@ import '../class/invitations.dart';
 import 'invitation_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../class/event.dart';
 
 class UserModel extends ChangeNotifier {
   final String _baseUrl = 'http://api.frontoffice.reunionou:49383';
@@ -257,6 +258,32 @@ class UserModel extends ChangeNotifier {
         Provider.of<InvitationsModel>(context, listen: false)
             .addEvent(Invitations.fromJson(element));
       }
+      return list;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<List<Event>> getEvents(context) async {
+    try {
+      final response = await http.get(Uri.parse('$_baseUrl/user/$id/events'));
+      List<Event> list = [];
+      for (var element in jsonDecode(response.body)['events']) {
+        Event event = Event(
+            element.id,
+            element.title,
+            element.date,
+            element.description,
+            element.organizer.id,
+            element.organizer.username,
+            element.gps,
+            element.participants,
+            element.address,
+            element.icon);
+        print(event);
+        list.add(event);
+      }
+      print(list[0]);
       return list;
     } catch (error) {
       rethrow;

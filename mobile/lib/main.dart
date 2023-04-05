@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Screens/MyEvents/my_events.dart';
 import 'package:flutter_auth/Screens/MyPage/components/modify_my_info.dart';
 import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
 import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         '/welcome': (context) => const WelcomeScreen(),
         '/mypage': (context) => const MyPage(),
         '/editprofile': (context) => ModifyMyInfo(),
+        '/myevents': (context) => const MyEvents(),
       },
       theme: ThemeData(
           primaryColor: kPrimaryColor,
