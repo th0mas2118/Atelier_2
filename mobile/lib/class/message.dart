@@ -12,7 +12,7 @@ class EventMessage {
   final String memberId;
   final String content;
   final String firstname;
-  final String? lastname;
+  final String lastname;
 
 //From map
   EventMessage.fromMap(Map<String, dynamic> res)
