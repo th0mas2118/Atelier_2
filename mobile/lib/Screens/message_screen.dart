@@ -18,13 +18,13 @@ class _MessageScreenState extends State<MessageScreen> {
   void _handleSubmitted(String text) async {
     _textController.clear();
     final messageAdd = Provider.of<MessageModel>(context, listen: false);
-    bool success = await messageAdd.addMessage(context,
+    final success = await messageAdd.addMessage(context,
         Provider.of<EventModel>(context, listen: false).event.id, text);
     if (success) {
-      List<EventMessage> messages = await messageAdd
+      List<EventMessage> messagesGet = await messageAdd
           .getMessages(Provider.of<EventModel>(context).event.id);
       setState(() {
-        _messages = messages;
+        _messages = messagesGet;
         _messages.insert(
           0,
           EventMessage(
