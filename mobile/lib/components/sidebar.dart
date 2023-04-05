@@ -54,6 +54,20 @@ class Sidebar extends StatelessWidget {
                                       },
                                     ),
                                   ),
+                                  Positioned(
+                                    top: -8,
+                                    left: 0,
+                                    child: IconButton(
+                                      icon: const Icon(
+                                        Icons.newspaper,
+                                        color: Colors.white,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        onItemTapped(3);
+                                      },
+                                    ),
+                                  ),
                                 ],
                               ))),
                       ListTile(

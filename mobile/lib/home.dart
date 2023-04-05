@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Screens/Create_Event/components/create_event_form.dart';
 import 'package:flutter_auth/Screens/Event_Info/components/event_info.dart';
 import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
 import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
@@ -25,12 +26,14 @@ class _MyHomePageStateState extends State<MyHomePageState> {
     const WelcomeScreen(),
     const MyPage(),
     const EventInfo(),
+    CreateEventForm(),
   ];
 
   final List<String> _widgetTitles = <String>[
     'Accueil',
     'Mon compte',
     'Mon événement',
+    'Créer un évènement'
   ];
 
   @override
