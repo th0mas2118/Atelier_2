@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
 import '../../../provider/event_model.dart';
+import '../../message_screen.dart';
 
 class EventInfo extends StatefulWidget {
   const EventInfo({Key? key}) : super(key: key);
@@ -36,7 +37,13 @@ class _EventInfoState extends State<EventInfo> {
               children: [
                 IconButton(
                     //go to comment page
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MessageScreen()),
+                      );
+                    },
                     icon: const Icon(Icons.chat_bubble, color: kPrimaryColor)),
               ],
             ),
