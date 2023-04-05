@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/message_model.dart';
 import '../provider/user_model.dart';
+import '../provider/event_model.dart';
 import '../class/message.dart';
 
 class MessageScreen extends StatefulWidget {
@@ -17,42 +18,26 @@ class _MessageScreenState extends State<MessageScreen> {
   void _handleSubmitted(String text) async {
     _textController.clear();
     final messageAdd = Provider.of<MessageModel>(context, listen: false);
-    // if (await messageAdd.addMessage(
-    //     context, '642accf124b181e796096862', text)) {
-    //   List<EventMessage> messages =
-    //       await messageAdd.getMessages('642accf124b181e796096862');
-    //   setState(() {
-    //     _messages = messages;
-    //     _messages.insert(
-    //       0,
-    //       EventMessage(
-    //         id: '',
-    //         eventId: '642accf124b181e796096862',
-    //         memberId: '',
-    //         firstname: '',
-    //         lastname: '',
-    //         content: text,
-    //       ),
-    //     );
-    //   });
-    // } else {
-    List<EventMessage> messages =
-        await messageAdd.getMessages('642accf124b181e796096862');
-    setState(() {
-      _messages = messages;
-      _messages.insert(
-        0,
-        EventMessage(
-          id: '',
-          eventId: '642accf124b181e796096862',
-          memberId: '',
-          firstname: '',
-          lastname: '',
-          content: text,
-        ),
-      );
-    });
-    //}
+    final success = await messageAdd.addMessage(context,
+        Provider.of<EventModel>(context, listen: false).event.id, text);
+    if (success) {
+      List<EventMessage> messagesGet = await messageAdd
+          .getMessages(Provider.of<EventModel>(context).event.id);
+      setState(() {
+        _messages = messagesGet;
+        _messages.insert(
+          0,
+          EventMessage(
+            id: '',
+            eventId: '',
+            memberId: '',
+            firstname: '',
+            lastname: '',
+            content: text,
+          ),
+        );
+      });
+    }
   }
 
   Widget _buildTextComposer() {
@@ -84,7 +69,6 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   Widget build(BuildContext context) {
     final messageProvider = Provider.of<MessageModel>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Messages'),
@@ -97,7 +81,8 @@ class _MessageScreenState extends State<MessageScreen> {
         children: [
           const SizedBox(height: 20),
           FutureBuilder<List<EventMessage>>(
-            future: messageProvider.getMessages('642accf124b181e796096862'),
+            future: messageProvider
+                .getMessages(Provider.of<EventModel>(context).event.id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
