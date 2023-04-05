@@ -54,13 +54,27 @@ export const useUserStore = defineStore(
           Authorization: `Bearer ${member.acces_token}`
         }
       }).then((response) => {
-        isConnected.value = false
-        localStorage.clear()
+        resetStore();
         router.push('/')
       })
     }
 
+    function resetStore() {
+      isConnected.value = false
+      member.email = ''
+      member.id = ''
+      member.firstname = ''
+      member.lastname = ''
+      member.username = ''
+      member.level = 0
+      member.acces_token = ''
+    }
+
+
+
+
     return { isConnected, setConnected, disconnect, member }
   },
   { persist: true }
+
 )
