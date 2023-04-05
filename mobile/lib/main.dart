@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/Screens/MyEvents/my_events.dart';
 import 'package:flutter_auth/Screens/MyPage/components/modify_my_info.dart';
 import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
 import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/provider/event_model.dart';
+import 'package:flutter_auth/provider/invitation_model.dart';
 import 'package:flutter_auth/provider/message_model.dart';
 import 'package:provider/provider.dart';
 import '../provider/user_model.dart';
 import 'home.dart';
-import 'provider/invitation_model.dart';
+import 'provider/invited_user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -22,7 +22,8 @@ void main() async {
         ChangeNotifierProvider(create: (context) => UserModel()),
         ChangeNotifierProvider(create: (context) => InvitationsModel()),
         ChangeNotifierProvider(create: (context) => EventModel()),
-        ChangeNotifierProvider(create: (context) => MessageModel())
+        ChangeNotifierProvider(create: (context) => MessageModel()),
+        ChangeNotifierProvider(create: (context) => InvitedUserModel()),
       ],
       child: MyApp(isLoggedIn: isLoggedIn),
     ),
@@ -54,7 +55,6 @@ class MyApp extends StatelessWidget {
         '/welcome': (context) => const WelcomeScreen(),
         '/mypage': (context) => const MyPage(),
         '/editprofile': (context) => ModifyMyInfo(),
-        '/myevents': (context) => const MyEvents(),
       },
       theme: ThemeData(
           primaryColor: kPrimaryColor,
