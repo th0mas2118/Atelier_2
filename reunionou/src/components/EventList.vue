@@ -54,7 +54,7 @@ onMounted(async () => {
           Crées par moi ({{ createdByMe.length }})
         </h2>
         <ul>
-          <li v-for="event in createdByMe" :key="event.id">
+          <li class="text-center py-2 mb-2 bg-slate-200 rounded-lg border-2 border-amber-300 shadow-lg hover:shadow-blue-500/50 transition duration-250 ease-out hover:ease-in" v-for="event in createdByMe" :key="event.id">
             <router-link
               :to="{ name: 'event', params: { id: event.id } }"
               active-class="bg-cpurple text-cwhite"
@@ -70,7 +70,7 @@ onMounted(async () => {
           Je suis invité ({{ invitedTo.length }})
         </h2>
         <ul>
-          <li v-for="event in invitedTo" :key="event.id">
+          <li class="text-center py-2 mb-2 bg-slate-200 rounded-lg border-2 border-amber-300 shadow-lg hover:shadow-blue-500/50 transition duration-250 ease-out hover:ease-in" v-for="event in invitedTo" :key="event.id">
             <router-link
               :to="{ name: 'event', params: { id: event.id } }"
               active-class="bg-cpurple text-cwhite"
