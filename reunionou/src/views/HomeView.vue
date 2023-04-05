@@ -19,9 +19,7 @@ onMounted(() => {
     >
       <img src="/images/home_bg.jpg" alt="background" class="w-full h-full object-cover" />
     </div>
-    <!-- <h1 class="text-2xl font-bold text-gray-900 dark:text-white text-center pt-14">
-      Bienvenue sur REUNIONOU
-    </h1> -->
+    
     <!-- Logo -->
     <div class="flex flex-col items-center justify-center w-32 md:w-full mx-auto">
       <img src="/images/logo.svg" alt="logo" class="" />
