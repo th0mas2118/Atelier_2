@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/provider/user_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/background.dart';
 import '../../responsive.dart';
@@ -51,15 +53,23 @@ class MobileWelcomeScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         const WelcomeImage(),
-        Row(
-          children: const [
-            Spacer(),
-            Expanded(
-              flex: 8,
-              child: LoginAndSignupBtn(),
-            ),
-            Spacer(),
-          ],
+        Consumer<UserModel>(
+          builder: (context, user, child) {
+            if (!user.isLoggedIn) {
+              return Row(
+                children: const [
+                  Spacer(),
+                  Expanded(
+                    flex: 8,
+                    child: LoginAndSignupBtn(),
+                  ),
+                  Spacer(),
+                ],
+              );
+            } else {
+              return const SizedBox();
+            }
+          },
         ),
       ],
     );
