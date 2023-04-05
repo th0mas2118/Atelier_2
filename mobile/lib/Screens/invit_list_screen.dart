@@ -7,45 +7,56 @@ import 'package:provider/provider.dart';
 
 import '../class/invitations.dart';
 
-class InvitListScreen extends StatelessWidget {
+class InvitListScreen extends StatefulWidget {
   const InvitListScreen({Key? key, required this.invitationsList})
       : super(key: key);
 
   final List<Invitations> invitationsList;
 
   @override
+  _InvitListScreenState createState() => _InvitListScreenState();
+}
+
+class _InvitListScreenState extends State<InvitListScreen> {
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: invitationsList.length,
+        itemCount: widget.invitationsList.length,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(invitationsList[index].title),
-            subtitle: Text('De : ${invitationsList[index].organizer}'),
+            title: Text(widget.invitationsList[index].title),
+            subtitle: Text('De : ${widget.invitationsList[index].organizer}'),
             leading: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
                   onPressed: () {
-                    Provider.of<InvitationsModel>(context, listen: false)
-                        .updatInvitations(index, invitationsList[index].id,
-                            !invitationsList[index].accepted);
+                    setState(() {
+                      Provider.of<InvitationsModel>(context, listen: false)
+                          .updatInvitations(
+                              context,
+                              index,
+                              widget.invitationsList[index].eventId,
+                              !widget.invitationsList[index].accepted);
+                    });
                   },
                   child: AvailableBadge(
-                    state: invitationsList[index].accepted,
+                    state: widget.invitationsList[index].accepted,
                   ),
                 )
               ],
             ),
             trailing: TextButton(
               onPressed: () {
-                fetchEvent(context, invitationsList[index].eventId);
+                fetchEvent(context, widget.invitationsList[index].eventId);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return EventScreen(eventId: invitationsList[index].id);
+                      return EventScreen(
+                          eventId: widget.invitationsList[index].id);
                     },
                   ),
                 );
