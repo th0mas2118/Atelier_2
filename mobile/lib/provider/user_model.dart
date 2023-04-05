@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_auth/home.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+import 'dart:io';
 
 import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
 import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
@@ -19,7 +21,6 @@ class UserModel extends ChangeNotifier {
   final String _baseUrl = 'http://api.frontoffice.reunionou:49383';
   Dio dio = Dio();
 
-  bool connected = false;
   String username = '';
   String firstname = '';
   String lastname = '';
@@ -30,6 +31,7 @@ class UserModel extends ChangeNotifier {
   String adresse = '';
   String id = '';
   bool isLoggedIn = false;
+  File? image = null;
 
   Map<String, dynamic> get log => {
         'username': username,
@@ -40,8 +42,8 @@ class UserModel extends ChangeNotifier {
         'refreshToken': refreshToken,
         'id': id,
         'adresse': adresse,
-        'connected': connected,
-        'isLoggedIn': isLoggedIn // ajout de la variable
+        'isLoggedIn': isLoggedIn, // ajout de la variable
+        'image': image,
       };
   String get loggedId => id;
 
@@ -58,7 +60,6 @@ class UserModel extends ChangeNotifier {
     await prefs.setString('refreshToken', vrefreshToken);
     await prefs.setBool('isLoggedIn', true); // ajout de la variable
 
-    connected = true;
     id = vid;
     username = vusername;
     firstname = vfirstname;
@@ -75,7 +76,6 @@ class UserModel extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
 
-    connected = false;
     id = '';
     username = '';
     firstname = '';
@@ -85,6 +85,11 @@ class UserModel extends ChangeNotifier {
     accesToken = '';
     refreshToken = '';
     isLoggedIn = false; // mise à jour de la variable
+    notifyListeners();
+  }
+
+  void setImage(image) {
+    this.image = image;
     notifyListeners();
   }
 
@@ -99,6 +104,17 @@ class UserModel extends ChangeNotifier {
             'lastname': vlastname,
             'adresse': vadresse
           });
+      if (image != null) {
+        print(image!.path);
+        FormData formData = FormData.fromMap({
+          'file': await MultipartFile.fromFile(image!.path,
+              filename: path.basename(image!.path))
+        });
+        await dio.post('$_baseUrl/avatars/$id',
+            options:
+                Options(headers: {'Authorization': 'Bearer $log.accesToken'}),
+            data: formData);
+      }
     } catch (error) {
       rethrow;
     }
