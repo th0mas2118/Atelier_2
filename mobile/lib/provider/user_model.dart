@@ -267,6 +267,7 @@ class UserModel extends ChangeNotifier {
   Future<List<Event>> getEvents(context) async {
     try {
       final response = await http.get(Uri.parse('$_baseUrl/user/$id/events'));
+
       List<Event> list = [];
       for (var element in jsonDecode(response.body)['events']) {
         Event event = Event(
@@ -275,16 +276,14 @@ class UserModel extends ChangeNotifier {
             element['date'],
             element['description'],
             element['organizer']["id"],
-            element['organizer]["username'],
+            element['organizer']["username"],
             element['gps'],
             element['participants'],
             element['address'],
             element['icon']);
-
         list.add(event);
-
-        print(event);
       }
+
       return list;
     } catch (error) {
       rethrow;
