@@ -29,7 +29,7 @@ class _MessageScreenState extends State<MessageScreen> {
           0,
           EventMessage(
             id: '',
-            eventId: Provider.of<EventModel>(context).event.id,
+            eventId: '',
             memberId: '',
             firstname: '',
             lastname: '',
