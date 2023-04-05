@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../provider/message_provider.dart';
-import '../model/message.dart';
+import '../provider/message_model.dart';
+import '../class/message.dart';
 
 class MessageScreen extends StatefulWidget {
   @override
@@ -48,7 +48,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final messageProvider = Provider.of<MessageProvider>(context);
+    final messageProvider = Provider.of<MessageModel>(context);
 
     return Scaffold(
       appBar: AppBar(

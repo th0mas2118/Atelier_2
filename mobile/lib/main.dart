@@ -4,7 +4,7 @@ import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
 import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/provider/event_model.dart';
-import 'package:flutter_auth/provider/message_provider.dart';
+import 'package:flutter_auth/provider/message_model.dart';
 import 'package:provider/provider.dart';
 import '../provider/user_model.dart';
 import 'home.dart';
@@ -21,7 +21,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => UserModel()),
         ChangeNotifierProvider(create: (context) => InvitationsModel()),
         ChangeNotifierProvider(create: (context) => EventModel()),
-        ChangeNotifierProvider(create: (context) => MessageProvider())
+        ChangeNotifierProvider(create: (context) => MessageModel())
       ],
       child: MyApp(isLoggedIn: isLoggedIn),
     ),

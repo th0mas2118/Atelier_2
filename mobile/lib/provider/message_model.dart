@@ -1,25 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
-import '../model/message.dart';
+import '../class/message.dart';
 
-class MessageProvider extends ChangeNotifier {
+class MessageModel extends ChangeNotifier {
   //Event Messages
   final String _getEventMessages =
       "http://api.frontoffice.reunionou:49383/messages/{id}/event";
-  final String _messageUri =
-      "http://docketu.iutnc.univ-lorraine.fr:62015/messages";
-
-  //User _user;
-  // late User _user;
 
   //Messages list
   List<EventMessage> eventMessages = [];
-
-  //Get current _member
-  // getCurrentMember() {
-  //   return _member;
-  // }
 
   ///-------------------------------------------------------------------------------------------------------------------------///
   ///***********************************************  Messages Methods  ******************************************************///
