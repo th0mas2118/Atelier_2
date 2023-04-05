@@ -4,7 +4,7 @@
 
 
 
-##Installation globale:
+## Installation globale:
 Cloner chaque partie (mobile, front,back) séparément
 Ajouter le vhos suivant  :
 127.0.0.1    api.frontoffice.reunionou
