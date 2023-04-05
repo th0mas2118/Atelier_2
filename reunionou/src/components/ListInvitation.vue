@@ -7,13 +7,31 @@ import router from '@/router';
 const invitations = ref({})
 
 const userId = useRoute().params['id']
-const updateInvitStatus = (id: String, state: Boolean) => {
-    axios
-        .patch(`http://api.frontoffice.reunionou:49383/invitations/${id}`, {
-            accepted: state,
-        }).then((response) => {
-            location.reload()
-        })
+const participate = async (id: String) => {
+    const result = await axios.patch(
+        `${import.meta.env.VITE_API_HOST}/events/${id}/participate`,
+        {
+            user_id: userId,
+            status: 'confirmed',
+            type: 'user'
+        }
+    ).then((response) => {
+        location.reload()
+    })
+
+}
+const decline = async (id: String) => {
+    const result = await axios.patch(
+        `${import.meta.env.VITE_API_HOST}/events/${id}/participate`,
+        {
+            user_id: userId,
+            status: 'declined',
+            type: 'user'
+        }
+    ).then((response) => {
+        location.reload()
+    })
+
 }
 
 axios
@@ -41,11 +59,11 @@ axios
                 <div class="flex flex-row gap-3">
                     <div
                         :class="`${invit.accepted ? 'bg-cgray' : 'bg-cgreen hover:bg-blue-700 '}  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline text-center`">
-                        <button :disabled="invit.accepted" @click="updateInvitStatus(invit.id, true)">Accepter</button>
+                        <button :disabled="invit.accepted" @click="participate(invit.event_id, true)">Accepter</button>
                     </div>
                     <div
                         :class="`${!invit.accepted ? 'bg-cgray' : 'bg-cred hover:bg-blue-700'}   text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline text-center`">
-                        <button :disabled="!invit.accepted" @click="updateInvitStatus(invit.id, false)">Refuser</button>
+                        <button :disabled="!invit.accepted" @click="decline(invit.event_id, false)">Refuser</button>
                     </div>
                 </div>
             </div>
