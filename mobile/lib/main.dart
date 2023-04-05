@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Screens/Event_Info/components/event_info.dart';
+import 'package:flutter_auth/Screens/Event_Info/event_screen.dart';
 import 'package:flutter_auth/Screens/MyPage/components/modify_my_info.dart';
 import 'package:flutter_auth/Screens/MyPage/mypage_screen.dart';
 import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';

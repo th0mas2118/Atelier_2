@@ -8,9 +8,11 @@ import '../../class/event.dart';
 import '../../provider/event_model.dart';
 
 fetchEvent(context, id) async {
+  print("fdp");
   Dio dio = Dio();
   var response =
       await dio.get('http://api.frontoffice.reunionou:49383/events/$id');
+  print(response.data);
   Provider.of<EventModel>(context, listen: false).setEvent(
     Event.fromJson(response.data['event']),
   );
@@ -18,9 +20,7 @@ fetchEvent(context, id) async {
 
 class EventScreen extends StatefulWidget {
   const EventScreen({Key? key, required this.eventId}) : super(key: key);
-
   final String eventId;
-
   @override
   State<EventScreen> createState() => _EventScreenState();
 }
@@ -28,27 +28,30 @@ class EventScreen extends StatefulWidget {
 class _EventScreenState extends State<EventScreen> {
   @override
   Widget build(BuildContext context) {
-    return Consumer(
+    print(widget.eventId);
+    return Consumer<EventModel>(
       builder: (context, value, child) {
-        return Scaffold(
-            appBar: AppBar(
-              backgroundColor: kPrimaryColor,
-              title: RichText(
-                text: TextSpan(
-                  text:
-                      '${Provider.of<EventModel>(context).event.icon} ${Provider.of<EventModel>(context).event.title}', // emoji characters
-                  style: const TextStyle(
-                    fontFamily: 'EmojiOne',
-                    fontSize: 30,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            body: const Padding(
-              padding: EdgeInsets.all(10),
-              child: EventInfo(),
-            ));
+        return FutureBuilder(
+            future: Provider.of<EventModel>(context, listen: false)
+                .getEvent(widget.eventId),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                    child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator(
+                          color: Colors.purple,
+                        )));
+              }
+
+              if (snapshot.hasData) {
+                final event = snapshot.data as Event;
+                return EventInfo(event: event);
+              } else {
+                return const Text('No events found.');
+              }
+            });
       },
     );
   }

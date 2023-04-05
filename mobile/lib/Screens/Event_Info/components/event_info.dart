@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/Event_Info/components/event_map.dart';
+import 'package:flutter_auth/class/event.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
@@ -7,7 +10,9 @@ import '../../../provider/event_model.dart';
 import '../../message_screen.dart';
 
 class EventInfo extends StatefulWidget {
-  const EventInfo({Key? key}) : super(key: key);
+  const EventInfo({Key? key, required this.event}) : super(key: key);
+
+  final Event event;
 
   @override
   State<EventInfo> createState() => _EventInfoState();
@@ -15,14 +20,15 @@ class EventInfo extends StatefulWidget {
 
 class _EventInfoState extends State<EventInfo> {
   getConfirmatedParticipantsCount(context) {
-    var list =
-        Provider.of<EventModel>(context, listen: false).event.participants;
+    var list = widget.event.participants;
     return list.where((element) => element['status'] == 'confirmed').length;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    print(widget.event.participants);
+    return SingleChildScrollView(
+        child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
@@ -56,15 +62,11 @@ class _EventInfoState extends State<EventInfo> {
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [
-                  Consumer<EventModel>(
-                    builder: (context, value, child) {
-                      return CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage(
-                            'http://api.frontoffice.reunionou:49383/avatars/${value.event.organizerID}/100/100'),
-                      );
-                    },
-                  ),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(
+                        'http://api.frontoffice.reunionou:49383/avatars/${widget.event.organizerID}/100/100'),
+                  )
                 ],
               ),
             ),
@@ -72,9 +74,7 @@ class _EventInfoState extends State<EventInfo> {
               children: [
                 Column(
                   children: [
-                    Text(Provider.of<EventModel>(context)
-                        .event
-                        .organizerUsername),
+                    Text(widget.event.organizerUsername),
                     const Text('Email')
                     //email firstname lastname ?
                   ],
@@ -88,37 +88,32 @@ class _EventInfoState extends State<EventInfo> {
             style:
                 TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor)),
         const Padding(padding: EdgeInsets.all(8)),
-        Text(Provider.of<EventModel>(context).event.description),
+        Text(widget.event.description),
         const Padding(padding: EdgeInsets.all(8)),
-        Text(
-            'Invités (${Provider.of<EventModel>(context).event.participants.length})',
+        Text('Invités (${widget.event.participants.length})',
             style: const TextStyle(
                 fontWeight: FontWeight.bold, color: kPrimaryColor)),
         const Padding(padding: EdgeInsets.all(8)),
         ListView.builder(
           shrinkWrap: true,
-          itemCount: Provider.of<EventModel>(context).event.participants.length,
+          itemCount: widget.event.participants.length,
           itemBuilder: (context, index) {
             return ListTile(
                 contentPadding: const EdgeInsets.all(5),
                 leading: CircleAvatar(
                   radius: 30,
                   backgroundImage: NetworkImage(
-                      'http://api.frontoffice.reunionou:49383/avatars/${Provider.of<EventModel>(context).event.participants[index]['user']['id']}/100/100'),
+                      'http://api.frontoffice.reunionou:49383/avatars/${widget.event.participants[index]['user']['id']}/100/100'),
                 ),
                 title: Row(
                   children: [
-                    Text(Provider.of<EventModel>(context)
-                        .event
-                        .participants[index]['user']['username']),
-                    Icon((Provider.of<EventModel>(context)
-                                .event
-                                .participants[index]['status'] ==
+                    Text(widget.event.participants[index]['user']['firstname'] +
+                        " " +
+                        widget.event.participants[index]['user']['lastname']),
+                    Icon((widget.event.participants[index]['status'] ==
                             'confirmed')
                         ? Icons.check
-                        : (Provider.of<EventModel>(context)
-                                    .event
-                                    .participants[index]['status'] ==
+                        : (widget.event.participants[index]['status'] ==
                                 'waiting')
                             ? Icons.pending_actions
                             : Icons.close)
@@ -129,15 +124,16 @@ class _EventInfoState extends State<EventInfo> {
         const Padding(padding: EdgeInsets.all(8)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             SizedBox(
-              width: 300,
+              // fullscreen width
+              width: MediaQuery.of(context).size.width,
               height: 300,
-              child: EventMap(),
+              child: EventMap(event: widget.event),
             )
           ],
         )
       ],
-    );
+    ));
   }
 }

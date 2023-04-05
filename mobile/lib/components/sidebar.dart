@@ -88,7 +88,7 @@ class Sidebar extends StatelessWidget {
                         title: const Text('Mes évenements'),
                         onTap: () {
                           Navigator.pop(context);
-                          onItemTapped(4);
+                          onItemTapped(3);
                         },
                       ),
                       Row(

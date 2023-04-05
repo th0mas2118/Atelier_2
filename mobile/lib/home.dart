@@ -26,7 +26,6 @@ class _MyHomePageStateState extends State<MyHomePageState> {
   final List<Widget> _widgetOptions = <Widget>[
     const WelcomeScreen(),
     const MyPage(),
-    const EventInfo(),
     CreateEventForm(),
     MyEvents()
   ];
@@ -34,7 +33,6 @@ class _MyHomePageStateState extends State<MyHomePageState> {
   final List<String> _widgetTitles = <String>[
     'Accueil',
     'Mon compte',
-    'Mon événement',
     'Créer un évènement',
     "Mes évenements"
   ];
