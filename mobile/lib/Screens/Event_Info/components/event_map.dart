@@ -17,9 +17,9 @@ class EventMap extends StatelessWidget {
             child: FlutterMap(
                 options: MapOptions(
                     center: LatLng(value.event.gps[0], value.event.gps[1]),
-                    zoom: 13,
+                    zoom: 16,
                     minZoom: 1,
-                    maxZoom: 18),
+                    maxZoom: 16),
                 children: [
               TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
