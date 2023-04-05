@@ -22,7 +22,10 @@ class _EventInfoState extends State<EventInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
+      children:[
+        ListTile(
+          title:Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
@@ -61,7 +64,7 @@ class _EventInfoState extends State<EventInfo> {
                       return CircleAvatar(
                         radius: 30,
                         backgroundImage: NetworkImage(
-                            'http://api.frontoffice.reunionou:49383/avatars/${value.event.organizerID}/100/100'),
+                           'http://api.frontoffice.reunionou:49383/avatars/${value.event.organizerID}/100/100'),
                       );
                     },
                   ),
@@ -128,6 +131,15 @@ class _EventInfoState extends State<EventInfo> {
         ),
         const Padding(padding: EdgeInsets.all(8)),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const [
+            Text(
+              'Lieu ',
+              style:
+                  TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+            )],),
+        const Padding(padding: EdgeInsets.all(8)),
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
             SizedBox(
@@ -138,6 +150,7 @@ class _EventInfoState extends State<EventInfo> {
           ],
         )
       ],
-    );
-  }
+    ),
+  )],
+  );}
 }
