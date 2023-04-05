@@ -40,6 +40,7 @@ createEvent(context, title, description, date, adresse) async {
       'lastname': user['lastname'],
       'email': user['email'],
       'username': user['username'],
+      'id': user['id'],
     },
     'isPrivate': false,
     'participants': Provider.of<InvitedUserModel>(context, listen: false)
