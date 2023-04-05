@@ -67,7 +67,9 @@ class MobileWelcomeScreen extends StatelessWidget {
                 ],
               );
             } else {
-              return const SizedBox();
+              return const SizedBox(
+                
+              );
             }
           },
         ),
