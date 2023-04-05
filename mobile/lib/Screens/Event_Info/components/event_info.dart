@@ -26,7 +26,6 @@ class _EventInfoState extends State<EventInfo> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.event.participants);
     return SingleChildScrollView(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +127,9 @@ class _EventInfoState extends State<EventInfo> {
             SizedBox(
               // fullscreen width
               width: MediaQuery.of(context).size.width,
-              height: 300,
+              height: MediaQuery.of(context).size.width > 600
+                  ? MediaQuery.of(context).size.height * 0.75
+                  : MediaQuery.of(context).size.height * 0.5,
               child: EventMap(event: widget.event),
             )
           ],
