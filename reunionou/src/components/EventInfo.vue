@@ -238,6 +238,7 @@ onMounted(() => {
         >
           Participer
         </button>
+
         <button
           v-if="event.participants.find((x: any) => x.user.id == (isGuest ? guestId : user.member.id) && x.status == 'confirmed') && (event.organizer.id != user.member.id || isGuest)"
           class="bg-cred hover:bg-[#ea384e] text-cwhite py-2 px-4 rounded-3xl transition-all duration-300 overflow-hidden whitespace-nowrap"

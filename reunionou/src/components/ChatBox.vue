@@ -28,7 +28,7 @@ let message = reactive({
 const state = reactive({
   channels: []
 })
-
+console.log(props.guest.status, 'ljkhklhlh')
 const Comment = async () => {
   if (message.content == '') {
     return alert('message vide')
@@ -123,7 +123,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <form>
+    <form v-if="props.guest.status == 'confirmed'">
       <div class="flex items-center border-b border-cpurple py-2">
         <input
           class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
