@@ -34,6 +34,7 @@ class _MyHomePageStateState extends State<MyHomePageState> {
     'Mon compte',
     'Mon événement',
   ];
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

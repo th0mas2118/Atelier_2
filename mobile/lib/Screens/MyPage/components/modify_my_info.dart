@@ -107,14 +107,7 @@ class ModifyMyInfo extends StatelessWidget {
                     widthFactor: 0.7,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const MyPage();
-                            },
-                          ),
-                        );
+                        Navigator.pop(context);
                       },
                       child: const Text('Annuler'),
                     ),
@@ -130,14 +123,7 @@ class ModifyMyInfo extends StatelessWidget {
                                 firstnameController.text,
                                 lastNameController.text,
                                 adresseController.text);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const MyPage();
-                            },
-                          ),
-                        );
+                        Navigator.pop(context);
                       },
                       child: const Text('Valider'),
                     ),

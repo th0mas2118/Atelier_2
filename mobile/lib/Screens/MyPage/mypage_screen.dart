@@ -32,8 +32,7 @@ class _MyPageState extends State<MyPage> {
               backgroundColor: kPrimaryColor,
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ModifyMyInfo()));
+              Navigator.pushNamed(context, "/editprofile");
             },
             child: const Text('Modifier mes informations'),
           ),
