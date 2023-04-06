@@ -24,7 +24,7 @@ class _ResearchResultState extends State<ResearchResult> {
                   CircleAvatar(
                     radius: 15,
                     backgroundImage: NetworkImage(
-                        'http://api.frontoffice.reunionou:49383/avatars/${widget.users[index]['index']}/200/200'),
+                        'http://api.frontoffice.reunionou:49383/avatars/${widget.users[index]['id']}/200/200'),
                   ),
                   const Padding(padding: EdgeInsets.all(8.0)),
                   Text(widget.users[index]['firstname']),

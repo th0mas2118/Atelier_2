@@ -64,7 +64,7 @@ class Sidebar extends StatelessWidget {
                                       ),
                                       onPressed: () {
                                         Navigator.pop(context);
-                                        onItemTapped(3);
+                                        onItemTapped(2);
                                       },
                                     ),
                                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/Create_Event/components/research_result.dart';
+import 'package:flutter_auth/home.dart';
 import 'package:flutter_auth/provider/invited_user_model.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
@@ -55,6 +56,14 @@ createEvent(context, title, description, date, adresse) async {
     }),
   );
   print(response);
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) {
+        return const MyHomePageState();
+      },
+    ),
+  );
 }
 
 class CreateEventForm extends StatefulWidget {
@@ -169,7 +178,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
           ),
           (showResult)
               ? SizedBox(
-                  height: 130,
+                  height: 200,
                   child: FutureBuilder(
                     future: getUsers(searchController.text, context),
                     builder: (context, snapshot) {
