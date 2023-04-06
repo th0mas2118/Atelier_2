@@ -292,9 +292,9 @@ onMounted(() => {
               </div>
             </li>
           </div>
-          <div id="event-description" class="w-full md:w-2/4">
+          <div id="event-description" class="w-full">
             <h3 class="text-cpurple font-bold min-w-[250px] mb-4">Description</h3>
-            <p>
+            <p class="w-full">
               {{ event.description }}
             </p>
           </div>
