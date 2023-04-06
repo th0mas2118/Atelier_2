@@ -22,7 +22,8 @@
 			"reunionou\\event\\": "./src/",
 			"reunionou\\comment\\": "./src/",
 			"reunionou\\frontwebapp\\": "./src/",
-			"reunionou\\files\\": "./src/"
+			"reunionou\\files\\": "./src/",
+			"reunionou\\seed\\": "./src/"
 		}
 	},
 	"provide": {

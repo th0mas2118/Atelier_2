@@ -153,3 +153,27 @@ services:
       reunionou.net:
         aliases:
           - api.files.reunionou
+  ###################
+  # SEEDING SERVICE #
+  ###################
+  api.seed:
+    image: "canals/php:latest"
+    environment:
+      - VHOST_HOSTNAME=api.seed.reunionou
+      - VHOST_DOCROOT=/var/www/public
+    ports:
+      - "49385:80"
+      - "49313:443"
+    volumes:
+      - "./reunionou/seed_service:/var/www"
+      - "./reunionou/composer/vendor:/var/www/vendor"
+    working_dir: /var/www/src
+    networks:
+      reunionou.net:
+        aliases:
+          - api.seed.reunionou
+    depends_on:
+      - auth.db
+      - event.db
+      - comment.db
+      - composer

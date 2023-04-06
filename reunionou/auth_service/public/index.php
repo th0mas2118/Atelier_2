@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
+use OpenApi\Annotations as OA;
 use reunionou\auth\actions\RemoveFriend;
 use reunionou\auth\actions\SigninAction;
 use reunionou\auth\actions\SignUpAction;
@@ -20,7 +21,6 @@ use reunionou\auth\actions\RefreshTokenAction;
 use reunionou\auth\actions\GetUserEventsAction;
 use reunionou\auth\actions\ValidateUserIdentity;
 use reunionou\auth\actions\GetUserInvitationsAction;
-use OpenApi\Annotations as OA;
 
 $builder = new ContainerBuilder();
 $builder->addDefinitions(__DIR__ . '/../conf/settings.php');

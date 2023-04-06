@@ -20,13 +20,15 @@ use reunionou\frontwebapp\actions\comment\GetComment;
 use reunionou\frontwebapp\actions\auth\GetFriendsList;
 use reunionou\frontwebapp\actions\auth\GetUsersAction;
 use reunionou\frontwebapp\actions\auth\AddFriendAction;
+use reunionou\frontwebapp\actions\seed\SeedUsersAction;
 use reunionou\frontwebapp\actions\auth\DeleteUserAction;
 use reunionou\frontwebapp\actions\auth\UpdateUserAction;
+
 use reunionou\frontwebapp\actions\events\GetEventAction;
 
+
 use reunionou\frontwebapp\actions\files\GetAvatarAction;
-
-
+use reunionou\frontwebapp\actions\seed\SeedEventsAction;
 use reunionou\frontwebapp\actions\auth\DeleteFriendAction;
 use reunionou\frontwebapp\actions\auth\GetUserEventsAction;
 use reunionou\frontwebapp\actions\comment\PostCommentEvent;
@@ -37,12 +39,11 @@ use reunionou\frontwebapp\middlewares\ValidateUserProperty;
 use reunionou\frontwebapp\actions\comment\GetCommentByIdEvent;
 use reunionou\frontwebapp\actions\events\AddParticipantAction;
 use reunionou\frontwebapp\actions\auth\GetUserInvitationsAction;
+
 use reunionou\frontwebapp\actions\events\UpdateInvitationAction;
 use reunionou\frontwebapp\actions\events\DeleteParticipantAction;
-
 use reunionou\frontwebapp\actions\events\UpdateParticipationAction;
 use reunionou\frontwebapp\actions\events\CreateEventUniqueInvitationAction;
-
 
 $config = ['settings' => [
     'outputBuffering' => false,
@@ -128,5 +129,8 @@ $app->post('/messages[/]', PostCommentEvent::class)->setName('postCommentEvent')
 // FILES
 $app->post('/avatars/{id}[/]', CreateAvatarAction::class)->setName('create_avatar');
 $app->get('/avatars/{id}[/{width}[/{height}]]', GetAvatarAction::class)->setName('get_avatar');
+
+$app->post('/users/seed', SeedUsersAction::class);
+$app->post('/events/seed', SeedEventsAction::class);
 
 $app->run();
