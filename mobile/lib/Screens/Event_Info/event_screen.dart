@@ -7,17 +7,6 @@ import '../../../constants.dart';
 import '../../class/event.dart';
 import '../../provider/event_model.dart';
 
-fetchEvent(context, id) async {
-  print("fdp");
-  Dio dio = Dio();
-  var response =
-      await dio.get('http://api.frontoffice.reunionou:49383/events/$id');
-  print(response.data);
-  Provider.of<EventModel>(context, listen: false).setEvent(
-    Event.fromJson(response.data['event']),
-  );
-}
-
 class EventScreen extends StatefulWidget {
   const EventScreen({Key? key, required this.eventId}) : super(key: key);
   final String eventId;

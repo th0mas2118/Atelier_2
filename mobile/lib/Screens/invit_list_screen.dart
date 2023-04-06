@@ -50,15 +50,18 @@ class _InvitListScreenState extends State<InvitListScreen> {
             ),
             trailing: TextButton(
               onPressed: () {
-                fetchEvent(context, widget.invitationsList[index].eventId);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) {
-                      return EventScreen(
-                          eventId: widget.invitationsList[index].id);
-                    },
-                  ),
+                      builder: (context) => Scaffold(
+                          appBar: AppBar(
+                            title: Text(widget.invitationsList[index].title),
+                            backgroundColor: Colors.purple,
+                          ),
+                          body: Material(
+                              child: EventScreen(
+                                  eventId:
+                                      widget.invitationsList[index].eventId)))),
                 );
               },
               child: const Icon(

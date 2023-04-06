@@ -30,7 +30,8 @@ class EventList extends StatelessWidget {
                               backgroundColor: Colors.purple,
                             ),
                             body: Material(
-                                child: EventInfo(event: events[index])))),
+                                child:
+                                    EventScreen(eventId: events[index].id)))),
                   );
                 }),
           );
