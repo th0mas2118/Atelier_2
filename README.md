@@ -14,7 +14,7 @@ Ajouter le vhost suivant :
 `127.0.0.1 api.frontoffice.reunionou`
 
 - Backend : se rendre dans Atelier_2/reunionou éxécuter `docker-compose up -d` (le backend est accessible depuis http://api.frontoffice.reunionou:49383)
-- FrontEnd : se rendre dans Atelier_2/reunionou éxecuter `npm i` puis `npm run dev`
+- FrontEnd : se rendre dans Atelier_2/reunionou éxecuter `npm i` puis `npm run dev`. Vous devez également créer un fichier `.env.local` dans /reunionou (aux cotés des dossiers src et public), avec cette ligne: `VITE_API_HOST=http://api.frontoffice.reunionou:49383`.
 - Mobile : se rendre dans Atelier_2/mobile éxécuter `flutter install`, `flutter pub get` puis `flutter run`
 
 Documentation backend : https://webetu.iutnc.univ-lorraine.fr/www/pierso112u/Atelier_2/documentation/
