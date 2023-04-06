@@ -11,7 +11,7 @@ Une branche par module (api_back, front et mobile)
 Cloner chaque partie (mobile, front, back) séparément
 
 Ajouter le vhost suivant :
-127.0.0.1 api.frontoffice.reunionou
+`127.0.0.1 api.frontoffice.reunionou`
 
 - Backend : se rendre dans Atelier_2/reunionou éxécuter `docker-compose up -d` (le backend est accessible depuis http://api.frontoffice.reunionou:49383)
 - FrontEnd : se rendre dans Atelier_2/reunionou éxecuter `npm i` puis `npm run dev`
