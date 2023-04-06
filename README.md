@@ -29,9 +29,9 @@ Vous pouvez accéder aux bases de données avec Compass:
 
 ## Seeding
 
-Dans le backend, un "seed_service" est disponible et permet d'ajouter des données randoms dans les bases de données. Il est accessible directement sur l'url du frontoffice (http://api.frontoffice.reunionou:49383)
+Dans le backend, un "seed_service" est disponible et permet d'ajouter des données randoms dans les bases de données. Il est accessible directement sur l'url du frontoffice (http://api.frontoffice.reunionou:49383).
 
 Vous pouvez ajouter:
 
-- Des users: `/users/seed` (un parametre `?count=xx` peut être fourni pour définir le nombre de données créées, 25 par défaut). Le mot de passe par défaut est 1234 pour tous les utilisateurs créés
-- Des events (avec les invitations et les commentaires): `/events/seed` (`?count=xx` peut aussi être utilisé, 5 par défaut). La géneration des évenements peut être assez longue, alors il est conseillé d'y aller doucement.
+- Des users: POST `/users/seed` (un parametre `?count=xx` peut être fourni pour définir le nombre de données créées, 25 par défaut). Le mot de passe par défaut est 1234 pour tous les utilisateurs créés
+- Des events (avec les invitations et les commentaires): POST `/events/seed` (`?count=xx` peut aussi être utilisé, 5 par défaut). La géneration des évenements peut être assez longue, alors il est conseillé d'y aller doucement.
