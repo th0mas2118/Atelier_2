@@ -28,7 +28,10 @@ getUsers(search, context) async {
 createEvent(context, title, description, date, adresse) async {
   var user = Provider.of<UserModel>(context, listen: false).log;
   var gpsData = await dio.get('https://geocode.maps.co/search?q=$adresse');
-  var gps = [gpsData.data[0]['lat'], gpsData.data[0]['lon']];
+  var gps = [
+    double.parse(gpsData.data[0]['lat']),
+    double.parse(gpsData.data[0]['lon'])
+  ];
 
   var body = {
     'title': title,

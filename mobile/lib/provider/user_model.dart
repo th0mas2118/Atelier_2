@@ -280,7 +280,7 @@ class UserModel extends ChangeNotifier {
             element['gps'],
             element['participants'],
             element['address'],
-            element['icon']);
+            element['icon'] ?? "");
         list.add(event);
       }
 

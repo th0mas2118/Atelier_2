@@ -20,6 +20,7 @@ class _EventMapState extends State<EventMap> {
   @override
   Widget build(BuildContext context) {
     try {
+      print(widget.event.gps[0].runtimeType);
       double lat = double.parse(widget.event.gps[0].toStringAsFixed(6));
       double long = double.parse(widget.event.gps[1].toStringAsFixed(6));
 

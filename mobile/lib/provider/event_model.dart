@@ -59,7 +59,7 @@ class EventModel extends ChangeNotifier {
           data['gps'],
           data['participants'],
           data['address'],
-          data['icon']);
+          data['icon'] ?? "");
       return event;
     } catch (error) {
       rethrow;
